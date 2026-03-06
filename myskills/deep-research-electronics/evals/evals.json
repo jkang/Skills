@@ -1,0 +1,11 @@
+{
+    "skill_name": "deep-research-electronics",
+    "evals": [
+        {
+            "id": 0,
+            "prompt": "收集最近一个季度范围内，苹果、三星、小米、OPPO、荣耀这些企业在 AI 上的举措动向（包含组织、端侧模型与平台、研产供销服领域），并生成一页极简商务风格的 PPT 报告。并在 PPT 备注中列出信源 URL。",
+            "expected_output": "A one-page minimalist PPT with 5 columns (one per company) and source URLs in the notes.",
+            "files": []
+        }
+    ]
+}
