@@ -1,0 +1,46 @@
+{
+    "entries": [
+        {
+            "company": "Alibaba",
+            "job_title": "Product Manager",
+            "level": "P7",
+            "source": "maimai",
+            "raw_text": "总包70-100w, 16薪制, 月薪约39k, 年终奖平均3.4个月, 股票约200股"
+        },
+        {
+            "company": "Alibaba",
+            "job_title": "Product Manager",
+            "level": "P7",
+            "source": "levels.fyi",
+            "raw_text": "Average total salary $134,326, base $114,902, bonus $19,425"
+        },
+        {
+            "company": "Tencent",
+            "job_title": "Product Manager",
+            "level": "L9",
+            "source": "maimai",
+            "raw_text": "16-20薪, 年终奖通常3个月, 总包约70-100w (参考同级别)"
+        },
+        {
+            "company": "ByteDance",
+            "job_title": "Product Manager",
+            "level": "2-2",
+            "source": "maimai",
+            "raw_text": "年包60-100w (含期权), 月薪40k, 年终14w, 160股期权, 调整后15薪月薪约36k-45k"
+        },
+        {
+            "company": "ByteDance",
+            "job_title": "Product Manager",
+            "level": "2-2",
+            "source": "levels.fyi",
+            "raw_text": "Average TC $288,000, ranges $271,000 - $398,000"
+        },
+        {
+            "company": "Meituan",
+            "job_title": "Product Manager",
+            "level": "L8",
+            "source": "maimai",
+            "raw_text": "总包70-130w, 15.5薪 (12+0.5+0.5+2.5), P7对标"
+        }
+    ]
+}
