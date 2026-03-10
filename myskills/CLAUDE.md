@@ -45,7 +45,14 @@ pip install python-pptx
 python deep-research-electronics/scripts/generate_ppt.py input.json output.pptx
 ```
 
-## Skill Development Patterns
+**Data processor** (data-visualizer-pro):
+```bash
+pip install pandas openpyxl numpy
+python data-visualizer-pro/scripts/data_processor.py --input data.csv --goal trend --dimension date --measure revenue
+# Goals: trend | compare | distribution | summary
+```
+
+
 
 - **SKILL.md files** contain the full agent prompt, including step-by-step instructions, data schemas, example inputs/outputs, and error handling. When modifying a skill, keep the workflow steps explicit and numbered.
 - **Chinese tech salary data** uses non-standard formatting: `16薪` (16-month salary), `总包` (total comp), `基础薪资` (base). The salary calculator normalizes these into annual figures.
