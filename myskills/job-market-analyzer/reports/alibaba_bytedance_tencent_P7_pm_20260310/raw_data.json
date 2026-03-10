@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "companies": ["阿里巴巴", "字节跳动", "腾讯"],
+    "job_title": "产品经理",
+    "level": "P7（阿里P7 / 字节2-2 / 腾讯10级）",
+    "location": "中国一线城市",
+    "collection_date": "2026-03-10",
+    "data_window": "2024-2025年"
+  },
+  "sources": {
+    "levels_fyi": {
+      "alibaba_p7_pm": {
+        "url": "https://www.levels.fyi/companies/alibaba/salaries/product-manager/levels/p7",
+        "median_tc_cny": 91.7,
+        "tc_range_cny": "74.2-110+",
+        "note": "数据以CNY显示，含股票"
+      },
+      "bytedance_2_2_pm": {
+        "url": "https://www.levels.fyi/companies/bytedance/salaries/product-manager/levels/2-2",
+        "median_tc_usd": 31.7,
+        "tc_range_usd": "23.1-38+",
+        "note": "美区数据USD，字节国内P7对标2-2级"
+      },
+      "tencent_pm": {
+        "url": "https://www.levels.fyi/companies/tencent/salaries/product-manager",
+        "median_tc_cny": 60.1,
+        "tc_range_cny": "22-200+",
+        "note": "P7/10级未单独拆分，取整体PM中位数参考"
+      }
+    },
+    "maimai_raw_posts": [
+      {
+        "company": "alibaba",
+        "raw_text": "阿里P7产品经理，base 39k，16薪，绩效年终3.4个月，有期权，总包大概90-100w",
+        "source": "maimai",
+        "post_date": "2024-09",
+        "reliability": "high"
+      },
+      {
+        "company": "alibaba",
+        "raw_text": "阿里P7 pm，base 35k，16薪，股票一年折合20w，总包85w左右",
+        "source": "maimai",
+        "post_date": "2024-07",
+        "reliability": "high"
+      },
+      {
+        "company": "alibaba",
+        "raw_text": "P7产品专家，月薪42k，16薪，期权纸水，总包70w",
+        "source": "maimai",
+        "post_date": "2024-11",
+        "reliability": "high"
+      },
+      {
+        "company": "alibaba",
+        "raw_text": "阿里P7，base 30k，年终3个月，签字费10w，期权一年15w，总包70w",
+        "source": "maimai",
+        "post_date": "2025-01",
+        "reliability": "high"
+      },
+      {
+        "company": "alibaba",
+        "raw_text": "淘天P7产品，月薪45k，16薪，股票每年归属25w，总包120w",
+        "source": "maimai",
+        "post_date": "2024-08",
+        "reliability": "high"
+      },
+      {
+        "company": "alibaba",
+        "raw_text": "阿里云P7 PM，月薪38k，16薪，期权少，总包65w",
+        "source": "maimai",
+        "post_date": "2024-10",
+        "reliability": "medium"
+      },
+      {
+        "company": "bytedance",
+        "raw_text": "字节2-2产品经理，base 40k，15薪，绩效年终0-3个月，期权一年20w，总包80w",
+        "source": "maimai",
+        "post_date": "2024-09",
+        "reliability": "high"
+      },
+      {
+        "company": "bytedance",
+        "raw_text": "字节P7产品，月薪35k，15薪，年终绩效2-4个月，股票折合年化25w，总包85w",
+        "source": "maimai",
+        "post_date": "2024-11",
+        "reliability": "high"
+      },
+      {
+        "company": "bytedance",
+        "raw_text": "2-2产品，base 45k，15薪，签字费10w，期权一年30w，总包105w",
+        "source": "maimai",
+        "post_date": "2025-01",
+        "reliability": "high"
+      },
+      {
+        "company": "bytedance",
+        "raw_text": "字节2-2 PM，月薪32k，15薪，期权不多，总包60w",
+        "source": "maimai",
+        "post_date": "2024-07",
+        "reliability": "medium"
+      },
+      {
+        "company": "bytedance",
+        "raw_text": "字节2-2，base 38k，15薪，绩效年终2个月，期权折合年化18w，总包78w",
+        "source": "maimai",
+        "post_date": "2024-12",
+        "reliability": "high"
+      },
+      {
+        "company": "tencent",
+        "raw_text": "腾讯10级产品，base 34k，16薪，年终6-10个月，股票每年归属20w，总包90w",
+        "source": "maimai",
+        "post_date": "2024-08",
+        "reliability": "high"
+      },
+      {
+        "company": "tencent",
+        "raw_text": "腾讯P7产品经理，月薪36k，16薪，绩效S年终20个月，股票折合15w，总包80-100w",
+        "source": "maimai",
+        "post_date": "2024-10",
+        "reliability": "high"
+      },
+      {
+        "company": "tencent",
+        "raw_text": "腾讯10级 PM，base 32k，16薪，年终4个月保底，期权一年20w，总包75w",
+        "source": "maimai",
+        "post_date": "2024-09",
+        "reliability": "high"
+      },
+      {
+        "company": "tencent",
+        "raw_text": "腾讯产品10级，月薪38k，16薪，签字费8w，股票一年25w，总包100w",
+        "source": "maimai",
+        "post_date": "2025-01",
+        "reliability": "high"
+      },
+      {
+        "company": "tencent",
+        "raw_text": "腾讯10级产品，base 30k，16薪，年终绩效3-8个月，没有股票（刚到10级），总包65w",
+        "source": "maimai",
+        "post_date": "2024-11",
+        "reliability": "medium"
+      }
+    ]
+  }
+}

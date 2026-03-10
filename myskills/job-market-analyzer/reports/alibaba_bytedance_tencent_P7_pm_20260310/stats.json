@@ -1,0 +1,234 @@
+{
+  "overall_tc": {
+    "sample_count": 16,
+    "min": 60.0,
+    "max": 120.0,
+    "mean": 83.5,
+    "median": 82.5,
+    "p25": 70.0,
+    "p75": 91.8
+  },
+  "by_source": {
+    "maimai": {
+      "sample_count": 16,
+      "min": 60.0,
+      "max": 120.0,
+      "median": 82.5,
+      "range": "60.0-120.0万"
+    }
+  },
+  "base_monthly": {
+    "sample_count": 16,
+    "min": 30,
+    "max": 45,
+    "median": 37.0,
+    "unit": "k/月"
+  },
+  "bonus": {
+    "total_months": {
+      "sample_count": 16,
+      "min": 15,
+      "max": 16,
+      "median": 16.0,
+      "common": "15-16薪"
+    },
+    "fixed_months": {
+      "sample_count": 16,
+      "min": 3,
+      "max": 4,
+      "median": 4.0
+    },
+    "performance_months": {
+      "sample_count": 8,
+      "range_low": 0,
+      "range_high": 20
+    },
+    "sign_on_bonus": {
+      "sample_count": 3,
+      "min": 8,
+      "max": 10,
+      "median": 10,
+      "unit": "万"
+    }
+  },
+  "valid_entries": 16,
+  "parse_errors": [],
+  "entries_detail": [
+    {
+      "base_monthly": 39,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": 0,
+      "bonus_performance_months_high": 3.4,
+      "sign_on_bonus": null,
+      "stock_annual": 15,
+      "tc_annual": 97.4,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 35,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": null,
+      "stock_annual": 20,
+      "tc_annual": 85.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 42,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": null,
+      "stock_annual": 0,
+      "tc_annual": 70.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 30,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": 10,
+      "stock_annual": 15,
+      "tc_annual": 70.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 45,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": null,
+      "stock_annual": 25,
+      "tc_annual": 120.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 38,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": null,
+      "stock_annual": 5,
+      "tc_annual": 65.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 40,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": 0,
+      "bonus_performance_months_high": 3,
+      "sign_on_bonus": null,
+      "stock_annual": 20,
+      "tc_annual": 80.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 35,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": 2,
+      "bonus_performance_months_high": 4,
+      "sign_on_bonus": null,
+      "stock_annual": 25,
+      "tc_annual": 85.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 45,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": 10,
+      "stock_annual": 30,
+      "tc_annual": 105.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 32,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": null,
+      "stock_annual": 5,
+      "tc_annual": 60.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 38,
+      "bonus_months": 15,
+      "bonus_fixed_months": 3,
+      "bonus_performance_months_low": 2,
+      "bonus_performance_months_high": 2,
+      "sign_on_bonus": null,
+      "stock_annual": 18,
+      "tc_annual": 78.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 34,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": 6,
+      "bonus_performance_months_high": 10,
+      "sign_on_bonus": null,
+      "stock_annual": 20,
+      "tc_annual": 90.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 36,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": 0,
+      "bonus_performance_months_high": 20,
+      "sign_on_bonus": null,
+      "stock_annual": 15,
+      "tc_annual": 90.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 32,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": 4,
+      "bonus_performance_months_high": 4,
+      "sign_on_bonus": null,
+      "stock_annual": 20,
+      "tc_annual": 75.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 38,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": null,
+      "bonus_performance_months_high": null,
+      "sign_on_bonus": 8,
+      "stock_annual": 25,
+      "tc_annual": 100.0,
+      "source": "maimai"
+    },
+    {
+      "base_monthly": 30,
+      "bonus_months": 16,
+      "bonus_fixed_months": 4,
+      "bonus_performance_months_low": 3,
+      "bonus_performance_months_high": 8,
+      "sign_on_bonus": null,
+      "stock_annual": 0,
+      "tc_annual": 65.0,
+      "source": "maimai"
+    }
+  ]
+}
