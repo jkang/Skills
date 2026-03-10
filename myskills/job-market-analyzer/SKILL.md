@@ -18,6 +18,23 @@ description: 当用户需要查询某家公司某个岗位/职级的薪资待遇
 
 > **如果用户没有明确提供所有参数，你必须主动询问确认 `company` 和 `job_title`。** 对于 `level`，如果未指定，默认收集该公司该岗位的各主要职级区间数据。
 
+## 📁 输出目录约定 (Output Directory)
+
+所有调研产物统一写入 `reports/{company}_{level}_{date}/` 子目录：
+
+```
+reports/
+└── alibaba_P7_20260310/
+    ├── raw_data.json          # Step 2 原始采集数据
+    ├── cleaned_data.json      # Step 3 清洗后结构化数据
+    ├── stats.json             # Step 4 统计分析结果
+    └── report.md              # Step 4 最终调研报告
+```
+
+> **目录命名规则**：`{公司英文名}_{职级}_{采集日期 YYYYMMDD}`，全部小写，如 `bytedance_2-2_20260310`。
+
+---
+
 ## ⚙️ 核心工作流 (Workflow)
 
 ### Step 1: 参数解析与标准化 (Parameter Parsing)
@@ -34,7 +51,15 @@ description: 当用户需要查询某家公司某个岗位/职级的薪资待遇
 
 ### Step 2: 并行数据采集 (Parallel Data Collection)
 
-同时发起两个独立的数据抓取分支：
+同时发起两个独立的数据抓取分支，采集结束后将所有原始数据合并写入：
+
+```bash
+# 写入原始采集数据
+mkdir -p reports/{company}_{level}_{date}
+echo '{JSON原始数据}' > reports/{company}_{level}_{date}/raw_data.json
+```
+
+
 
 #### 🔀 分支 A — 主攻 Levels.fyi
 
@@ -133,20 +158,31 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
    > - `sign_on_bonus`: 签字费/入职奖金（万，年化后）
 2. 剔除明显异常值（如月薪写成年薪、数量级错误）。
 3. 合并分支 A 和分支 B 的数据，标注各条数据来源。
+4. **将清洗后的数据写入文件**：
+   ```bash
+   echo '{清洗后JSON}' > reports/{company}_{level}_{date}/cleaned_data.json
+   ```
 
 ### Step 4: 统计分析与报告生成 (Report Generation)
 
 1. **构造数据 JSON**：将所有清洗后的数据组装为 JSON 数组。
-2. **调用分析脚本**：
+2. **调用分析脚本并保存统计结果**：
    ```bash
-   echo '{JSON数据}' | python3 scripts/salary_calculator.py
+   python3 scripts/salary_calculator.py reports/{company}_{level}_{date}/cleaned_data.json \
+     > reports/{company}_{level}_{date}/stats.json
    ```
    脚本将输出：中位数、P25/P75 分位数、最大最小值、按来源分组的统计。
 
-3. **渲染报告**：读取 `assets/report_template.md`，替换所有占位符，生成最终的 Markdown 报告。
+3. **渲染报告**：读取 `assets/report_template.md`，替换所有占位符，生成最终的 Markdown 报告，**保存到**：
+   ```bash
+   # 最终报告写入 reports/ 目录
+   cat report_filled.md > reports/{company}_{level}_{date}/report.md
+   ```
 
 4. **AI 总结**：在报告末尾加入你的分析洞察，例如：
    > "该岗位在字节的 TC 跨度较大（50-90万），主要受期权归属价值波动与年终绩效系数影响。近期数据显示 Base 月薪区间稳定在 28-35k，建议谈薪时重点关注 sign-on bonus 和期权刷新包。"
+
+5. **向用户展示最终报告内容**，并告知文件已保存至 `reports/{company}_{level}_{date}/report.md`。
 
 ## 🔧 推荐 MCP 工具包配置
 
