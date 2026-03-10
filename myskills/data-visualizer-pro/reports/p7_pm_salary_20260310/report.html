@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAT P7 产品经理薪资对比 — 数据报表</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      background: #F0F2F5;
+      color: #1a2035;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ─── Header ─── */
+    header {
+      background: linear-gradient(135deg, #1a2035 0%, #2d3a5f 60%, #3d5a8a 100%);
+      color: #fff;
+      padding: 36px 40px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 12px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    header .subtitle {
+      font-size: 13px;
+      opacity: 0.75;
+    }
+    .header-meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 12px;
+      opacity: 0.65;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .header-meta span::before { content: '▸'; opacity: 0.6; }
+
+    /* ─── Main container ─── */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+
+    /* ─── Section titles ─── */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a2035;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 16px;
+      background: #4A90D9;
+      border-radius: 2px;
+    }
+
+    /* ─── Insights ─── */
+    .insights {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .insight-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: #F7F9FC;
+      border-radius: 8px;
+      border-left: 3px solid #4A90D9;
+    }
+    .insight-item.amber { border-left-color: #F5A623; }
+    .insight-item.purple { border-left-color: #845EC2; }
+    .insight-item.teal  { border-left-color: #00B4A0; }
+    .insight-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #4A90D9;
+      line-height: 1;
+      min-width: 28px;
+    }
+    .insight-item.amber .insight-num { color: #F5A623; }
+    .insight-item.purple .insight-num { color: #845EC2; }
+    .insight-item.teal   .insight-num { color: #00B4A0; }
+    .insight-text { font-size: 13px; color: #3a4a6a; line-height: 1.55; }
+    .insight-text strong { color: #1a2035; }
+
+    /* ─── KPI Cards ─── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 900px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent, #4A90D9);
+    }
+    .kpi-label { font-size: 11px; color: #8a96b0; font-weight: 500; letter-spacing: 0.3px; }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a2035;
+      line-height: 1.15;
+      margin: 6px 0 2px;
+    }
+    .kpi-unit { font-size: 12px; color: #8a96b0; }
+
+    /* ─── Chart grid ─── */
+    .chart-grid-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .chart-grid-2-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 800px) {
+      .chart-grid-2, .chart-grid-2-equal { grid-template-columns: 1fr; }
+    }
+    .chart-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 20px 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .chart-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #3a4a6a;
+      margin-bottom: 4px;
+    }
+    .chart-card .chart-sub {
+      font-size: 11px;
+      color: #a0abc0;
+      margin-bottom: 14px;
+    }
+    .chart-container { width: 100%; }
+
+    /* ─── Company color legend ─── */
+    .company-legend {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #3a4a6a;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ─── Table ─── */
+    .table-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    thead th {
+      background: #F0F4FA;
+      color: #3a4a6a;
+      font-weight: 700;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    tbody tr:hover { background: #F7F9FC; }
+    tbody td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #EEF2F8;
+      color: #3a4a6a;
+      vertical-align: middle;
+    }
+    .company-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-alibaba  { background: #FFF3E0; color: #E65100; }
+    .tag-bytedance{ background: #E3F2FD; color: #1565C0; }
+    .tag-tencent  { background: #EDE7F6; color: #4527A0; }
+    .tc-value { font-weight: 700; color: #1a2035; }
+    .tc-high  { color: #1565C0; }
+    .tc-mid   { color: #2E7D32; }
+    .tc-low   { color: #B71C1C; }
+
+    /* ─── Footer ─── */
+    footer {
+      text-align: center;
+      font-size: 11.5px;
+      color: #a0abc0;
+      margin-top: 8px;
+      padding: 16px;
+    }
+    footer a { color: #4A90D9; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ━━━ HEADER ━━━ -->
+<header>
+  <div class="header-badge">薪资调研报告 · 2026-03-10</div>
+  <h1>阿里 / 字节 / 腾讯 · P7 产品经理薪资对比</h1>
+  <p class="subtitle">基于脉脉 16 条真实薪资数据，覆盖 2024.07 — 2025.01</p>
+  <div class="header-meta">
+    <span>目标岗位：Product Manager（产品经理）</span>
+    <span>职级对标：阿里 P7 / 字节 2-2 / 腾讯 10级</span>
+    <span>城市范围：北京 · 上海 · 杭州 · 深圳</span>
+    <span>有效样本：16 条</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ━━━ CORE INSIGHTS ━━━ -->
+  <div class="insights">
+    <div class="section-title">核心洞察</div>
+    <div class="insights-grid">
+      <div class="insight-item">
+        <div class="insight-num">01</div>
+        <div class="insight-text">
+          三家公司 P7 PM <strong>TC 主力区间高度重叠（65–105万）</strong>，中位数差距有限：腾讯 90万 &gt; 字节 80万 &gt; 阿里 77.5万，整体差距约 12.5万
+        </div>
+      </div>
+      <div class="insight-item amber">
+        <div class="insight-num">02</div>
+        <div class="insight-text">
+          <strong>阿里 Base 月薪最高（中位 38.5k）</strong>，但年终奖弹性最弱；TC 上下限最宽（65–120万），极值受 BU 和期权价值影响大
+        </div>
+      </div>
+      <div class="insight-item purple">
+        <div class="insight-num">03</div>
+        <div class="insight-text">
+          <strong>腾讯年终奖弹性最大</strong>，S 级绩效年终可超 20 个月 Base，这是三家最高上限；但 Base 月薪最低（中位 34k）
+        </div>
+      </div>
+      <div class="insight-item teal">
+        <div class="insight-num">04</div>
+        <div class="insight-text">
+          <strong>股权是 TC 差距的核心变量</strong>：同级别有无股票 TC 相差可达 25–40万，字节期权未上市存在流动性风险
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">05</div>
+        <div class="insight-text">
+          全样本 TC 均值 <strong>83.5万</strong>，中位数 <strong>82.5万</strong>，P25–P75 区间为 70–91.8万，分布适度右偏，顶部由高股票拉升
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ KPI CARDS ━━━ -->
+  <div class="kpi-row">
+    <div class="kpi-card" style="--accent:#B71C1C;">
+      <div class="kpi-label">最低 TC</div>
+      <div class="kpi-value">60</div>
+      <div class="kpi-unit">万元 / 年</div>
+    </div>
+    <div class="kpi-card" style="--accent:#4A90D9;">
+      <div class="kpi-label">P25 分位</div>
+      <div class="kpi-value">70</div>
+      <div class="kpi-unit">万元 / 年</div>
+    </div>
+    <div class="kpi-card" style="--accent:#2E7D32;">
+      <div class="kpi-label">中位数 P50</div>
+      <div class="kpi-value">82.5</div>
+      <div class="kpi-unit">万元 / 年</div>
+    </div>
+    <div class="kpi-card" style="--accent:#F5A623;">
+      <div class="kpi-label">P75 分位</div>
+      <div class="kpi-value">91.8</div>
+      <div class="kpi-unit">万元 / 年</div>
+    </div>
+    <div class="kpi-card" style="--accent:#845EC2;">
+      <div class="kpi-label">最高 TC</div>
+      <div class="kpi-value">120</div>
+      <div class="kpi-unit">万元 / 年</div>
+    </div>
+    <div class="kpi-card" style="--accent:#00B4A0;">
+      <div class="kpi-label">平均 TC</div>
+      <div class="kpi-value">83.5</div>
+      <div class="kpi-unit">万元 / 年（n=16）</div>
+    </div>
+  </div>
+
+  <!-- ━━━ ROW 1: Box Plot + Bonus Structure ━━━ -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <h3>各公司 TC 总包分布（箱线图）</h3>
+      <p class="chart-sub">展示最小值、Q1、中位数、Q3、最大值，圆点为各样本个体值</p>
+      <div class="chart-container" id="chart-boxplot" style="height:320px;"></div>
+    </div>
+    <div class="chart-card">
+      <h3>薪资结构对比</h3>
+      <p class="chart-sub">固定现金 / 股票期权 / 绩效弹性（万元，取各公司均值）</p>
+      <div class="chart-container" id="chart-composition" style="height:320px;"></div>
+    </div>
+  </div>
+
+  <!-- ━━━ ROW 2: Scatter of all samples ━━━ -->
+  <div style="margin-bottom:16px;">
+    <div class="chart-card">
+      <h3>全部 16 条样本 TC 散点分布</h3>
+      <p class="chart-sub">横轴为月薪（k），纵轴为年度 TC（万），气泡大小代表年化股票价值，颜色区分公司</p>
+      <div class="chart-container" id="chart-scatter" style="height:340px;"></div>
+    </div>
+  </div>
+
+  <!-- ━━━ ROW 3: Base salary + Bonus months ━━━ -->
+  <div class="chart-grid-2-equal">
+    <div class="chart-card">
+      <h3>Base 月薪对比（各样本）</h3>
+      <p class="chart-sub">三家公司各样本月薪（k/月），虚线为各公司中位数</p>
+      <div class="chart-container" id="chart-base" style="height:300px;"></div>
+    </div>
+    <div class="chart-card">
+      <h3>年终奖结构对比</h3>
+      <p class="chart-sub">各公司固定年终 + 绩效浮动范围（相对月薪倍数）</p>
+      <div class="chart-container" id="chart-bonus" style="height:300px;"></div>
+    </div>
+  </div>
+
+  <!-- ━━━ DATA TABLE ━━━ -->
+  <div class="table-card">
+    <div class="section-title" style="margin-bottom:14px;">原始样本数据（16 条）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>公司</th>
+          <th>月薪（k）</th>
+          <th>薪资结构</th>
+          <th>固定年终</th>
+          <th>绩效区间</th>
+          <th>签字费（万）</th>
+          <th>股票/年（万）</th>
+          <th>TC 总包（万）</th>
+          <th>数据时间</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  数据来源：脉脉 Maimai（2024.07–2025.01）&nbsp;·&nbsp;
+  由 <strong>Data Visualizer Pro</strong> 生成 &nbsp;·&nbsp;
+  生成时间：2026-03-10 &nbsp;·&nbsp; 样本量 n=16（小样本，仅供方向参考）
+</footer>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  RAW DATA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+var rawData = [
+  { company:'alibaba',   base:39, bonusM:16, fixedM:4, perfLow:0,    perfHigh:3.4,  signOn:null, stock:15, tc:97.4,  date:'2024-09' },
+  { company:'alibaba',   base:35, bonusM:16, fixedM:4, perfLow:null, perfHigh:null, signOn:null, stock:20, tc:85,    date:'2024-07' },
+  { company:'alibaba',   base:42, bonusM:16, fixedM:4, perfLow:null, perfHigh:null, signOn:null, stock:0,  tc:70,    date:'2024-11' },
+  { company:'alibaba',   base:30, bonusM:15, fixedM:3, perfLow:null, perfHigh:null, signOn:10,   stock:15, tc:70,    date:'2025-01' },
+  { company:'alibaba',   base:45, bonusM:16, fixedM:4, perfLow:null, perfHigh:null, signOn:null, stock:25, tc:120,   date:'2024-08' },
+  { company:'alibaba',   base:38, bonusM:16, fixedM:4, perfLow:null, perfHigh:null, signOn:null, stock:5,  tc:65,    date:'2024-10' },
+  { company:'bytedance', base:40, bonusM:15, fixedM:3, perfLow:0,    perfHigh:3,    signOn:null, stock:20, tc:80,    date:'2024-09' },
+  { company:'bytedance', base:35, bonusM:15, fixedM:3, perfLow:2,    perfHigh:4,    signOn:null, stock:25, tc:85,    date:'2024-11' },
+  { company:'bytedance', base:45, bonusM:15, fixedM:3, perfLow:null, perfHigh:null, signOn:10,   stock:30, tc:105,   date:'2025-01' },
+  { company:'bytedance', base:32, bonusM:15, fixedM:3, perfLow:null, perfHigh:null, signOn:null, stock:5,  tc:60,    date:'2024-07' },
+  { company:'bytedance', base:38, bonusM:15, fixedM:3, perfLow:2,    perfHigh:2,    signOn:null, stock:18, tc:78,    date:'2024-12' },
+  { company:'tencent',   base:34, bonusM:16, fixedM:4, perfLow:6,    perfHigh:10,   signOn:null, stock:20, tc:90,    date:'2024-08' },
+  { company:'tencent',   base:36, bonusM:16, fixedM:4, perfLow:0,    perfHigh:20,   signOn:null, stock:15, tc:90,    date:'2024-10' },
+  { company:'tencent',   base:32, bonusM:16, fixedM:4, perfLow:4,    perfHigh:4,    signOn:null, stock:20, tc:75,    date:'2024-09' },
+  { company:'tencent',   base:38, bonusM:16, fixedM:4, perfLow:null, perfHigh:null, signOn:8,    stock:25, tc:100,   date:'2025-01' },
+  { company:'tencent',   base:30, bonusM:16, fixedM:4, perfLow:3,    perfHigh:8,    signOn:null, stock:0,  tc:65,    date:'2024-11' }
+];
+
+var COLORS = { alibaba:'#F5A623', bytedance:'#4A90D9', tencent:'#845EC2' };
+var LABELS  = { alibaba:'阿里巴巴 P7', bytedance:'字节跳动 2-2', tencent:'腾讯 10级' };
+var COMPANIES = ['alibaba', 'bytedance', 'tencent'];
+
+function getTCs(company) {
+  return rawData.filter(function(d){ return d.company === company; }).map(function(d){ return d.tc; }).sort(function(a,b){ return a-b; });
+}
+function quantile(arr, p) {
+  var s = arr.slice().sort(function(a,b){ return a-b; });
+  var idx = p * (s.length - 1);
+  var lo = Math.floor(idx), hi = Math.ceil(idx);
+  return s[lo] + (s[hi] - s[lo]) * (idx - lo);
+}
+function boxStats(arr) {
+  var s = arr.slice().sort(function(a,b){ return a-b; });
+  return [Math.min.apply(null,s), quantile(s,0.25), quantile(s,0.5), quantile(s,0.75), Math.max.apply(null,s)]
+    .map(function(v){ return Math.round(v*10)/10; });
+}
+
+// ━━━ Populate table immediately (no ECharts dependency) ━━━
+(function() {
+  var tbody = document.getElementById('data-table-body');
+  var sorted = rawData.slice().sort(function(a,b){ return b.tc - a.tc; });
+  for (var i = 0; i < sorted.length; i++) {
+    var d = sorted[i];
+    var tcClass = d.tc >= 95 ? 'tc-high' : d.tc <= 70 ? 'tc-low' : 'tc-mid';
+    var perf;
+    if (d.perfLow === null && d.perfHigh === null) {
+      perf = '—';
+    } else if (d.perfLow === d.perfHigh) {
+      perf = d.perfLow + '月';
+    } else {
+      perf = (d.perfLow !== null ? d.perfLow : 0) + '–' + d.perfHigh + '月';
+    }
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + (i+1) + '</td>' +
+      '<td><span class="company-tag tag-' + d.company + '">' + LABELS[d.company].split(' ')[0] + '</span></td>' +
+      '<td><b>' + d.base + 'k</b></td>' +
+      '<td>' + d.bonusM + '薪</td>' +
+      '<td>' + d.fixedM + '个月</td>' +
+      '<td>' + perf + '</td>' +
+      '<td>' + (d.signOn !== null ? d.signOn + '万' : '—') + '</td>' +
+      '<td>' + (d.stock > 0 ? d.stock + '万' : '无/纸水') + '</td>' +
+      '<td><span class="tc-value ' + tcClass + '">' + d.tc + '万</span></td>' +
+      '<td>' + d.date + '</td>';
+    tbody.appendChild(tr);
+  }
+})();
+
+// ━━━ Init charts after all resources (incl. ECharts CDN) are loaded ━━━
+window.addEventListener('load', function() {
+  if (typeof echarts === 'undefined') {
+    var els = document.querySelectorAll('.chart-container');
+    for (var i = 0; i < els.length; i++) {
+      els[i].innerHTML = '<div style="padding:40px;text-align:center;color:#aaa;font-size:13px;">图表加载失败：ECharts CDN 无法访问，请在浏览器中打开此文件</div>';
+    }
+    return;
+  }
+  initBoxplot();
+  initComposition();
+  initScatter();
+  initBase();
+  initBonus();
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  CHART 1: BOX PLOT + scatter overlay
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initBoxplot() {
+  var chart = echarts.init(document.getElementById('chart-boxplot'));
+
+  // FIX: embed per-item itemStyle directly in data (not function callback)
+  var boxSeriesData = COMPANIES.map(function(c) {
+    return {
+      value: boxStats(getTCs(c)),
+      itemStyle: { color: COLORS[c] + '40', borderColor: COLORS[c], borderWidth: 2 }
+    };
+  });
+
+  // Scatter overlay — individual sample points
+  var scatterSeries = COMPANIES.map(function(c, ci) {
+    return {
+      name: LABELS[c],
+      type: 'scatter',
+      data: rawData.filter(function(d){ return d.company === c; }).map(function(d){ return [ci, d.tc]; }),
+      symbolSize: 9,
+      itemStyle: { color: COLORS[c], borderColor: '#fff', borderWidth: 1.5 },
+      tooltip: {
+        formatter: function(p) { return '<b>' + LABELS[c] + '</b><br/>TC：<b>' + p.data[1] + '万</b>'; }
+      }
+    };
+  });
+
+  chart.setOption({
+    grid: { top: 24, right: 20, bottom: 60, left: 52 },
+    xAxis: {
+      type: 'category',
+      data: COMPANIES.map(function(c){ return LABELS[c]; }),
+      axisLabel: { fontSize: 12, color: '#3a4a6a' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    yAxis: {
+      name: 'TC（万）',
+      nameTextStyle: { color: '#8a96b0', fontSize: 11 },
+      axisLabel: { formatter: '{value}万', color: '#8a96b0', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } }
+    },
+    tooltip: { trigger: 'item' },
+    legend: { show: false },
+    series: [{
+      name: 'TC分布',
+      type: 'boxplot',
+      data: boxSeriesData,
+      tooltip: {
+        formatter: function(params) {
+          var c = COMPANIES[params.dataIndex];
+          var v = params.data.value || params.data;
+          return '<b>' + LABELS[c] + '</b><br/>最高：' + v[4] + '万<br/>Q3：' + v[3] + '万<br/>中位数：<b>' + v[2] + '万</b><br/>Q1：' + v[1] + '万<br/>最低：' + v[0] + '万';
+        }
+      }
+    }].concat(scatterSeries)
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  CHART 2: SALARY COMPOSITION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initComposition() {
+  var chart = echarts.init(document.getElementById('chart-composition'));
+  var compData = {
+    alibaba:   { baseCash: 45.8, fixedBonus: 14.8, stock: 13.3, perf: 10.7 },
+    bytedance: { baseCash: 45.6, fixedBonus: 11.4, stock: 19.6, perf: 5.0  },
+    tencent:   { baseCash: 40.8, fixedBonus: 13.6, stock: 16.0, perf: 13.6 }
+  };
+  chart.setOption({
+    grid: { top: 20, right: 16, bottom: 64, left: 60 },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var s = '<b>' + params[0].name + '</b><br/>';
+        var total = 0;
+        params.forEach(function(p) { s += p.marker + p.seriesName + '：' + p.value + '万<br/>'; total += p.value; });
+        return s + '<b>合计：' + total.toFixed(1) + '万</b>';
+      }
+    },
+    legend: { bottom: 4, textStyle: { fontSize: 11, color: '#3a4a6a' }, itemWidth: 12, itemHeight: 8 },
+    xAxis: {
+      type: 'category',
+      data: COMPANIES.map(function(c){ return LABELS[c]; }),
+      axisLabel: { fontSize: 11, color: '#3a4a6a' },
+      axisLine: { lineStyle: { color: '#e2e8f0' } }
+    },
+    yAxis: {
+      name: '万元',
+      nameTextStyle: { color: '#8a96b0', fontSize: 11 },
+      axisLabel: { formatter: '{value}万', color: '#8a96b0', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } }
+    },
+    series: [
+      { name: '基础年薪（×12）', type: 'bar', stack: 'tc', data: COMPANIES.map(function(c){ return compData[c].baseCash; }), itemStyle: { color: '#4A90D9' }, label: { show: true, position: 'inside', fontSize: 10, formatter: function(p){ return p.value.toFixed(1); } } },
+      { name: '固定年终奖',      type: 'bar', stack: 'tc', data: COMPANIES.map(function(c){ return compData[c].fixedBonus; }), itemStyle: { color: '#69C0FF' }, label: { show: true, position: 'inside', fontSize: 10, formatter: function(p){ return p.value.toFixed(1); } } },
+      { name: '股票/期权（年化）', type: 'bar', stack: 'tc', data: COMPANIES.map(function(c){ return compData[c].stock; }), itemStyle: { color: '#F5A623' }, label: { show: true, position: 'inside', fontSize: 10, formatter: function(p){ return p.value.toFixed(1); } } },
+      { name: '绩效浮动（均值）', type: 'bar', stack: 'tc', data: COMPANIES.map(function(c){ return compData[c].perf; }), itemStyle: { color: '#845EC2' }, label: { show: true, position: 'inside', fontSize: 10, formatter: function(p){ return p.value.toFixed(1); } } }
+    ]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  CHART 3: SCATTER (base vs TC, bubble=stock)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initScatter() {
+  var chart = echarts.init(document.getElementById('chart-scatter'));
+
+  // FIX: use flat [x, y, z] array format so symbolSize callback receives the value array
+  var series = COMPANIES.map(function(c) {
+    return {
+      name: LABELS[c],
+      type: 'scatter',
+      data: rawData.filter(function(d){ return d.company === c; }).map(function(d){
+        return [d.base, d.tc, Math.max(d.stock, 1), d.bonusM, d.signOn];
+      }),
+      // FIX: val is the [x,y,z,...] array, not an object
+      symbolSize: function(val) { return Math.sqrt(val[2]) * 3 + 8; },
+      itemStyle: { color: COLORS[c], opacity: 0.9, borderColor: '#fff', borderWidth: 1.5 },
+      tooltip: {
+        formatter: function(p) {
+          var v = p.value;
+          return '<b>' + LABELS[c] + '</b><br/>月薪：<b>' + v[0] + 'k</b><br/>TC：<b>' + v[1] + '万</b><br/>股票/年：' + (v[2] <= 1 ? '无' : v[2] + '万') + '<br/>薪资结构：' + v[3] + '薪' + (v[4] ? '<br/>签字费：' + v[4] + '万' : '');
+        }
+      }
+    };
+  });
+
+  chart.setOption({
+    grid: { top: 24, right: 120, bottom: 52, left: 52 },
+    tooltip: { trigger: 'item' },
+    legend: { right: 8, top: 'center', orient: 'vertical', textStyle: { fontSize: 11, color: '#3a4a6a' }, icon: 'circle', itemWidth: 10 },
+    xAxis: {
+      name: 'Base 月薪（k/月）', nameLocation: 'middle', nameGap: 32,
+      nameTextStyle: { color: '#8a96b0', fontSize: 11 },
+      min: 28, max: 48,
+      axisLabel: { formatter: '{value}k', color: '#8a96b0', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } }
+    },
+    yAxis: {
+      name: 'TC（万元）', nameTextStyle: { color: '#8a96b0', fontSize: 11 },
+      min: 55, max: 125,
+      axisLabel: { formatter: '{value}万', color: '#8a96b0', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } }
+    },
+    series: series.concat([{
+      type: 'line', data: [],
+      markLine: {
+        silent: true, symbol: ['none','none'],
+        data: [
+          { yAxis: 77.5, lineStyle: { color: COLORS.alibaba,   type: 'dashed', width: 1.5 }, label: { formatter: '阿里中位 77.5万', position: 'insideEndTop', fontSize: 10, color: COLORS.alibaba } },
+          { yAxis: 80,   lineStyle: { color: COLORS.bytedance, type: 'dashed', width: 1.5 }, label: { formatter: '字节中位 80万',   position: 'insideEndTop', fontSize: 10, color: COLORS.bytedance } },
+          { yAxis: 90,   lineStyle: { color: COLORS.tencent,   type: 'dashed', width: 1.5 }, label: { formatter: '腾讯中位 90万',   position: 'insideEndTop', fontSize: 10, color: COLORS.tencent } }
+        ]
+      }
+    }])
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  CHART 4: BASE MONTHLY SALARY
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initBase() {
+  var chart = echarts.init(document.getElementById('chart-base'));
+  var ali  = rawData.filter(function(d){ return d.company==='alibaba'; });
+  var byte = rawData.filter(function(d){ return d.company==='bytedance'; });
+  var ten  = rawData.filter(function(d){ return d.company==='tencent'; });
+  var maxLen = Math.max(ali.length, byte.length, ten.length);
+  var xLabels = [];
+  for (var i = 0; i < maxLen; i++) { xLabels.push('样本 ' + (i+1)); }
+
+  // FIX: replace unsupported type:'median' with hard-coded yAxis median values
+  chart.setOption({
+    grid: { top: 24, right: 20, bottom: 60, left: 46 },
+    tooltip: {
+      trigger: 'axis', axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var s = '<b>' + params[0].axisValue + '</b><br/>';
+        params.forEach(function(p){ if (p.value != null) s += p.marker + p.seriesName + '：' + p.value + 'k/月<br/>'; });
+        return s;
+      }
+    },
+    legend: { bottom: 4, textStyle: { fontSize: 11 }, itemWidth: 12 },
+    xAxis: { type: 'category', data: xLabels, axisLabel: { fontSize: 11, color: '#8a96b0' }, axisLine: { lineStyle: { color: '#e2e8f0' } } },
+    yAxis: { name: 'k/月', min: 25, max: 50, axisLabel: { formatter: '{value}k', color: '#8a96b0', fontSize: 11 }, splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } } },
+    series: [
+      {
+        name: '阿里巴巴 P7', type: 'bar', barMaxWidth: 20,
+        data: ali.map(function(d){ return d.base; }),
+        itemStyle: { color: COLORS.alibaba },
+        markLine: { silent: true, symbol: ['none','none'], data: [{ yAxis: 38.5, lineStyle: { color: COLORS.alibaba, width: 2, type: 'dashed' }, label: { formatter: '中位 38.5k', fontSize: 10, color: COLORS.alibaba } }] }
+      },
+      {
+        name: '字节跳动 2-2', type: 'bar', barMaxWidth: 20,
+        data: byte.map(function(d){ return d.base; }),
+        itemStyle: { color: COLORS.bytedance },
+        markLine: { silent: true, symbol: ['none','none'], data: [{ yAxis: 38, lineStyle: { color: COLORS.bytedance, width: 2, type: 'dashed' }, label: { formatter: '中位 38k', fontSize: 10, color: COLORS.bytedance, position: 'insideStartBottom' } }] }
+      },
+      {
+        name: '腾讯 10级', type: 'bar', barMaxWidth: 20,
+        data: ten.map(function(d){ return d.base; }),
+        itemStyle: { color: COLORS.tencent },
+        markLine: { silent: true, symbol: ['none','none'], data: [{ yAxis: 34, lineStyle: { color: COLORS.tencent, width: 2, type: 'dashed' }, label: { formatter: '中位 34k', fontSize: 10, color: COLORS.tencent, position: 'insideEndBottom' } }] }
+      }
+    ]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  CHART 5: BONUS STRUCTURE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initBonus() {
+  var chart = echarts.init(document.getElementById('chart-bonus'));
+  var bonusData = [
+    { name: '阿里巴巴 P7',  fixed: 4, perfHigh: 3.4, color: COLORS.alibaba },
+    { name: '字节跳动 2-2', fixed: 3, perfHigh: 4,   color: COLORS.bytedance },
+    { name: '腾讯 10级',    fixed: 4, perfHigh: 20,  color: COLORS.tencent }
+  ];
+  chart.setOption({
+    grid: { top: 24, right: 24, bottom: 56, left: 52 },
+    tooltip: {
+      trigger: 'axis', axisPointer: { type: 'shadow' },
+      formatter: function(params) {
+        var d = bonusData[params[0].dataIndex];
+        return '<b>' + d.name + '</b><br/>固定年终：<b>' + d.fixed + ' 个月</b><br/>绩效浮动上限：+' + d.perfHigh + ' 个月';
+      }
+    },
+    legend: { bottom: 4, textStyle: { fontSize: 11 }, itemWidth: 12 },
+    xAxis: { type: 'category', data: bonusData.map(function(d){ return d.name; }), axisLabel: { fontSize: 11, color: '#3a4a6a', interval: 0 }, axisLine: { lineStyle: { color: '#e2e8f0' } } },
+    yAxis: { name: '月数', axisLabel: { formatter: '{value}月', color: '#8a96b0', fontSize: 11 }, splitLine: { lineStyle: { color: '#EEF2F8', type: 'dashed' } } },
+    series: [
+      {
+        name: '固定年终（月）', type: 'bar', stack: 'bonus', barMaxWidth: 50,
+        data: bonusData.map(function(d){ return { value: d.fixed, itemStyle: { color: d.color } }; }),
+        label: { show: true, position: 'inside', color: '#fff', fontWeight: 700, fontSize: 12, formatter: function(p){ return p.value + '月'; } }
+      },
+      {
+        name: '绩效浮动上限（月）', type: 'bar', stack: 'bonus', barMaxWidth: 50,
+        data: bonusData.map(function(d){ return { value: d.perfHigh, itemStyle: { color: d.color, opacity: 0.3 } }; }),
+        label: { show: true, position: 'top', fontSize: 11, formatter: function(p){ return '+' + p.value + '月'; } }
+      }
+    ]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+}
+</script>
+</body>
+</html>

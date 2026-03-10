@@ -160,7 +160,92 @@ window.addEventListener('resize', () => chart.resize())
 
 参考 `references/chart_templates.json` 中的具体配置示例。
 
-#### 3.4 分析结论区规范（必须存在）
+#### 3.4 ECharts 常见陷阱（必须遵守，否则图表静默失败）
+
+以下是经过实际验证后总结的高频错误，**生成代码前务必逐条核对**：
+
+**① 初始化必须在 `window.load` 之后，并检测 CDN 是否加载成功**
+
+```javascript
+// ✅ 正确：表格/静态内容立即执行，图表延迟到 load 事件
+(function() { /* 填充 table、KPI 等不依赖 ECharts 的内容 */ })();
+
+window.addEventListener('load', function() {
+  if (typeof echarts === 'undefined') {
+    // CDN 加载失败时给用户友好提示，而不是静默空白
+    document.querySelectorAll('.chart-container').forEach(function(el) {
+      el.innerHTML = '<div style="padding:40px;text-align:center;color:#aaa;">图表加载失败：ECharts CDN 无法访问，请在浏览器中打开此文件</div>';
+    });
+    return;
+  }
+  initChart1();
+  initChart2();
+  // ...
+});
+```
+
+**② Boxplot 的每数据项着色：用 data 内嵌 itemStyle，不用 function 回调**
+
+```javascript
+// ❌ 错误：ECharts boxplot 的 itemStyle 不支持 function callback
+itemStyle: { color: function(params) { return COLORS[params.dataIndex]; } }
+
+// ✅ 正确：在每条 data 内嵌 itemStyle
+data: COMPANIES.map(function(c) {
+  return {
+    value: boxStats(getTCs(c)),
+    itemStyle: { color: COLORS[c] + '40', borderColor: COLORS[c], borderWidth: 2 }
+  };
+})
+```
+
+**③ Scatter `symbolSize` 回调接收的是 value 数组，不是数据对象**
+
+```javascript
+// 数据格式：flat 数组 [x, y, size_dim, ...]
+data: rawData.map(function(d) { return [d.x, d.y, d.stock]; })
+
+// ❌ 错误：d 是 value 数组，d.value 是 undefined → NaN → 图表静默空白
+symbolSize: function(d) { return Math.sqrt(d.value[2]) * 4; }
+
+// ✅ 正确：val 就是 [x, y, stock] 数组
+symbolSize: function(val) { return Math.sqrt(val[2]) * 3 + 8; }
+```
+
+**④ markLine 合法的 `type` 值只有三个**
+
+```javascript
+// ❌ 错误：type:'median' 不存在，ECharts 抛错并中断当前 IIFE
+data: [{ type: 'median', ... }]
+
+// ✅ 正确：用计算好的具体数值，或使用合法 type
+data: [{ yAxis: 38.5, lineStyle: {...}, label: {...} }]   // 指定 y 轴位置
+data: [{ type: 'average', ... }]  // 合法：average / min / max
+```
+
+**⑤ markLine 的 `symbol` 要用数组格式**
+
+```javascript
+// ❌ 可能导致箭头出现
+symbol: 'none'
+
+// ✅ 正确：两端分别指定
+symbol: ['none', 'none']
+```
+
+**⑥ JS 兼容性：避免箭头函数和 `const/let`（部分 IDE 预览环境不支持）**
+
+```javascript
+// ❌ 可能在旧环境失败，且语法错误会导致整个 script 块不执行
+const series = data.map(d => d.value);
+
+// ✅ 使用 var + function，确保最大兼容性
+var series = data.map(function(d) { return d.value; });
+```
+
+> **根本原则**：ECharts 中任何一个图表函数抛出未捕获异常，都会导致页面上**所有**后续 JS（含 table 填充）静默停止。必须将每个图表初始化封装为独立具名函数，由 `window.load` 统一调用，并用 try-catch 保护。
+
+#### 3.5 分析结论区规范（必须存在）
 
 在 HTML 顶部（图表上方）生成 **"核心洞察"** 区域，包含：
 1. **最高/最低值**：指出绝对峰谷及对应维度
