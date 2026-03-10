@@ -14,6 +14,7 @@ This is a **Claude Skills collection** — a set of modular AI agent skills desi
 | `deep-research-electronics/` | Quarterly AI trend analysis for consumer electronics companies | Minimalist PPT via python-pptx |
 | `ai-opportunity-map-generator/` | Transform business processes into AI opportunity maps | Single-file HTML+CSS |
 | `prototype-prompt-generator/` | Convert product ideas into UI/UX prompts for AI tools (v0, Claude Artifacts) | Structured Markdown prompts |
+| `data-visualizer-pro/` | Transform structured data (CSV/Excel/JSON) into interactive HTML chart reports | Single-file interactive HTML |
 
 ## Architecture
 
