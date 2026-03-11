@@ -97,6 +97,54 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
    - 降权或剔除纯情绪化发泄帖（如"垃圾薪水"但无具体数字）。
    - 注意时效性：优先最近 12 个月内的数据。
 
+#### 🔀 分支 C — Boss直聘 JD 薪资区间（`@playwright/mcp`）
+
+Boss直聘是中国最大的直连招聘平台，在招 JD 的薪资区间反映**雇主当前市场开价**，可作为员工实报数据的横向参照。
+
+> ⚠️ **数据视角说明**：Boss直聘数据属于"雇主开价"，通常代表薪资下限区间，与 Levels.fyi / 脉脉的"员工实报 TC"存在系统性差异。报告中需明确区分。
+
+1. **构造搜索 URL**，使用 `browser_navigate` 访问：
+   ```
+   https://www.zhipin.com/web/geek/job?query={岗位名}&city={城市码}
+   ```
+   常用城市码：
+   | 城市 | 城市码 |
+   |------|--------|
+   | 北京 | 101010100 |
+   | 上海 | 101020100 |
+   | 深圳 | 101280600 |
+   | 杭州 | 101210100 |
+   | 广州 | 101280100 |
+
+2. 调用 `browser_snapshot` 获取页面快照，检查是否出现登录墙或 CAPTCHA：
+   - **正常**：从 JD 卡片列表中提取数据
+   - **登录墙 / CAPTCHA**：在 raw_data.json 中记录 `"boss_zhipin": {"status": "requires_login", "data": []}` 后立即跳过，不阻断整体流程
+
+3. 在搜索结果中**筛选目标公司**的职位卡片（通过公司名匹配）：
+   - 若初次搜索结果不含目标公司，调用 `browser_type` + `browser_click` 在搜索框补充公司名重新搜索
+
+4. **提取前 5-10 条**最相关 JD 的以下字段：
+   ```json
+   {
+     "salary_range_raw": "25k-45k·14薪",
+     "job_title": "高级前端开发工程师",
+     "company": "字节跳动",
+     "location": "北京",
+     "experience": "3-5年",
+     "education": "本科"
+   }
+   ```
+
+5. 将采集结果写入 raw_data.json 的 `boss_zhipin` 字段：
+   ```json
+   "boss_zhipin": {
+     "status": "success",
+     "data": [ ... ]
+   }
+   ```
+
+---
+
 ### Step 3: 数据清洗与融合 (Data Normalization)
 
 这是 Agent 最核心的增值步骤。脉脉上的薪资描述充满非标准化的"黑话"，需要精准翻译：
@@ -134,6 +182,22 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
 | `股票每年归属 XX 股` | 需要查当前股价计算年化股票价值 |
 | `RSU 每年 vest XX 万` | 每年归属的受限股票价值 = XX万 |
 
+**Boss直聘 JD 薪资格式类（`source: boss_zhipin`）：**
+
+| Boss直聘格式 | 标准化含义 |
+|------------|-----------|
+| `25k-45k·14薪` | Base 月薪区间 25-45k，全年 14 个月（固定 2 个月年终）→ 中位 `base_monthly = 35` |
+| `20-35k·13薪` | Base 区间 20-35k，13 薪（固定 1 个月年终）→ 中位 `base_monthly = 27.5` |
+| `30k-50k` | Base 区间 30-50k，薪资结构未标注，保守默认 13薪 |
+| `20k-40k·16薪` | Base 区间 20-40k，16 个月（固定 4 个月年终）→ 中位 `base_monthly = 30` |
+
+Boss直聘数据处理规则：
+- `base_monthly`：取区间中位值 `(min + max) / 2`，并保留原始区间字段 `base_range`
+- `bonus_months`：从"N薪"提取；无标注时默认 13
+- `bonus_fixed_months`：`bonus_months - 12`
+- `tc_annual`：不可直接计算（无股票/奖金信息），保留 `null`
+- 新增字段 `data_type: "employer_posted"`（区别于脉脉/Levels.fyi 的 `"employee_reported"`）
+
 #### 📊 清洗流程
 
 1. 将每条有效数据提取为结构化格式：
@@ -156,6 +220,23 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
    > - `bonus_performance_months`: 绩效年终月数范围（如 "0-3"）
    > - `bonus_months`: 全年总月数（固定 + 绩效均值估算）
    > - `sign_on_bonus`: 签字费/入职奖金（万，年化后）
+
+   Boss直聘条目示例（`data_type: "employer_posted"`）：
+   ```json
+   {
+     "base_monthly": 35,
+     "base_range": "25k-45k",
+     "bonus_months": 14,
+     "bonus_fixed_months": 2,
+     "tc_annual": null,
+     "source": "boss_zhipin",
+     "data_type": "employer_posted",
+     "job_title": "高级前端开发工程师",
+     "experience": "3-5年",
+     "post_date": "2026-03",
+     "raw_text": "25k-45k·14薪"
+   }
+   ```
 2. 剔除明显异常值（如月薪写成年薪、数量级错误）。
 3. 合并分支 A 和分支 B 的数据，标注各条数据来源。
 4. **将清洗后的数据写入文件**：
@@ -182,6 +263,9 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
 4. **AI 总结**：在报告末尾加入你的分析洞察，例如：
    > "该岗位在字节的 TC 跨度较大（50-90万），主要受期权归属价值波动与年终绩效系数影响。近期数据显示 Base 月薪区间稳定在 28-35k，建议谈薪时重点关注 sign-on bonus 和期权刷新包。"
 
+   **若含 Boss直聘数据，需补充数据视角说明**：
+   > "Boss直聘 JD 数据（共 X 条）代表雇主当前市场开价，通常略低于员工实际 TC；Levels.fyi 和脉脉数据代表员工实际拿到手的历史 TC。建议结合两者解读：JD 区间反映行情下限，员工实报反映可争取的上限。"
+
 5. **向用户展示最终报告内容**，并告知文件已保存至 `reports/{company}_{level}_{date}/report.md`。
 
 ## 🔧 推荐 MCP 工具包配置
@@ -190,11 +274,11 @@ Levels.fyi 是全球最大的科技公司薪资众包平台，数据相对结构
 
 | MCP Server | 用途 | 核心能力 |
 |------------|------|---------|
-| `mcp-server-puppeteer` / `browser-use` | 真实浏览器环境，用于访问动态加载页面 | `goto()`, `click()`, `evaluate_javascript()`, `get_page_content()` |
+| `@playwright/mcp`（官方） | 真实浏览器环境，用于 Boss直聘等动态加载页面 | `browser_navigate`, `browser_type`, `browser_click`, `browser_snapshot`, `browser_screenshot` |
 | `mcp-server-brave-search` / `tavily` | 搜索引擎定向搜索（脉脉绕过策略核心） | `search("site:maimai.cn ...")` |
 | `mcp-server-fetch` | 快速抓取 Levels.fyi 页面/API | HTTP GET/POST |
 
-> **优先级说明**：如果只有搜索工具可用（无浏览器），仍然可以完成任务——Levels.fyi 的数据可通过搜索引擎获取摘要，脉脉数据同理。灵活降级。
+> **优先级说明**：`@playwright/mcp`（Browser）> `mcp-server-fetch` > 搜索引擎（仅搜索）。Branch C（Boss直聘）依赖 `@playwright/mcp`；若浏览器工具不可用，Branch C 自动跳过，不影响 Branch A/B 的结果输出。
 
 ## 🚨 重要规则 (Rules)
 
