@@ -4,7 +4,7 @@ import asyncio
 import os
 from playwright.async_api import async_playwright
 
-async def scrape(company, job_title):
+async def scrape(company, job_title, target_count=50):
     print(f"Starting Liepin scrape for {company} {job_title}...", flush=True)
     results = []
     
@@ -28,12 +28,14 @@ async def scrape(company, job_title):
             await page.goto(url, wait_until="networkidle")
             await page.wait_for_timeout(3000)
             
-            for page_num in range(5):
+            for page_num in range(10): # increased arbitrarily
                 cards = await page.query_selector_all(".job-card-pc-container")
                 if not cards and page_num == 0:
                     raise Exception("Could not find Job cards. Liepin might require captcha or UI changed.")
                     
                 for card in cards:
+                    if len(results) >= target_count:
+                        break
                     title_elem = await card.query_selector(".job-title")
                     salary_elem = await card.query_selector(".job-salary")
                     
@@ -49,7 +51,9 @@ async def scrape(company, job_title):
                     })
                 
                 print(f"Liepin page {page_num+1} scraped. Total records so far: {len(results)}")
-                
+                if len(results) >= target_count:
+                    break
+                    
                 # try click next page
                 try:
                     # Liepin pagination next button usually has class like ant-pagination-next
@@ -94,4 +98,5 @@ async def scrape(company, job_title):
 if __name__ == "__main__":
     company = sys.argv[1] if len(sys.argv) > 1 else "OPPO"
     job_title = sys.argv[2] if len(sys.argv) > 2 else "算法工程师"
-    asyncio.run(scrape(company, job_title))
+    target_count = int(sys.argv[3]) if len(sys.argv) > 3 else 100
+    asyncio.run(scrape(company, job_title, target_count))

@@ -4,7 +4,7 @@ import asyncio
 import os
 from playwright.async_api import async_playwright
 
-async def scrape(company, job_title):
+async def scrape(company, job_title, target_count=50):
     print(f"Starting 51job scrape for {company} {job_title}...", flush=True)
     results = []
     
@@ -28,7 +28,7 @@ async def scrape(company, job_title):
             await page.goto(url, wait_until="networkidle")
             await page.wait_for_timeout(3000)
             
-            for page_num in range(5):
+            for page_num in range(10): # increased arbitrarily to safely hit dynamic counts
                 # 51job is known to be a bit slow, ensure cards are loaded
                 await page.wait_for_timeout(2000)
                 cards = await page.query_selector_all(".joblist-item")
@@ -36,6 +36,8 @@ async def scrape(company, job_title):
                     raise Exception("Could not find Job cards on 51job. UI might have changed or blocked.")
                     
                 for card in cards:
+                    if len(results) >= target_count:
+                        break
                     title_elem = await card.query_selector(".jname.text-cut")
                     salary_elem = await card.query_selector(".sal")
                     exp_elem = await card.query_selector(".d.icon-work.text-cut")
@@ -56,6 +58,9 @@ async def scrape(company, job_title):
                 
                 print(f"51job page {page_num+1} scraped. Total records so far: {len(results)}")
                 
+                if len(results) >= target_count:
+                    break
+                    
                 # try click next page
                 try:
                     next_btn = await page.query_selector(".btn-next")
@@ -99,4 +104,5 @@ async def scrape(company, job_title):
 if __name__ == "__main__":
     company = sys.argv[1] if len(sys.argv) > 1 else "OPPO"
     job_title = sys.argv[2] if len(sys.argv) > 2 else "算法工程师"
-    asyncio.run(scrape(company, job_title))
+    target_count = int(sys.argv[3]) if len(sys.argv) > 3 else 100
+    asyncio.run(scrape(company, job_title, target_count))
