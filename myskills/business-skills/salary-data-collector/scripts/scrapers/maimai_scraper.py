@@ -30,30 +30,37 @@ async def scrape(company, job_title):
         
         try:
             import urllib.parse
-            search_term = f"{company} {job_title} 爆料"
+            search_term = f"{company} {job_title}"
             encoded_query = urllib.parse.quote(search_term)
-            target_url = f"https://maimai.cn/web/search_center?highlight=true&query={encoded_query}&type=feed"
+            target_url = f"https://maimai.cn/web/search_center?type=feed&query={encoded_query}"
             
             print(f"Navigating to accurate search URL: {target_url}")
             await page.goto(target_url)
             print("Waiting up to 60 seconds for page to load. Please scan QR code to log in if required...")
             
-            # Wait for feed items to appear, which indicates both login success and data loaded
-            await page.wait_for_selector(".feed-item", timeout=60000)
-            print("Login success and results loaded! Proceeding to extract.")
+            # Use a slightly longer timeout and allow page to settle
+            await page.wait_for_timeout(5000)
             
-            await page.wait_for_timeout(2000) # Buffer to let images/dom settle
+            # Wait for feed items to appear, which indicates both login success and data loaded
+            try:
+                await page.wait_for_selector(".feed-item", timeout=120000)
+                print("Login success and results loaded! Proceeding to extract.")
+            except Exception as e:
+                print("Could not find .feed-item, page might be empty or login failed.")
+                raise e
+            
+            await page.wait_for_timeout(4000) # Buffer to let images/dom settle
             
             # Simulated scroll and extract
             # Maimai feeds require scrolling
-            for _ in range(5):
+            for _ in range(15):
                 await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                await page.wait_for_timeout(2000)
+                await page.wait_for_timeout(3000)
                 
             posts = await page.query_selector_all(".feed-item")
             print(f"Found {len(posts)} posts. Extracting data...")
             
-            for post in posts[:30]:
+            for post in posts[:100]:
                 content = await post.inner_text()
                 # Basic extraction
                 results.append({

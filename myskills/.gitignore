@@ -1,5 +1,5 @@
-.DS_Store
-.DS*
+*.DS_Store*
+*.DS*
 */tmp
 */temp
-*/temp/*
+*/temp/*s

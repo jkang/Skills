@@ -27,25 +27,24 @@ async def scrape(company, job_title):
         url = "https://www.levels.fyi/"
         
         try:
-            await page.goto(url, wait_until="networkidle")
-            # This is a naive heuristic; a real crawler would interact with the precise DOM and XHR requests
-            await page.wait_for_timeout(3000)
+            # Try to search directly on the salaries page
+            await page.goto(f"https://www.levels.fyi/companies/{company.lower()}/salaries", wait_until="networkidle")
+            await page.wait_for_timeout(5000)
             
-            # Since Levels data is complex and heavily anti-bot protected,
-            # this script serves as the automation entry point. 
-            # To get reliable 100+ items, we'll simulate scraping the payload via evaluated JS.
             print("Evaluating visible salary data on the page...")
             
-            # Mocking the actual extraction logic for boilerplate completeness
-            # You would replace this with actual DOM querying like:
-            # rows = await page.query_selector_all('table tr')
+            # Simulated scrolling to load more rows
+            for _ in range(10):
+                await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                await page.wait_for_timeout(2000)
             
             rows = await page.query_selector_all('table tbody tr')
             if not rows:
-                print("No standard table rows found on Levels.fyi.")
-            for row in rows[:25]:
+                print("No standard table rows found on Levels.fyi. Trying alternative selectors...")
+                rows = await page.query_selector_all('[class*="salary-row"]')
+                
+            for row in rows[:100]:
                 text = await row.inner_text()
-                # Store the raw text for the data cleaner to parse
                 results.append({
                     "platform": "levels_fyi",
                     "raw_content": text,
