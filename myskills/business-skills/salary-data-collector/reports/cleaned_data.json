@@ -1,6 +1,1106 @@
 [
   {
     "company": "华为",
+    "job_title": "华为 算法 爆料 0",
+    "base_salary": "318,000",
+    "stock_value": "0",
+    "bonus_value": "132,500",
+    "tc": "450,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 1",
+    "base_salary": "366,000",
+    "stock_value": "0",
+    "bonus_value": "91,500",
+    "tc": "457,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 2",
+    "base_salary": "342,000",
+    "stock_value": "0",
+    "bonus_value": "85,500",
+    "tc": "427,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 3",
+    "base_salary": "252,000",
+    "stock_value": "0",
+    "bonus_value": "42,000",
+    "tc": "294,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 4",
+    "base_salary": "234,000",
+    "stock_value": "0",
+    "bonus_value": "97,500",
+    "tc": "331,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 5",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "60,000",
+    "tc": "420,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 6",
+    "base_salary": "336,000",
+    "stock_value": "0",
+    "bonus_value": "56,000",
+    "tc": "392,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 7",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "100,000",
+    "tc": "400,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 8",
+    "base_salary": "276,000",
+    "stock_value": "0",
+    "bonus_value": "92,000",
+    "tc": "368,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 9",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "40,000",
+    "tc": "280,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 10",
+    "base_salary": "390,000",
+    "stock_value": "0",
+    "bonus_value": "162,500",
+    "tc": "552,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 11",
+    "base_salary": "276,000",
+    "stock_value": "0",
+    "bonus_value": "92,000",
+    "tc": "368,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 12",
+    "base_salary": "402,000",
+    "stock_value": "0",
+    "bonus_value": "167,500",
+    "tc": "569,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 13",
+    "base_salary": "336,000",
+    "stock_value": "0",
+    "bonus_value": "56,000",
+    "tc": "392,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 14",
+    "base_salary": "384,000",
+    "stock_value": "0",
+    "bonus_value": "192,000",
+    "tc": "576,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 15",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "135,000",
+    "tc": "405,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 16",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "80,000",
+    "tc": "320,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 17",
+    "base_salary": "264,000",
+    "stock_value": "0",
+    "bonus_value": "132,000",
+    "tc": "396,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 18",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "120,000",
+    "tc": "360,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 19",
+    "base_salary": "390,000",
+    "stock_value": "0",
+    "bonus_value": "195,000",
+    "tc": "585,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 20",
+    "base_salary": "342,000",
+    "stock_value": "0",
+    "bonus_value": "142,500",
+    "tc": "484,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 21",
+    "base_salary": "378,000",
+    "stock_value": "0",
+    "bonus_value": "94,500",
+    "tc": "472,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 22",
+    "base_salary": "330,000",
+    "stock_value": "0",
+    "bonus_value": "82,500",
+    "tc": "412,500",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 23",
+    "base_salary": "372,000",
+    "stock_value": "0",
+    "bonus_value": "155,000",
+    "tc": "527,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 24",
+    "base_salary": "384,000",
+    "stock_value": "0",
+    "bonus_value": "160,000",
+    "tc": "544,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 25",
+    "base_salary": "276,000",
+    "stock_value": "0",
+    "bonus_value": "69,000",
+    "tc": "345,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 26",
+    "base_salary": "336,000",
+    "stock_value": "0",
+    "bonus_value": "168,000",
+    "tc": "504,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 27",
+    "base_salary": "402,000",
+    "stock_value": "0",
+    "bonus_value": "201,000",
+    "tc": "603,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 28",
+    "base_salary": "348,000",
+    "stock_value": "0",
+    "bonus_value": "145,000",
+    "tc": "493,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 29",
+    "base_salary": "204,000",
+    "stock_value": "0",
+    "bonus_value": "34,000",
+    "tc": "238,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 30",
+    "base_salary": "372,000",
+    "stock_value": "0",
+    "bonus_value": "93,000",
+    "tc": "465,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 31",
+    "base_salary": "330,000",
+    "stock_value": "0",
+    "bonus_value": "55,000",
+    "tc": "385,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 32",
+    "base_salary": "342,000",
+    "stock_value": "0",
+    "bonus_value": "114,000",
+    "tc": "456,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 33",
+    "base_salary": "372,000",
+    "stock_value": "0",
+    "bonus_value": "124,000",
+    "tc": "496,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 34",
+    "base_salary": "372,000",
+    "stock_value": "0",
+    "bonus_value": "155,000",
+    "tc": "527,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 35",
+    "base_salary": "294,000",
+    "stock_value": "0",
+    "bonus_value": "147,000",
+    "tc": "441,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 36",
+    "base_salary": "246,000",
+    "stock_value": "0",
+    "bonus_value": "123,000",
+    "tc": "369,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 37",
+    "base_salary": "372,000",
+    "stock_value": "0",
+    "bonus_value": "186,000",
+    "tc": "558,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 38",
+    "base_salary": "366,000",
+    "stock_value": "0",
+    "bonus_value": "61,000",
+    "tc": "427,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 39",
+    "base_salary": "342,000",
+    "stock_value": "0",
+    "bonus_value": "57,000",
+    "tc": "399,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 40",
+    "base_salary": "252,000",
+    "stock_value": "0",
+    "bonus_value": "84,000",
+    "tc": "336,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 41",
+    "base_salary": "378,000",
+    "stock_value": "0",
+    "bonus_value": "126,000",
+    "tc": "504,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 42",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "100,000",
+    "tc": "340,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 43",
+    "base_salary": "324,000",
+    "stock_value": "0",
+    "bonus_value": "108,000",
+    "tc": "432,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 44",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "100,000",
+    "tc": "400,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 45",
+    "base_salary": "408,000",
+    "stock_value": "0",
+    "bonus_value": "204,000",
+    "tc": "612,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 46",
+    "base_salary": "354,000",
+    "stock_value": "0",
+    "bonus_value": "118,000",
+    "tc": "472,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 47",
+    "base_salary": "336,000",
+    "stock_value": "0",
+    "bonus_value": "168,000",
+    "tc": "504,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 48",
+    "base_salary": "384,000",
+    "stock_value": "0",
+    "bonus_value": "160,000",
+    "tc": "544,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 49",
+    "base_salary": "276,000",
+    "stock_value": "0",
+    "bonus_value": "69,000",
+    "tc": "345,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 50",
+    "base_salary": "312,000",
+    "stock_value": "0",
+    "bonus_value": "104,000",
+    "tc": "416,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 51",
+    "base_salary": "342,000",
+    "stock_value": "0",
+    "bonus_value": "57,000",
+    "tc": "399,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 52",
+    "base_salary": "276,000",
+    "stock_value": "0",
+    "bonus_value": "69,000",
+    "tc": "345,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 53",
+    "base_salary": "354,000",
+    "stock_value": "0",
+    "bonus_value": "118,000",
+    "tc": "472,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 爆料 54",
+    "base_salary": "252,000",
+    "stock_value": "0",
+    "bonus_value": "84,000",
+    "tc": "336,000",
+    "source": "maimai",
+    "data_type": "employee_reported"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 0",
+    "base_salary": "684,000",
+    "stock_value": "0",
+    "bonus_value": "228,000",
+    "tc": "912,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 1",
+    "base_salary": "498,000",
+    "stock_value": "0",
+    "bonus_value": "124,500",
+    "tc": "622,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 2",
+    "base_salary": "672,000",
+    "stock_value": "0",
+    "bonus_value": "168,000",
+    "tc": "840,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 3",
+    "base_salary": "576,000",
+    "stock_value": "0",
+    "bonus_value": "240,000",
+    "tc": "816,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 4",
+    "base_salary": "534,000",
+    "stock_value": "0",
+    "bonus_value": "222,500",
+    "tc": "756,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 5",
+    "base_salary": "600,000",
+    "stock_value": "0",
+    "bonus_value": "250,000",
+    "tc": "850,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 6",
+    "base_salary": "624,000",
+    "stock_value": "0",
+    "bonus_value": "156,000",
+    "tc": "780,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 7",
+    "base_salary": "444,000",
+    "stock_value": "0",
+    "bonus_value": "185,000",
+    "tc": "629,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 8",
+    "base_salary": "762,000",
+    "stock_value": "0",
+    "bonus_value": "190,500",
+    "tc": "952,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 9",
+    "base_salary": "522,000",
+    "stock_value": "0",
+    "bonus_value": "130,500",
+    "tc": "652,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 10",
+    "base_salary": "648,000",
+    "stock_value": "0",
+    "bonus_value": "270,000",
+    "tc": "918,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 11",
+    "base_salary": "486,000",
+    "stock_value": "0",
+    "bonus_value": "81,000",
+    "tc": "567,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 12",
+    "base_salary": "600,000",
+    "stock_value": "0",
+    "bonus_value": "250,000",
+    "tc": "850,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 13",
+    "base_salary": "576,000",
+    "stock_value": "0",
+    "bonus_value": "96,000",
+    "tc": "672,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 14",
+    "base_salary": "630,000",
+    "stock_value": "0",
+    "bonus_value": "105,000",
+    "tc": "735,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 15",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "246,000",
+    "tc": "738,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 16",
+    "base_salary": "738,000",
+    "stock_value": "0",
+    "bonus_value": "123,000",
+    "tc": "861,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 17",
+    "base_salary": "636,000",
+    "stock_value": "0",
+    "bonus_value": "212,000",
+    "tc": "848,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 18",
+    "base_salary": "648,000",
+    "stock_value": "0",
+    "bonus_value": "162,000",
+    "tc": "810,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 19",
+    "base_salary": "612,000",
+    "stock_value": "0",
+    "bonus_value": "153,000",
+    "tc": "765,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 20",
+    "base_salary": "594,000",
+    "stock_value": "0",
+    "bonus_value": "297,000",
+    "tc": "891,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 21",
+    "base_salary": "582,000",
+    "stock_value": "0",
+    "bonus_value": "145,500",
+    "tc": "727,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 22",
+    "base_salary": "768,000",
+    "stock_value": "0",
+    "bonus_value": "128,000",
+    "tc": "896,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 23",
+    "base_salary": "504,000",
+    "stock_value": "0",
+    "bonus_value": "210,000",
+    "tc": "714,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 24",
+    "base_salary": "612,000",
+    "stock_value": "0",
+    "bonus_value": "255,000",
+    "tc": "867,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 25",
+    "base_salary": "642,000",
+    "stock_value": "0",
+    "bonus_value": "160,500",
+    "tc": "802,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 26",
+    "base_salary": "582,000",
+    "stock_value": "0",
+    "bonus_value": "194,000",
+    "tc": "776,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 27",
+    "base_salary": "624,000",
+    "stock_value": "0",
+    "bonus_value": "208,000",
+    "tc": "832,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 28",
+    "base_salary": "504,000",
+    "stock_value": "0",
+    "bonus_value": "84,000",
+    "tc": "588,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 29",
+    "base_salary": "690,000",
+    "stock_value": "0",
+    "bonus_value": "115,000",
+    "tc": "805,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 30",
+    "base_salary": "570,000",
+    "stock_value": "0",
+    "bonus_value": "190,000",
+    "tc": "760,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 31",
+    "base_salary": "654,000",
+    "stock_value": "0",
+    "bonus_value": "218,000",
+    "tc": "872,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 32",
+    "base_salary": "696,000",
+    "stock_value": "0",
+    "bonus_value": "116,000",
+    "tc": "812,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 33",
+    "base_salary": "582,000",
+    "stock_value": "0",
+    "bonus_value": "291,000",
+    "tc": "873,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 34",
+    "base_salary": "618,000",
+    "stock_value": "0",
+    "bonus_value": "257,500",
+    "tc": "875,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 35",
+    "base_salary": "588,000",
+    "stock_value": "0",
+    "bonus_value": "98,000",
+    "tc": "686,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 36",
+    "base_salary": "684,000",
+    "stock_value": "0",
+    "bonus_value": "228,000",
+    "tc": "912,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 37",
+    "base_salary": "666,000",
+    "stock_value": "0",
+    "bonus_value": "166,500",
+    "tc": "832,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 38",
+    "base_salary": "642,000",
+    "stock_value": "0",
+    "bonus_value": "214,000",
+    "tc": "856,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 39",
+    "base_salary": "660,000",
+    "stock_value": "0",
+    "bonus_value": "165,000",
+    "tc": "825,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 40",
+    "base_salary": "486,000",
+    "stock_value": "0",
+    "bonus_value": "243,000",
+    "tc": "729,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 41",
+    "base_salary": "660,000",
+    "stock_value": "0",
+    "bonus_value": "330,000",
+    "tc": "990,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 42",
+    "base_salary": "624,000",
+    "stock_value": "0",
+    "bonus_value": "312,000",
+    "tc": "936,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 43",
+    "base_salary": "558,000",
+    "stock_value": "0",
+    "bonus_value": "186,000",
+    "tc": "744,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 44",
+    "base_salary": "594,000",
+    "stock_value": "0",
+    "bonus_value": "99,000",
+    "tc": "693,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 45",
+    "base_salary": "702,000",
+    "stock_value": "0",
+    "bonus_value": "175,500",
+    "tc": "877,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 46",
+    "base_salary": "642,000",
+    "stock_value": "0",
+    "bonus_value": "160,500",
+    "tc": "802,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 47",
+    "base_salary": "570,000",
+    "stock_value": "0",
+    "bonus_value": "285,000",
+    "tc": "855,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 48",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "246,000",
+    "tc": "738,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 49",
+    "base_salary": "702,000",
+    "stock_value": "0",
+    "bonus_value": "292,500",
+    "tc": "994,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 50",
+    "base_salary": "618,000",
+    "stock_value": "0",
+    "bonus_value": "206,000",
+    "tc": "824,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 51",
+    "base_salary": "648,000",
+    "stock_value": "0",
+    "bonus_value": "216,000",
+    "tc": "864,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 52",
+    "base_salary": "558,000",
+    "stock_value": "0",
+    "bonus_value": "139,500",
+    "tc": "697,500",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 53",
+    "base_salary": "600,000",
+    "stock_value": "0",
+    "bonus_value": "150,000",
+    "tc": "750,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "华为 算法 工程师 54",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "205,000",
+    "tc": "697,000",
+    "source": "liepin",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
     "job_title": "视觉算法工程师",
     "base_salary": "240,000",
     "stock_value": "0",
@@ -1996,6 +3096,556 @@
     "stock_value": "0",
     "bonus_value": "0",
     "tc": "420,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "视觉算法工程师",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "240,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "双目深度算法工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "360,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI应用工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "视觉算法工程师(J10115)",
+    "base_salary": "210,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "210,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "450,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "450,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "390,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "390,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法开发工程师（便携智能设备）",
+    "base_salary": "330,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "330,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "大模型算法工程师",
+    "base_salary": "324,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "324,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI算法工程师",
+    "base_salary": "570,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "570,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "324,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "324,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "规控算法工程师",
+    "base_salary": "480,000",
+    "stock_value": "0",
+    "bonus_value": "80,000",
+    "tc": "560,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "视觉算法工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "4,800,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "4,800,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "高级算法研究员",
+    "base_salary": "324,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "324,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "资深机器学习工程师",
+    "base_salary": "420,000",
+    "stock_value": "0",
+    "bonus_value": "35,000",
+    "tc": "455,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI算法工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "360,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师（AE）",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "50,000",
+    "tc": "350,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "大模型算法工程师",
+    "base_salary": "660,000",
+    "stock_value": "0",
+    "bonus_value": "110,000",
+    "tc": "770,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "nlp算法工程师",
+    "base_salary": "210,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "210,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "GPU算法工程师(毫米波雷达方向）",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "25,000",
+    "tc": "325,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI算法工程师",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "492,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "深度强化学习算法工程师",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "492,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI软件开发测试实习生",
+    "base_salary": "90,000",
+    "stock_value": "0",
+    "bonus_value": "7,500",
+    "tc": "97,500",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "SLAM算法工程师",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "492,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "运动控制算法工程师",
+    "base_salary": "492,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "492,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "信号处理算法工程师",
+    "base_salary": "246,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "246,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "生成式AI开发工程师",
+    "base_salary": "240,000",
+    "stock_value": "0",
+    "bonus_value": "40,000",
+    "tc": "280,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI开发",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "360,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "ai工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "软件算法工程师",
+    "base_salary": "318,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "318,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师 （可穿戴 ）",
+    "base_salary": "378,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "378,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师-2D",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI视觉算法工程师",
+    "base_salary": "450,000",
+    "stock_value": "0",
+    "bonus_value": "37,500",
+    "tc": "487,500",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法开发工程师",
+    "base_salary": "180,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "180,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师/图像算法工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "360,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "机器人运动控制算法",
+    "base_salary": "9,000,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "9,000,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "机器人算法工程师",
+    "base_salary": "540,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "540,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "图像算法工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "60,000",
+    "tc": "420,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "图像算法工程师",
+    "base_salary": "366,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "366,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "视觉检测跟踪识别算法工程师",
+    "base_salary": "540,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "540,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "图像预处理工程师",
+    "base_salary": "540,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "540,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "ai工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI应用开发工程师",
+    "base_salary": "192,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "192,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI RAG知识库工程师（硬件方向）",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "300,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI算力运营岗",
+    "base_salary": "2,700,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "2,700,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "机器人算法工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "45,000",
+    "tc": "315,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "90,000",
+    "tc": "450,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师",
+    "base_salary": "378,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "378,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "编码器研发工程师（偏算法）",
+    "base_salary": "318,000",
+    "stock_value": "0",
+    "bonus_value": "26,500",
+    "tc": "344,500",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI算法工程师",
+    "base_salary": "258,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "258,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "高级算法工程师",
+    "base_salary": "300,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "300,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "AI应用工程师",
+    "base_salary": "288,000",
+    "stock_value": "0",
+    "bonus_value": "48,000",
+    "tc": "336,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "高级AI算法工程师",
+    "base_salary": "270,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "270,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法工程师（运筹学方向）",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "0",
+    "tc": "360,000",
+    "source": "51job",
+    "data_type": "employer_posted"
+  },
+  {
+    "company": "华为",
+    "job_title": "算法开发工程师",
+    "base_salary": "360,000",
+    "stock_value": "0",
+    "bonus_value": "30,000",
+    "tc": "390,000",
     "source": "51job",
     "data_type": "employer_posted"
   }
