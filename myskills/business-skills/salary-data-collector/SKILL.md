@@ -35,11 +35,15 @@ salary-data-collector/
 请严格按照以下顺序执行任务：
 
 ### 第一步：多源并行抓取 (Data Collection)
-你需要分别调用以下四个平台专门的 scraper 子技能（可并行或串行）。**要求每个平台尽可能抓取 20 条以上的数据**。
-1. 调用 `sub-skills/levels-fyi-scraper` 抓取 `{company} {job_title}` 数据，保存至 `reports/raw/levels_fyi.json`。
-2. 调用 `sub-skills/maimai-scraper` 搜索并抓取数据，保存至 `reports/raw/maimai.json`。
-3. 调用 `sub-skills/liepin-scraper` 抓取猎聘雇主挂牌价，保存至 `reports/raw/liepin.json`。
-4. 调用 `sub-skills/51job-scraper` 抓取前程无忧雇主挂牌价，保存至 `reports/raw/51job.json`。
+**⚠️ 反幻觉/防伪造强制指令**：作为 Agent，你**绝对不被允许**使用自身知识捏造、猜测或生成任何测试用的假薪水数据！你必须且只能通过执行真实的本地自动化爬虫脚本来获取网页上的真实数字。
+
+请通过命令行执行以下四个 Python 爬虫脚本，它们会自动把抓取到的线上真实结果写入 `reports/raw/*.json`：
+1. `python scripts/scrapers/levels_fyi_scraper.py "{company}" "{job_title}"`
+2. `python scripts/scrapers/maimai_scraper.py "{company}" "{job_title}"`
+3. `python scripts/scrapers/liepin_scraper.py "{company}" "{job_title}"`
+4. `python scripts/scrapers/51job_scraper.py "{company}" "{job_title}"`
+
+*若某个脚本报错或未能收集到指定数量，请在最终报告中如实反映，并使用其实际捕获的（哪怕是 0 条）数据。决不准通过脑补来凑数！*
 
 ### 第二步：数据清洗与标准化 (Data Cleaning)
 调用 `sub-skills/data-cleaner`。
@@ -54,6 +58,6 @@ salary-data-collector/
 - 第一页 (Sheet1) 为清洗过的数据，第二页 (Sheet2) 为原始数据 (raw data)。
 
 ## 🚨 注意事项
-- 每个子技能专门处理一个数据源，确保高内聚低耦合。
-- 当且仅当四个平台的抓取动作都完成后，才允许进入数据清洗阶段。
-- 如果某个平台未能抓够 20 条，应在日志或最终报告中提及，但不可阻断后续流程。
+- 每一步必须真实执行本地 Python 脚本，严禁任何形式的占位或伪造数据生成。
+- 当且仅当四个平台的抓取命令都执行完毕后（无论成功还是空跑），才允许进入数据结构化及数据清洗阶段。
+- 最终产物里的数字必须100%能够追溯到 `raw_data_merged.json` 里的原始字符。
