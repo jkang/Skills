@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>AI-Native产品经理的 5 项修炼</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- 1. THE SETUP --- */
+        * {
+            box-sizing: border-box;
+        }
+
+        p {
+            margin: 0;
+            margin-bottom: 15px;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            /* Light Slate Background */
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 0;
+            place-items: center;
+        }
+
+        .slide-container {
+            align-items: center;
+            background: #ffffff;
+            /* Pure White Background */
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Lato', sans-serif;
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 60px;
+            position: relative;
+            width: 1280px;
+        }
+
+        /* Ambient glowing background shapes for high-end feel */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .slide-container>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 2. CONSISTENT TYPOGRAPHY --- */
+        .slide-container h1,
+        .slide-container h2,
+        .slide-container h3 {
+            color: #0f172a;
+            /* Dark Slate for headings */
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .slide-container p,
+        .slide-container li,
+        .slide-container .subtitle,
+        .slide-container .chart-summary,
+        .slide-container th,
+        .slide-container td,
+        .slide-container .bleed-text-side p {
+            color: #475569;
+            /* Medium Slate for body text */
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* Accent Colors - Darkened for Light Theme */
+        .text-cyan {
+            color: #0284c7;
+        }
+
+        /* Sky 600 */
+        .text-emerald {
+            color: #059669;
+        }
+
+        /* Emerald 600 */
+        .text-purple {
+            color: #7c3aed;
+        }
+
+        /* Violet 600 */
+        .text-rose {
+            color: #e11d48;
+        }
+
+        /* Rose 600 */
+
+        .slide-container h1 {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .slide-container .slide-title {
+            font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: left;
+            width: 100%;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .slide-container h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .slide-container p,
+        .slide-container li,
+        .slide-container .subtitle,
+        .slide-container .bleed-text-side p {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .slide-container .subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            margin: 20px auto;
+            color: #64748b;
+            max-width: 800px;
+        }
+
+        .slide-container .content-area {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* --- 3. LAYOUT DEFINITIONS --- */
+
+        /* Title Layout */
+        .title-layout {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .title-layout h1 {
+            margin-bottom: 20px;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .two-column.tiled {
+            align-items: stretch;
+        }
+
+        .two-column.tiled>div {
+            background-color: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            padding: 40px;
+            text-align: left;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .two-column.tiled h3 {
+            color: #0284c7;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .two-column ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .two-column li {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .two-column li::before {
+            content: "\f0da";
+            /* FontAwesome arrow */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #0284c7;
+        }
+
+        .highlight-box {
+            background: rgba(225, 29, 72, 0.05);
+            border-left: 4px solid #e11d48;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+
+        .highlight-box h4 {
+            color: #e11d48;
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Image Wrapper */
+        .image-wrapper {
+            border-radius: 16px;
+            height: 400px;
+            max-width: 100%;
+            overflow: hidden;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #cbd5e1;
+        }
+
+        .image-wrapper img {
+            height: 100%;
+            max-width: 100%;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .two-column .image-wrapper img {
+            object-fit: contain;
+            background: #f8fafc;
+        }
+
+        /* Tiled Content (3 columns) */
+        .tiled-content {
+            align-items: stretch;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .tile {
+            align-items: flex-start;
+            background-color: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 30px;
+            text-align: left;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .tile .icon {
+            color: #059669;
+            font-size: 40px;
+            margin-bottom: 20px;
+            background: rgba(5, 150, 105, 0.1);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        /* Rounded Image Layout */
+        .rounded-image-layout {
+            align-items: center;
+        }
+
+        .rounded-image-layout .image-wrapper {
+            border-radius: 50%;
+            flex-shrink: 0;
+            height: 380px;
+            width: 380px;
+            max-width: 380px;
+            margin: 0 auto;
+            border: 4px solid #0284c7;
+            padding: 10px;
+            background: rgba(2, 132, 199, 0.05);
+        }
+
+        .rounded-image-layout .image-wrapper img {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Timeline Layout */
+        .timeline-layout {
+            align-items: stretch;
+            display: flex;
+            height: stretch;
+            justify-content: space-between;
+            position: relative;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .timeline-layout .timeline-line {
+            background: linear-gradient(90deg, #0284c7, #7c3aed, #059669);
+            height: 6px;
+            left: 0;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-3px);
+            width: 100%;
+            z-index: 0;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            text-align: center;
+            width: 22%;
+        }
+
+        .timeline-item::after {
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: 4px solid #0f172a;
+            content: '';
+            height: 24px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
+        }
+
+        .timeline-item .content-wrapper {
+            left: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .timeline-item:nth-child(odd) .content-wrapper {
+            bottom: 50%;
+            margin-bottom: 35px;
+        }
+
+        .timeline-item:nth-child(even) .content-wrapper {
+            margin-top: 35px;
+            top: 50%;
+        }
+
+        .timeline-item h3 {
+            color: #0f172a;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p {
+            font-size: 16px;
+            color: #475569;
+        }
+
+        /* Q&A Layout */
+        .qa-layout {
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+            align-self: center;
+        }
+
+        .qa-layout h2 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            background: -webkit-linear-gradient(#0284c7, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .qa-layout p {
+            font-size: 28px;
+            color: #334155;
+        }
+
+        /* Bleed_Image_Right Layout */
+        .slide-container.bleed-image-layout {
+            align-items: start;
+            display: grid;
+            gap: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            padding: 0;
+        }
+
+        .slide-container.bleed-image-layout>.content-container {
+            padding: 60px 50px 60px 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-container.bleed-image-layout>.image-container {
+            height: 100%;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .slide-container.bleed-image-layout img.bleed-image-side {
+            border-radius: 0 16px 16px 0;
+            display: block;
+            height: 720px;
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .slide-container.bleed-image-layout .bleed-text-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .slide-container.bleed-image-layout .slide-title {
+            margin-top: 20px;
+        }
+
+        /* Full Background Image */
+        .full-bg-image {
+            background-position: center;
+            background-size: cover;
+        }
+
+        .full-bg-image .content-overlay {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.92);
+            padding: 50px 80px;
+            border-radius: 20px;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .full-bg-image h2 {
+            font-size: 50px;
+            margin-bottom: 25px;
+            color: #0284c7;
+        }
+
+/* PPT Mode CSS overrides */
+body {
+    padding: 0;
+    overflow: hidden;
+}
+.slide-container {
+    display: none !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.slide-container.active {
+    display: flex !important;
+}
+.slide-container.bleed-image-layout.active {
+    display: grid !important;
+}
+
+/* Controls */
+#ppt-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 9999;
+    font-family: 'Poppins', sans-serif;
+}
+#ppt-controls button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+#ppt-controls button:hover {
+    background: #0284c7;
+    color: #fff;
+}
+#ppt-controls button:disabled {
+    color: #cbd5e1;
+    cursor: not-allowed;
+    background: transparent;
+}
+#ppt-controls .page-info {
+    font-size: 16px;
+    font-weight: 500;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#ppt-controls input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title Layout -->
+    <div class="slide-container active" id="slide1">
+        <div class="title-layout">
+            <h1>AI-Native产品经理的 5 项修炼</h1>
+            <p class="subtitle">Agent 正在加速进化，是时候进化为 AI-Native 产品经理了。需要修炼好这 5 项基本功：动手体验把握 AI 能力边界、洞悉业务本质进行本体建模、重塑业务价值流体验、主导数据集验证与策略运营、独立动手完成场景闭环实施。</p>
+            <p style="margin-top:20px; color:#94a3b8;"><i class="fa-solid fa-pen-nib"></i> KKJM &nbsp;&nbsp;|&nbsp;&nbsp; 2026-03-08</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Bleed_Image_Right Layout -->
+    <div class="slide-container bleed-image-layout" id="slide2">
+        <div class="content-container">
+            <h2 class="slide-title">当业务线自己打通了闭环，护城河还剩什么？</h2>
+            <div class="content-area">
+                <div class="bleed-text-side">
+                    <h3>被非技术业务颠覆的现实</h3>
+                    <p>上周，负责华南区销售的大业务总监，拿着一个他自己用 <strong>OpenClaw</strong> 花半天时间搭出来的自动化跑批工具来找我。</p>
+                    <p>原本在产研池子里需要排期苦等半个月的“非标合同比对与发票合规预警闭环”，被他这个从没写过一行代码的老业务直接打通了。</p>
+                    <div class="highlight-box">
+                        <h4><i class="fa-solid fa-triangle-exclamation"></i> 核心思考</h4>
+                        <p>看着业务人员在终端里行云流水般的操作，作为产品经理，不由开始深思：过去，“写需求、催排期、盯交付”的是核心工作；现在呢？如果这些不再是壁垒，产品经理的核心价值到底是什么？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image-container">
+            <img class="bleed-image-side" src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80" alt="业务总监在办公室">
+        </div>
+    </div>
+
+    <!-- Slide 3: Two-Column Tiled Layout -->
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">1. Agent 加速进化：4 个新趋势</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="color:#0284c7;">趋势 1：走向全员化与 Skills 爆发</h3>
+                    <p><strong>全员化应用：</strong>非技术职能使用 AI 的深度显著增加（HR 筛简历、法务审合同）。OpenClaw 拥有数百万非技术用户搭建自动化流。</p>
+                    <p><strong>Skills 成为轻系统：</strong>传统依赖漫长 PRD 的敏捷模式正在变为：基于业务口述 -> 技术数小时跑通上线，沉积上百个微能力。</p>
+                    <ul>
+                        <li><strong class="text-emerald">影响：</strong>“懂业务不懂技术”的沟通壁垒被打破，产品交付的周期被极度压缩。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color:#7c3aed;">趋势 2：走出聊天框与接管全栈调度</h3>
+                    <p><strong>接管真实环境：</strong>跨应用原生协同，自动整理文档、读取 Excel、清洗去重，最后将结论直接推送。</p>
+                    <p><strong>统一调度系统：</strong>Agent 沉降为新一代基础设施，从单次问答变为本地常驻服务，通过心跳主动唤醒和执行长工作流。</p>
+                    <ul>
+                        <li><strong class="text-rose">影响：</strong>传统的界面交互流减少，“落地开发”不再是痛点，业务诊断力更关键。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Rounded Image Layout -->
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">2. 进化为 AI-Native 产品经理 (5个转变)</h2>
+        <div class="content-area">
+            <div class="two-column rounded-image-layout">
+                <div>
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" alt="AI Native 进化">
+                    </div>
+                </div>
+                <div>
+                    <h3>传统单向流水线正在加速解体</h3>
+                    <p>“产品提需求-研发排期敲代码”的模式终将过去。我们需要快速进化（即 AIBP / FDE），实现 5 个关键能力变迁：</p>
+                    <ul>
+                        <li><span class="text-cyan font-semibold">转变 1：</span>从体验浅层应用到深度理解 <strong>AI 上下限边界</strong>。</li>
+                        <li><span class="text-emerald font-semibold">转变 2：</span>从梳理泳道图到 <strong>洞悉业务本质与本体建模</strong>。</li>
+                        <li><span class="text-purple font-semibold">转变 3：</span>从表层 UI 交互到 <strong>系统层业务价值流体验设计</strong>。</li>
+                        <li><span class="text-rose font-semibold">转变 4：</span>从只看指标到主导 <strong>数据集验证及策略运营</strong>。</li>
+                        <li><span class="text-cyan font-semibold">转变 5：</span>从依赖开发到独立使用 AI 工具实施 <strong>初版 MVP 闭环</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Title Layout Section -->
+    <div class="slide-container" id="slide5">
+        <div class="title-layout">
+            <h1 style="font-size: 54px; margin-bottom: 20px;">3. AI-Native 产品经理的 5 项修炼</h1>
+            <p class="subtitle" style="font-size: 24px; color: #64748b;">该如何成为合格的 AI-Native 产品经理？有哪些是现在就可以做的？</p>
+        </div>
+    </div>
+    
+    <!-- Slide 6: Tiled Content -->
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">修炼 1 & 2：认知边界与深刻建模</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="color:#0284c7;"><i class="fa-solid fa-gauge-high"></i> 1: 把握模型上下限边界</h3>
+                    <p>最坑的产品往往是一上来啥都用最高级、最复杂方案。需要清晰了解模型在极复杂数据穿透时的天花板、前提约束和局限。</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <h4>🛠 行动建议</h4>
+                        <p style="font-size: 16px;">挑一个业务任务，用轻量级（Deepseek 私有时）和旗舰级（Claude Opus）对比输出。设计「压力测试」，记录模型幻觉或截断发生的“天花板线”。</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color:#059669;"><i class="fa-solid fa-diagram-project"></i> 2: 洞悉业务本质与本体建模</h3>
+                    <p>借助大模型，将未写在纸面上的模糊业务潜规则，准确解构为极其具体的实体（Entities）、相互映射的属性和流转规则。</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <h4>🛠 行动建议</h4>
+                        <p style="font-size: 16px;">在工作主要领域里挑一条主线梳理核心价值流；借助 AI，将真实的业务体感转化为大模型能理解的系统级语义模型。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tiled Content -->
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">修炼 3 & 4：体验重塑与策略运营</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="color:#7c3aed;"><i class="fa-solid fa-arrows-spin"></i> 3: 重塑业务价值流体验设计</h3>
+                    <p>站在价值流粒度，为独立 Agent 提供底层设计并重塑人机协同流。设计重心已经从“按钮放哪”变为“人和 Agent 各负责什么、在哪里交接”。</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <h4>🛠 行动建议</h4>
+                        <p style="font-size: 16px;">画一张"双轨体验地图"（人类轨 + Agent 轨）；为 Agent 自治环节设计异常兜底模板和不可逆风险的复核岗环节。</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color:#e11d48;"><i class="fa-solid fa-database"></i> 4: 主导数据集验证与策略运营</h3>
+                    <p>真实流涌入时的 Bad Case。一头扎进错题本，剖析反向提出优化策略，解决真实的投产比和召回率。</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <h4>🛠 行动建议</h4>
+                        <p style="font-size: 16px;">为内测 MVP 构建正/反/边缘 Case 测试数据集进行批量测；收集 Bad Case，推导分类（幻觉/上下文溢出等）优化。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Bleed Image Right -->
+    <div class="slide-container bleed-image-layout" id="slide8">
+        <div class="content-container">
+            <h2 class="slide-title">修炼 5: 独立动手闭环能力</h2>
+            <div class="content-area">
+                <div class="bleed-text-side">
+                    <h3>亲手蹚过落地的泥巴</h3>
+                    <p>纸面方案时代已去。现代产品经理必须亲自结合业务场景实施，熟知最新工具并落地极简的最初版 MVP。</p>
+                    <ul>
+                        <li><strong class="text-cyan">利用轻量级能力：</strong> 结合 Skills 或 Vibe Coding 实现。</li>
+                        <li><strong class="text-emerald">快速发布与验证：</strong> 不依赖庞大技术开发池进行迭代试跑。</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <h4>🛠 行动建议</h4>
+                        <p>挑一个确切痛点场景（周报汇总、合同比对），用技能独立实现一版可运行模型，给同事试用反馈走完验证闭环。只有亲自做，才能给业务和技术定好准确边界。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="image-container">
+            <img class="bleed-image-side" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Code window screen displaying development">
+        </div>
+    </div>
+
+    <!-- Slide 9: Q&A Layout -->
+    <div class="slide-container" id="slide9">
+        <h2 class="slide-title">你可能会问的实战思考...</h2>
+        <div class="content-area">
+            <div class="timeline-layout" style="align-items: center; left:0; width:100%; justify-content: space-around; padding:0; flex-direction:column; gap:40px;">
+                <div style="text-align:left; background: #f8fafc; border-radius: 12px; padding: 25px; width:100%; border:1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <h3 style="color:#0f172a; font-size: 20px; font-weight:600;"><i class="fa-solid fa-lightbulb text-cyan"></i> 都在教“养龙虾”，我们需要学吗？</h3>
+                    <p style="margin-top:10px;">关键在于带目的去学：它的核心能力是___，我要验证的是___。不盲目比拼花费时间或部署，了解解决问题的真实能力。</p>
+                </div>
+                <div style="text-align:left; background: #f8fafc; border-radius: 12px; padding: 25px; width:100%; border:1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <h3 style="color:#0f172a; font-size: 20px; font-weight:600;"><i class="fa-solid fa-lightbulb text-emerald"></i> AI什么都会，过去学的产品基本功还有用吗？</h3>
+                    <p style="margin-top:10px;">非常有！AI 取代的是“画图”动作，取代不了“为什么这样画”的逻辑。信息架构、体感判断这些反而是你能控制 AI 输出质量的底气，用来拉高上限。</p>
+                </div>
+                <div style="text-align:left; background: #f8fafc; border-radius: 12px; padding: 25px; width:100%; border:1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <h3 style="color:#0f172a; font-size: 20px; font-weight:600;"><i class="fa-solid fa-lightbulb text-rose"></i> 技术迭代这么快，感觉追不上怎么学？</h3>
+                    <p style="margin-top:10px;">别盲目追模型参数。静下心弄明白企业业务系统到底怎么运转？试着用工具跑通一个解决小问题的 MVP，体感就能真正建立起来。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Full Background Image -->
+    <div class="slide-container full-bg-image" id="slide10" style="background-image: linear-gradient(rgba(241, 245, 249, 0.5), rgba(241, 245, 249, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1920&q=80');">
+        <div class="content-overlay">
+            <h2>做事，做好眼前的事</h2>
+            <p style="font-size: 22px; color: #0f172a; margin-bottom: 20px; font-weight: 600;">想清楚就不慌了。</p>
+            <p style="font-size: 18px; color: #334155;">无论技术演进多快，保持思考、探讨本质。去业务现场，动手去做，跑通不同的 MVP 落地体感。保持自己的节奏前行。</p>
+            <div style="margin-top:20px; border-top: 1px solid #cbd5e1; padding-top:20px;">
+                <p style="font-size: 16px; color:#e11d48; font-weight: bold;">[ Inspire AI-Native 招募中 ]</p>
+                <p style="font-size: 14px; margin-bottom:0;">带上你自己亲手跑通的真实 MVP 作品，发送至 recruiting_team@inspiregroup.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div id="ppt-controls">
+        <button id="btn-prev" onclick="prevSlide()" title="上一页"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="page-info">
+            <span id="current-page">1</span> / <span id="total-pages">10</span>
+        </div>
+        <button id="btn-next" onclick="nextSlide()" title="下一页"><i class="fa-solid fa-chevron-right"></i></button>
+        <div style="height: 24px; width: 1px; background: #cbd5e1; margin: 0 10px;"></div>
+        <div style="display:flex; align-items:center; gap:5px;">
+            <input type="number" id="jump-input" min="1" max="10" placeholder="页">
+            <button onclick="jumpSlide()" title="跳转" style="font-size: 14px; width: auto; padding: 0 10px; border-radius: 12px; background: #0284c7; color: white;">Go</button>
+        </div>
+    </div>
+
+    <!-- PPT Scripts -->
+    <script>
+        const slides = document.querySelectorAll('.slide-container');
+        const prevBtn = document.getElementById('btn-prev');
+        const nextBtn = document.getElementById('btn-next');
+        const currentPageEl = document.getElementById('current-page');
+        const jumpInput = document.getElementById('jump-input');
+        
+        document.getElementById('total-pages').innerText = slides.length;
+        jumpInput.max = slides.length;
+
+        let currentSlide = 0;
+
+        function updateUI() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            currentPageEl.innerText = currentSlide + 1;
+            
+            // disable buttons if at boundaries
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function jumpSlide() {
+            let targetSlide = parseInt(jumpInput.value) - 1;
+            if (!isNaN(targetSlide) && targetSlide >= 0 && targetSlide < slides.length) {
+                currentSlide = targetSlide;
+                updateUI();
+            } else {
+                alert('请输入有效的页码（1-' + slides.length + '）');
+            }
+        }
+
+        // Keyboard navigation bindings
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            }
+        });
+
+        // Initialize state
+        updateUI();
+    </script>
+</body>
+</html>

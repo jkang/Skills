@@ -1,0 +1,56 @@
+{
+  "title": "AI-Native产品经理的 5 项修炼 (v3.0)",
+  "slides": [
+    {
+      "type": "cover",
+      "title": "AI-Native产品经理的 5 项修炼",
+      "subtitle": "Agent 加速进化，是时候重塑你的核心竞技力了",
+      "author": "KKJM",
+      "date": "2026-03-08"
+    },
+    {
+      "type": "agenda",
+      "title": "本次分享大纲",
+      "items": [
+        { "title": "Agent加速进化", "subtitle": "理解 4 个即将改变范式的趋势" },
+        { "title": "PM的身份转型", "subtitle": "从 ITBP/FDE 迈向 AI-Native" },
+        { "title": "5 项核心修炼", "subtitle": "深度拆解 AI 下半场的高价值能力" }
+      ]
+    },
+    {
+      "type": "chapter",
+      "chapter_label": "Chapter 01",
+      "title": "Agent 加速进化：4 个新趋势",
+      "subtitle": "理解底层逻辑的变迁，才能看清未来的方向"
+    },
+    {
+      "type": "layout_h_split",
+      "title": "新的挑战",
+      "content": "<p>业务总监半天搭出的自动化工具，打通了耗时半个月的产研排期。<strong>当业务人员开始自研闭环，我们的护城河还剩什么？</strong></p>",
+      "image": "blog14/new_challenge.jpg"
+    },
+    {
+      "type": "layout_v_split",
+      "title": "趋势 3：接管真实工作环境",
+      "content": "<h3>跨应用的原生协同</h3><p>AI 正在走出聊天框，开始读写 Excel、自动 VLOOKUP 并直接推送 PPT。<strong>当原本的按钮不再需要人去点击，UI 设计还有多少用武之地？</strong></p>",
+      "image": "blog14/agent_trends1.jpg"
+    },
+    {
+      "type": "layout_full_media",
+      "title": "修炼 1：把握模型上下限",
+      "content": "<p>压力测试：拉升输入复杂度，寻找模型逻辑崩溃的“天花板线”。</p>",
+      "image": "blog14/exercise1.jpg"
+    },
+    {
+      "type": "layout_double_stack",
+      "title": "连续配图验证",
+      "content": "<p>这是一个双图堆叠的测试页面，展示连续两个竖图或横图的排版逻辑。</p>",
+      "images": ["blog14/exercise3.jpg", "blog14/exercise5.jpg"]
+    },
+    {
+      "type": "qa",
+      "title": "不慌，保持节奏",
+      "subtitle": "做事，做好眼前的事。去现场，动手做。"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 | **ai-opportunity-map-generator** | `new-product-manager-skills/ai-opportunity-map-generator` | 根据业务流程描述生成符合标准设计规范的“AI机会场景地图” HTML文件，用于挖掘自动化和智能化机会。 |
 | **applying-brand-guidelines** | `new-product-manager-skills/applying-brand-guidelines` | 为所有生成的文档应用一致的企业品牌和样式，包括颜色、字体、布局和消息传递。 |
 | **prototype-prompt-generator** | `new-product-manager-skills/prototype-prompt-generator` | 基于产品想法或需求，生成高质量的 UI/UX 原型初始化提示词，适用于 v0、Claude Artifacts 等工具。 |
+| **html-ppt-generator** | `new-product-manager-skills/html-ppt-generator` | 将普通 Markdown 文本自动排版转化为带有翻页、页面跳转播放控制的单页高质感交互式 HTML PPT 展示页面。 |
 
 ---
 
