@@ -1,36 +1,63 @@
 import os
 import sys
 import argparse
+import json
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pptx.dml.color import RGBColor
+from pptx.util import Pt
 import traceback
 
+def hex_to_rgb(hex_code):
+    hex_code = hex_code.lstrip('#')
+    return RGBColor(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16))
+
 class StyleTransfer:
-    def __init__(self, template_path):
+    def __init__(self, template_path, style_config_path=None):
         self.template_path = template_path
         self.template_prs = Presentation(template_path)
-        self.extract_template_styles()
-
-    def extract_template_styles(self):
-        """Extracts key styles from the template."""
-        # Extract fonts from the first slide's first title if available, or use defaults
-        self.heading_font = "Poppins" 
-        self.body_font = "Lato"
+        self.style_config = None
         
-        # Try to find theme fonts from master
-        try:
-            master = self.template_prs.slide_masters[0]
-            # In a real scenario, we'd dig deeper into theme XML, 
-            # but for now we'll use these high-quality defaults mentioned in the plan
-        except Exception:
-            pass
+        if style_config_path and os.path.exists(style_config_path):
+            with open(style_config_path, 'r', encoding='utf-8') as f:
+                self.style_config = json.load(f)
+        
+        self.load_styles()
+
+    def load_styles(self):
+        """Loads styles from JSON config or fallback to template extraction."""
+        if self.style_config:
+            # Typography from JSON
+            typo = self.style_config.get("typography", {})
+            self.heading_font = typo.get("chinese_fonts", {}).get("heading", "Source Han Sans CN").split('(')[0].strip()
+            self.body_font = typo.get("chinese_fonts", {}).get("body", "Source Han Sans CN").split('(')[0].strip()
+            
+            # Colors from JSON
+            colors = self.style_config.get("color_system", {})
+            self.primary_color_hex = colors.get("brand_primary", {}).get("starry_blues", {}).get("hex", "#1B2B47")
+            self.accent_color_hex = colors.get("brand_primary", {}).get("creative_blue", {}).get("hex", "#4A9FD8")
+            self.text_primary_hex = colors.get("functional", {}).get("text_primary", {}).get("hex", "#1B2B47")
+        else:
+            # Fallback to previous extraction logic
+            self.heading_font = "Poppins"
+            self.body_font = "Lato"
+            self.primary_color_hex = "#1B2B47"
+            self.accent_color_hex = "#4A9FD8"
+            self.text_primary_hex = "#1B2B47"
 
     def apply_style_to_shape(self, shape):
-        """Recursively applies styles to a shape and its children (if any)."""
+        """Recursively applies styles to a shape."""
         try:
             if shape.has_text_frame:
                 self.apply_text_style(shape.text_frame)
+
+            # Apply colors to solid fills for AutoShapes
+            if shape.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE:
+                if hasattr(shape, "fill") and shape.fill.type == 1: # Solid fill
+                    # Simple heuristic: if it was some kind of blue/dark color, map to brand primary
+                    # Otherwise keep it or map to accent if it was bright.
+                    # For now, let's just force the primary text color or similar for stability.
+                    pass
 
             if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
                 for child_shape in shape.shapes:
@@ -41,36 +68,42 @@ class StyleTransfer:
                     for cell in row.cells:
                         self.apply_text_style(cell.text_frame)
             
-            # Note: We skip complex elements like SmartArt or Charts for now to avoid breaking them
         except Exception as e:
             print(f"Warning: Could not restyle shape {shape.name}: {e}")
 
     def apply_text_style(self, text_frame):
-        """Applies font styles to a text frame while preserving content."""
+        """Applies font styles and colors to a text frame."""
         for paragraph in text_frame.paragraphs:
             for run in paragraph.runs:
-                # Apply theme fonts
-                # Heuristic: If it looks like a title (large font), use heading font
-                if run.font.size and run.font.size > 24:
-                    run.font.name = self.heading_font
-                else:
-                    run.font.name = self.body_font
-                
-                # Colors: We could map colors here, but let's start with fonts
-                # to ensure high stability as requested.
+                try:
+                    # Font Name
+                    is_heading = False
+                    if run.font.size and run.font.size.pt > 24:
+                        is_heading = True
+                    elif run.font.bold:
+                        is_heading = True
+                    
+                    target_font = self.heading_font if is_heading else self.body_font
+                    run.font.name = target_font
+                    
+                    # Font Size Defaults
+                    if run.font.size is None:
+                        run.font.size = Pt(28) if is_heading else Pt(14)
+                    
+                    # Font Color
+                    run.font.color.rgb = hex_to_rgb(self.text_primary_hex)
+                    
+                except Exception:
+                    pass
 
     def transform(self, target_path):
         """Transforms the target presentation."""
-        print(f"Transforming {target_path}...")
+        print(f"Transforming {target_path} using JSON-defined styles...")
         target_prs = Presentation(target_path)
         
-        # 1. Slide Master alignment (Simpler version: just iterate slides)
         for slide in target_prs.slides:
             for shape in slide.shapes:
                 self.apply_style_to_shape(shape)
-            
-            # Apply slide background if possible
-            # (Skipped for now for maximum stability)
 
         output_path = os.path.splitext(target_path)[0] + "_inspired.pptx"
         target_prs.save(output_path)
@@ -78,23 +111,21 @@ class StyleTransfer:
         return output_path
 
 def main():
-    parser = argparse.ArgumentParser(description="Apply InspireTemplate styles to a PPT.")
+    parser = argparse.ArgumentParser(description="Apply InspireTemplate styles (JSON-driven) to a PPT.")
     parser.add_argument("target_ppt", help="Path to the target PPT file.")
     parser.add_argument("--template", default=os.path.join(os.path.dirname(__file__), "..", "InspireTemplate.pptx"),
                         help="Path to the InspireTemplate.pptx file.")
+    parser.add_argument("--style", default=os.path.join(os.path.dirname(__file__), "..", "pptstyle.json"),
+                        help="Path to the pptstyle.json file.")
     
     args = parser.parse_args()
     
     if not os.path.exists(args.target_ppt):
         print(f"Error: Target file {args.target_ppt} not found.")
         sys.exit(1)
-        
-    if not os.path.exists(args.template):
-        print(f"Error: Template file {args.template} not found.")
-        sys.exit(1)
 
     try:
-        transformer = StyleTransfer(args.template)
+        transformer = StyleTransfer(args.template, args.style)
         transformer.transform(args.target_ppt)
     except Exception as e:
         print(f"An error occurred during transformation:")
