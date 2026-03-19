@@ -28,12 +28,12 @@
 | `content` 内容页 | P6-P12 P14-P16… | 英文标签+中文标题，白色背景 |
 | `ending` 结尾页 | P55 | "感谢聆听"，深蓝渐变背景 |
 
-## 页面处理策略
+## 页面处理策略 (v5.0 Source-Host Strategy)
 
 | 页面类型 | 处理方式 |
 |---|---|
-| `cover` / `agenda` / `section` / `ending` | **从 InspireTemplate.pptx 复制完整幻灯片 XML**，再注入源 PPT 文字 |
-| `content` / `interactive` / `case_study` | 保留原布局，应用 Inspire 字体（微软雅黑）+ 颜色（`#1B2B47`）|
+| `cover` / `agenda` / `section` / `ending` | **直接替换结构**：清空目标页原有形状，通过XML深度拷贝（Deepcopy） `InspireTemplate.pptx` 的 `<p:bg>` 和 `<p:spTree>`，再由程序注入源文本。此法保留完美渐变背景，无需依赖容易破坏图片关系的版式应用机制。 |
+| `content` / `interactive` / `case_study` | **原位样式清洗（Style Washing）**：源PPT作为Host容器（完美保留所有原生图片、图表的关系链）。强制全局替换 `theme1.xml` 植入 Inspire 色板，再将非标准文本刷为微软雅黑及标准主色 `#1B2B47`，所有纯色填充块强制转为创想蓝 `#4A9FD8` 或标准背景色。 |
 
 ## InspireTemplate.pptx 幻灯片索引映射（固定）
 
@@ -72,4 +72,4 @@ python scripts/style_transfer.py <target.pptx>
 | `InspireTemplate.pptx` | 11张幻灯片，各页型模板 |
 | `pptstyle.json` | 完整设计系统（颜色/字体/间距/组件） |
 | `AI商业落地实战：…pdf` | **55页参考示例** — 效果标准 |
-| `scripts/style_transfer.py` | 核心引擎 v3.1 |
+| `scripts/style_transfer.py` | 核心引擎 v5.0 (Source-Host ZIP 融合架构) |

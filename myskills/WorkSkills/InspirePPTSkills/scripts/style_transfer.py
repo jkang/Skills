@@ -1,458 +1,352 @@
-#!/usr/bin/env python3
-"""
-InspireTemplate Style Transfer - v3.1
-=======================================
-核心策略：
-  1. 结构性页面 (封面/议程/章节分隔页/结尾页):
-     → 直接从 InspireTemplate.pptx 复制对应幻灯片 XML
-       再将源 PPT 的关键文本注入到复制的幻灯片中
-  2. 内容页 / 互动页:
-     → 保留源幻灯片的所有形状和布局
-       应用 Inspire 样式：
-         - 背景：白色 (#FFFFFF)
-         - 标题：思源黑体+粗体+#1B2B47
-         - 正文：思源黑体+#1B2B47
-         - 表格：表头深蓝背景+白字
+import argparse
+import os
+import re
+import sys
+import copy
+import zipfile
+import shutil
+import traceback
+import io
+import tempfile
+from pathlib import Path
 
-InspireTemplate.pptx 幻灯片映射 (已知，固定):
-  index 0: 说明页（跳过）
-  index 1: Cover 封面
-  index 4: Agenda/Contents 目录
-  index 5: Section Divider 章节封面（无图）
-  index 6: Section Divider with Image（备用）
-  index 10: Ending 结束页
-
-Usage:
-  python style_transfer.py <target.pptx>
-  python style_transfer.py <target.pptx> --template InspireTemplate.pptx
-"""
-
-import os, sys, copy, json, argparse, traceback
-from lxml import etree
 from pptx import Presentation
-from pptx.util import Pt, Emu
-from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE_TYPE
-from pptx.oxml.ns import qn
+from pptx.dml.color import RGBColor
 
-
-# ─── Brand Colors (Inspire Design System) ────────────────────────────────────
-STARRY_BLUE    = "#1B2B47"   # 星空蓝 - 主品牌色：背景、标题
-CREATIVE_BLUE  = "#4A9FD8"   # 创想蓝 - 强调色：数字序号、bullet点
-TECH_GRAY      = "#F5F7FA"   # 科技灰 - 内容页背景、卡片背景
-WHITE          = "#FFFFFF"   # 白色    - 内容页主背景/深色背景文字
-TEXT_PRIMARY   = "#1B2B47"   # 正文主色（深蓝灰，非纯黑）
-TEXT_SECONDARY = "#64748B"   # 次要文字（副标题、图注）
-BORDER_COLOR   = "#E2E8F0"   # 边框/分割线
-
-# InspireTemplate.pptx 中固定的幻灯片索引映射
-TEMPLATE_SLIDE_MAP = {
-    "cover":       1,   # Inspire PPT Template Cover
-    "agenda":      4,   # CONTENTS 目录页
-    "section":     5,   # Slide Separator 章节封面（无图）
-    "section_img": 6,   # Slide Separator With Image
-    "ending":      10,  # We look forward to working with you
+# --- Color Scheme Definition ---
+COLORS = {
+    "primary": "#1B2B47",     # 极致海蓝
+    "secondary": "#4A9FD8",   # 创想蓝
+    "tertiary": "#64748B",    # 科技灰
+    "bg_light": "#FFFFFF",    # 纯白
+    "bg_warm": "#FFFDF5"      # 温暖米白
 }
 
-# 中文字体 (源文件往往有思源黑体/苹方，这里用微软雅黑作通用回退)
-HEADING_FONT = "Microsoft YaHei"
-BODY_FONT    = "Microsoft YaHei"
+def hex_to_rgb(hex_str):
+    hex_str = hex_str.lstrip('#')
+    return RGBColor(int(hex_str[0:2], 16), int(hex_str[2:4], 16), int(hex_str[4:6], 16))
 
+COLOR_VALS = [hex_to_rgb(v) for v in COLORS.values()]
 
-# ─── Color helpers ────────────────────────────────────────────────────────────
-def hex_to_rgb(h: str) -> RGBColor:
-    h = h.lstrip('#')
-    return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+# Template Slide Mapping (0-indexed based on InspireTemplate.pptx)
+TEMPLATE_MAP = {
+    "cover": 1,        # Slide 2: Inspire PPT Template Cover
+    "agenda": 4,       # Slide 5: Agenda
+    "section": 5,      # Slide 6: Section Separator (No Image)
+    "ending": 10       # Slide 11: Ending
+}
 
+def classify_source_slide(slide, idx: int, total: int) -> str:
+    if idx == 0: return "cover"
+    if idx == total - 1: return "ending"
 
-def set_slide_solid_bg(slide, hex_color: str):
-    """Give a slide a solid color background."""
-    bg = slide.background
-    fill = bg.fill
-    fill.solid()
-    fill.fore_color.rgb = hex_to_rgb(hex_color)
+    txt_content = ""
+    for s in slide.shapes:
+        if s.has_text_frame: txt_content += s.text_frame.text.lower()
+        
+    if "agenda" in txt_content or "议程" in txt_content or "目录" in txt_content:
+        return "agenda"
+        
+    # Section covers usually have very little text and might contain 'part' or '第'
+    txt_stripped = txt_content.replace(' ', '').replace('\n', '')
+    if len(txt_stripped) < 30 and ("part" in txt_stripped or "第" in txt_stripped):
+        return "section"
 
+    if "🎯" in txt_content or "共创" in txt_content or "练习" in txt_content:
+        return "interactive"
 
-# ─── Text helpers ─────────────────────────────────────────────────────────────
-def get_slide_full_text(slide) -> str:
-    parts = []
+    return "content"
+
+def extract_texts_by_size(slide) -> list:
+    shapes = []
     for shape in slide.shapes:
-        if shape.has_text_frame:
-            for para in shape.text_frame.paragraphs:
-                parts.append(para.text)
-    return ' '.join(parts)
+        if not shape.has_text_frame: continue
+        txt = shape.text_frame.text.strip()
+        if not txt: continue
+        
+        max_sz = 14
+        for p in shape.text_frame.paragraphs:
+            for r in p.runs:
+                if r.font and r.font.size:
+                    max_sz = max(max_sz, r.font.size.pt)
+        shapes.append((max_sz, txt))
+        
+    shapes.sort(key=lambda x: x[0], reverse=True)
+    return [txt for _, txt in shapes]
 
-
-def extract_texts_by_importance(slide) -> list:
-    """
-    Return all non-empty paragraph texts from slide,
-    ordered: largest font size → smallest.
-    """
-    items = []
+def inject_texts(slide, texts: list):
+    """Inject texts into the copied template placeholder shapes by size hierarchy."""
+    shapes = []
     for shape in slide.shapes:
-        if not shape.has_text_frame:
-            continue
-        for para in shape.text_frame.paragraphs:
-            text = para.text.strip()
-            if not text:
-                continue
-            max_sz = 0
-            is_bold = False
-            for run in para.runs:
-                if run.font.size and run.font.size.pt > max_sz:
-                    max_sz = run.font.size.pt
-                if run.font.bold:
-                    is_bold = True
-            items.append((max_sz, is_bold, text))
-    items.sort(key=lambda x: (x[0], x[1]), reverse=True)
-    return [item[2] for item in items]
+        if not shape.has_text_frame: continue
+        txt = shape.text_frame.text.strip()
+        if not txt: continue
+        max_sz = 14
+        for p in shape.text_frame.paragraphs:
+            for r in p.runs:
+                if r.font and r.font.size:
+                    max_sz = max(max_sz, r.font.size.pt)
+        shapes.append((max_sz, shape))
+    shapes.sort(key=lambda x: x[0], reverse=True)
 
-
-# ─── Slide classification (for SOURCE PPT slides) ────────────────────────────
-def classify_slide(slide, index: int, total: int) -> str:
-    """
-    Classify a source slide into one of:
-    'cover', 'agenda', 'section', 'ending', 'interactive', 'content'
-    
-    Based on analysis of the 55-page reference PDF (AI商业落地实战):
-    - Page 1      = cover
-    - Page 2      = agenda (AGENDA / 议程)
-    - PART XX     = section (dark gradient bg, chapter divider)
-    - 🎯          = interactive
-    - Last page   = ending
-    - All others  = content
-    """
-    if index == 0:
-        return 'cover'
-
-    text = get_slide_full_text(slide)
-    text_stripped = text.strip()
-    text_lower = text_stripped.lower()
-    lines = [l.strip() for l in text_stripped.split() if l.strip()]
-    first_words = text_stripped[:60].lower()
-
-    # Last slide: ending page
-    if index == total - 1 and len(text_stripped) < 400:
-        return 'ending'
-
-    # Agenda (appears near the start, contains agenda/目录/议程)
-    agenda_kw = ['agenda', '议程', '目录', 'contents', '大纲', 'outline']
-    if index <= 3 and any(kw in text_lower for kw in agenda_kw):
-        return 'agenda'
-
-    # Section dividers: "PART XX" pattern (very characteristic in this template)
-    # These are short slides with dark gradient background
-    import re
-    if re.search(r'\bpart\s+\d+', text_lower):
-        # Only if the text is relatively short (it's a divider, not a content page mentioning PART)
-        if len(text_stripped) < 400:
-            return 'section'
-
-    # Also catch PART SUMMARY pages (they're styled as content, not section)
-    # so don't classify them as section
-    
-    # Interactive pages: start with 🎯 or contain strong interactive keywords
-    if '🎯' in text or '互动环节' in text or '实操引导' in text:
-        return 'interactive'
-    
-    interactive_kw = ['小组讨论', '请思考', '课堂活动', '让我们一起']
-    if any(kw in text for kw in interactive_kw):
-        return 'interactive'
-
-    return 'content'
-
-
-# ─── Slide cloning from template ─────────────────────────────────────────────
-def clone_template_slide(template_prs: Presentation, slide_index: int,
-                          target_prs: Presentation):
-    """
-    Deep-clone a slide from template_prs[slide_index] into target_prs.
-    Returns the new slide.
-    """
-    try:
-        template_slide = template_prs.slides[slide_index]
-    except IndexError:
-        print(f"  [warn] Template slide index {slide_index} out of range, skipping clone")
-        return None
-
-    # Add blank slide to target
-    blank_layout = target_prs.slide_layouts[6]
-    new_slide = target_prs.slides.add_slide(blank_layout)
-
-    # Replace spTree (all shapes)
-    tpl_spTree = template_slide.shapes._spTree
-    new_spTree = new_slide.shapes._spTree
-    for child in list(new_spTree):
-        new_spTree.remove(child)
-    for child in tpl_spTree:
-        new_spTree.append(copy.deepcopy(child))
-
-    # Copy background
-    tpl_bg = template_slide.background._element
-    new_bg = new_slide.background._element
-    for child in list(new_bg):
-        new_bg.remove(child)
-    for child in tpl_bg:
-        new_bg.append(copy.deepcopy(child))
-
-    return new_slide
-
-
-def get_text_shapes_sorted_by_size(slide) -> list:
-    """
-    Return list of (estimated_size, shape) tuples sorted largest-first.
-    Only includes shapes that have non-empty text.
-    """
-    result = []
-    for shape in slide.shapes:
-        if not shape.has_text_frame:
-            continue
-        if not shape.text_frame.text.strip():
-            continue
-        max_sz = 0
-        for para in shape.text_frame.paragraphs:
-            for run in para.runs:
-                if run.font.size and run.font.size.pt > max_sz:
-                    max_sz = run.font.size.pt
-        result.append((max_sz, shape))
-    result.sort(key=lambda x: x[0], reverse=True)
-    return result
-
-
-def inject_texts_into_cloned_slide(cloned_slide, texts: list):
-    """
-    Replace text in the TOP-N largest text shapes of a cloned template slide
-    with the provided texts (ordered by importance).
-    Each shape's first run gets the corresponding text.
-    """
-    text_shapes = get_text_shapes_sorted_by_size(cloned_slide)
-
-    for i, (_, shape) in enumerate(text_shapes):
-        if i >= len(texts) or not texts[i]:
-            break
-        new_text = texts[i]
+    for i, (_, shape) in enumerate(shapes):
+        if i >= len(texts): break
+        new_val = texts[i]
         tf = shape.text_frame
-        # Find first paragraph with runs
         set_done = False
-        for para in tf.paragraphs:
-            if para.runs and not set_done:
-                para.runs[0].text = new_text
-                for run in para.runs[1:]:
-                    run.text = ''
+        for p in tf.paragraphs:
+            if p.runs and not set_done:
+                p.runs[0].text = new_val
+                for r in p.runs[1:]: r.text = ''
                 set_done = True
             elif set_done:
-                # Clear remaining paragraphs
-                for run in para.runs:
-                    run.text = ''
+                for r in p.runs: r.text = ''
 
+def apply_color_to_text_frame(text_frame, primary_rgb):
+    for p in text_frame.paragraphs:
+        for r in p.runs:
+            if r.font:
+                r.font.name = "Microsoft YaHei"
+                # If explicit color is set, override it to primary unless it's white or another theme color
+                if hasattr(r.font, 'color') and hasattr(r.font.color, 'rgb') and r.font.color.rgb:
+                    if r.font.color.rgb not in COLOR_VALS:
+                        r.font.color.rgb = primary_rgb
 
-# ─── Content slide styling ────────────────────────────────────────────────────
-def is_title_shape(shape) -> bool:
-    """Heuristic: is this shape likely a slide title?"""
-    if not shape.has_text_frame:
-        return False
-    # Positional: near the top of the slide
-    if shape.top is not None and shape.top < Emu(1_800_000):
-        return True
-    for para in shape.text_frame.paragraphs:
-        for run in para.runs:
-            if run.font.size and run.font.size.pt >= 24:
-                return True
-            if run.font.bold and len(run.text.strip()) < 70:
-                return True
-    return False
+import colorsys
 
+# Full diverse palette mapping based on Inspire specifications
+INSPIRE_PALETTE = {
+    "secondary": "#4A9FD8",
+    "amethyst": "#7B6B9E",
+    "myrtle": "#2F5B56",
+    "cerulean": "#8FBCD4",
+    "sakura": "#E8B4B4",
+}
+INSPIRE_RGB = {k: hex_to_rgb(v) for k, v in INSPIRE_PALETTE.items()}
+INSPIRE_HSL = {}
+for k, rgb in INSPIRE_RGB.items():
+    r, g, b = rgb[0]/255.0, rgb[1]/255.0, rgb[2]/255.0
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    INSPIRE_HSL[k] = (h, l, s)
 
-def style_run(run, is_title: bool = False):
-    """Apply Inspire font + color to a single text run."""
-    try:
-        run.font.name = HEADING_FONT if is_title else BODY_FONT
-        if is_title:
-            run.font.bold = True
-            run.font.color.rgb = hex_to_rgb(STARRY_BLUE)
-        else:
-            run.font.color.rgb = hex_to_rgb(TEXT_PRIMARY)
-    except Exception:
-        pass
+def get_closest_inspire_color_rgb(r, g, b):
+    # Map an original RGB to the closest Inspire Palette semantic color
+    h, l, s = colorsys.rgb_to_hls(r/255.0, g/255.0, b/255.0)
+    
+    # If the original color is red/orange/pink -> sakura
+    if h < 0.05 or h > 0.85: return INSPIRE_RGB["sakura"]
+    # If original is Yellow/Green -> myrtle or cerulean depending on lightness/sat
+    if 0.05 <= h < 0.45: return INSPIRE_RGB["myrtle"]
+    # If original is Blue/Cyan -> secondary or cerulean
+    if 0.45 <= h < 0.65: return INSPIRE_RGB["secondary"] if s > 0.5 else INSPIRE_RGB["cerulean"]
+    # If original is Purple/Violet -> amethyst
+    if 0.65 <= h <= 0.85: return INSPIRE_RGB["amethyst"]
+    
+    return INSPIRE_RGB["secondary"] # Fallback
 
-
-def style_table(table):
-    """Apply Inspire table styling: header row = dark bg + white bold text."""
-    for row_idx, row in enumerate(table.rows):
-        is_header = (row_idx == 0)
-        for col_idx, cell in enumerate(row.cells):
-            try:
-                if is_header:
-                    cell.fill.solid()
-                    cell.fill.fore_color.rgb = hex_to_rgb(STARRY_BLUE)
-                    for para in cell.text_frame.paragraphs:
-                        for run in para.runs:
-                            run.font.color.rgb = hex_to_rgb(WHITE)
-                            run.font.name = HEADING_FONT
-                            run.font.bold = True
-                else:
-                    # First column: slightly accented
-                    text_color = STARRY_BLUE if col_idx == 0 else TEXT_PRIMARY
-                    bold = col_idx == 0
-                    for para in cell.text_frame.paragraphs:
-                        for run in para.runs:
-                            run.font.color.rgb = hex_to_rgb(text_color)
-                            run.font.name = BODY_FONT
-                            run.font.bold = bold
-            except Exception:
-                pass
-
-
-def style_shape(shape):
-    """Apply Inspire styles to a single shape (text + table)."""
-    try:
+def wash_shapes_recursive(shapes, primary_rgb, secondary_rgb, bg_light_rgb):
+    for shape in shapes:
         if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-            for child in shape.shapes:
-                style_shape(child)
-            return
-
+            wash_shapes_recursive(shape.shapes, primary_rgb, secondary_rgb, bg_light_rgb)
+            continue
+            
         if shape.has_text_frame:
-            title = is_title_shape(shape)
-            for para in shape.text_frame.paragraphs:
-                for run in para.runs:
-                    style_run(run, is_title=title)
+            apply_color_to_text_frame(shape.text_frame, primary_rgb)
+            
+        # Wash Solid Fills intelligently
+        if hasattr(shape, "fill") and shape.fill.type == 1:
+            if hasattr(shape.fill.fore_color, 'rgb') and shape.fill.fore_color.rgb:
+                original_rgb = shape.fill.fore_color.rgb
+                if original_rgb != bg_light_rgb and original_rgb != hex_to_rgb(COLORS["bg_light"]):
+                    new_rgb = get_closest_inspire_color_rgb(*original_rgb)
+                    shape.fill.fore_color.rgb = new_rgb
+        # Do NO harm to theme colors! Native zip-replaced theme handles theme_colors perfectly.
 
-        if shape.shape_type == MSO_SHAPE_TYPE.TABLE:
-            style_table(shape.table)
+def wash_shape_tree(slide):
+    """Enforce Inspire style onto the existing shapes of a content slide."""
+    primary = hex_to_rgb(COLORS["primary"])
+    secondary = hex_to_rgb(COLORS["secondary"])
+    bg_light = hex_to_rgb(COLORS["bg_light"])
+    
+    # 1. Background
+    bg = slide.background
+    bg.fill.solid()
+    bg.fill.fore_color.rgb = bg_light
+    
+    # 2. Texts and Fills (Recursive)
+    wash_shapes_recursive(slide.shapes, primary, secondary, bg_light)
 
-    except Exception as e:
-        print(f"  [warn] Cannot style shape '{shape.name}': {e}")
-
-
-def style_content_slide(slide, is_interactive: bool = False):
-    """Apply full Inspire styling to a content/interactive slide."""
-    bg_color = "#FFFDF5" if is_interactive else WHITE
-    set_slide_solid_bg(slide, bg_color)
-    for shape in slide.shapes:
-        style_shape(shape)
-
-
-# ─── Copy source shapes into a new slides ────────────────────────────────────
-def copy_shapes_from_source(source_slide, target_slide):
-    """Deep-copy all shapes from source_slide to target_slide."""
-    src_spTree = source_slide.shapes._spTree
-    tgt_spTree = target_slide.shapes._spTree
-    for child in list(tgt_spTree):
-        tgt_spTree.remove(child)
-    for child in src_spTree:
-        tgt_spTree.append(copy.deepcopy(child))
-
-
-# ─── Main Transformer ─────────────────────────────────────────────────────────
-class StyleTransfer:
-    def __init__(self, template_path: str, style_config_path: str = None):
-        self.template_path = template_path
-        self.template_prs  = Presentation(template_path)
-        n = len(self.template_prs.slides)
-        print(f"[template] {n} slides loaded from {os.path.basename(template_path)}")
-        for k, idx in TEMPLATE_SLIDE_MAP.items():
-            if idx < n:
-                tpl_text = get_slide_full_text(self.template_prs.slides[idx])[:60]
-                print(f"  → [{k}] slide {idx+1}: \"{tpl_text}\"")
+def replace_zip_file(zip_path, file_to_replace, new_content):
+    """Safely replace a file inside a ZIP archive."""
+    temp_zip = zip_path + ".temp"
+    with zipfile.ZipFile(zip_path, 'r') as zin, zipfile.ZipFile(temp_zip, 'w') as zout:
+        for item in zin.infolist():
+            if item.filename == file_to_replace:
+                zout.writestr(item, new_content)
             else:
-                print(f"  → [{k}] slide {idx+1}: OUT OF RANGE (template only has {n} slides)")
+                zout.writestr(item, zin.read(item.filename))
+    os.replace(temp_zip, zip_path)
 
-    def _build_structural_slide(self, source_slide, slide_type: str,
-                                 output_prs: Presentation):
-        """Clone template slide for structural types and inject source texts."""
-        idx = TEMPLATE_SLIDE_MAP.get(slide_type)
-        if idx is None:
-            return None
-        n_tpl = len(self.template_prs.slides)
-        if idx >= n_tpl:
-            print(f"  [warn] Template slide {idx} for '{slide_type}' not available")
-            return None
+def flatten_template_slide_to_target(target_slide, template_slide):
+    """Deep copy background and shape tree from template (including layout) to target."""
+    # 1. Clear target slide shapes entirely
+    for s in list(target_slide.shapes):
+        s._element.getparent().remove(s._element)
+    
+    # 2. Copy background <p:bg> (Check slide, then layout)
+    bg_element = None
+    if template_slide._element.xpath('./p:bg'):
+        bg_element = template_slide._element.xpath('./p:bg')[0]
+    elif template_slide.slide_layout._element.xpath('./p:bg'):
+        bg_element = template_slide.slide_layout._element.xpath('./p:bg')[0]
 
-        # --- Clone the template slide ---
-        cloned = clone_template_slide(self.template_prs, idx, output_prs)
-        if cloned is None:
-            return None
+    if bg_element is not None:
+        target_bg_xpath = target_slide._element.xpath('./p:bg')
+        if target_bg_xpath:
+            target_slide._element.remove(target_bg_xpath[0])
+        target_slide._element.insert(0, copy.deepcopy(bg_element))
 
-        # --- Extract key texts from source ---
-        key_texts = extract_texts_by_importance(source_slide)
-        preview = key_texts[:2] if key_texts else []
-        print(f"  [clone] '{slide_type}' → injecting {len(key_texts)} text(s): {preview}")
+    # 3. Copy Layout shapes (skip placeholders, extract pictures)
+    layout = template_slide.slide_layout
+    for shape in layout.shapes:
+        if shape.is_placeholder:
+            continue
+        if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+            blob = shape.image.blob
+            target_slide.shapes.add_picture(io.BytesIO(blob), shape.left, shape.top, shape.width, shape.height)
+        else:
+            # Safe deepcopy for vector shapes
+            target_slide._element.spTree.append(copy.deepcopy(shape._element))
 
-        inject_texts_into_cloned_slide(cloned, key_texts)
-        return cloned
+    # 4. Copy Slide shapes (extract pictures)
+    for shape in template_slide.shapes:
+        if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+            blob = shape.image.blob
+            target_slide.shapes.add_picture(io.BytesIO(blob), shape.left, shape.top, shape.width, shape.height)
+        else:
+            target_slide._element.spTree.append(copy.deepcopy(shape._element))
 
-    def transform(self, target_path: str) -> str:
-        print(f"\n{'='*60}")
-        print(f"[InspireTransfer v3.1]  {os.path.basename(target_path)}")
-        print(f"{'='*60}")
-
-        source_prs = Presentation(target_path)
-        output_prs = Presentation()
-
-        # Match slide dimensions
-        output_prs.slide_width  = source_prs.slide_width
-        output_prs.slide_height = source_prs.slide_height
-
-        total = len(source_prs.slides)
-        print(f"[source]  {total} slides\n")
-
-        for idx, src_slide in enumerate(source_prs.slides):
-            slide_type = classify_slide(src_slide, idx, total)
-            preview = get_slide_full_text(src_slide)[:70].replace('\n', ' ')
-            print(f"  [{idx+1:02d}/{total}] → {slide_type:12s}  \"{preview}\"")
-
-            if slide_type in ('cover', 'agenda', 'section', 'ending'):
-                # Clone the matching InspireTemplate slide
-                new_slide = self._build_structural_slide(src_slide, slide_type, output_prs)
-                if new_slide is None:
-                    # Fallback: treat as content
-                    print(f"  [fallback] treating as content")
-                    blank = output_prs.slide_layouts[6]
-                    new_slide = output_prs.slides.add_slide(blank)
-                    copy_shapes_from_source(src_slide, new_slide)
-                    style_content_slide(new_slide)
-            else:
-                # Content or interactive: copy shapes + apply Inspire styles
-                blank = output_prs.slide_layouts[6]
-                new_slide = output_prs.slides.add_slide(blank)
-                copy_shapes_from_source(src_slide, new_slide)
-                style_content_slide(new_slide, is_interactive=(slide_type == 'interactive'))
-
-        output_path = os.path.splitext(target_path)[0] + "_inspired.pptx"
-        output_prs.save(output_path)
-        print(f"\n✅  Saved → {output_path}\n")
-        return output_path
-
-
-# ─── CLI entry point ──────────────────────────────────────────────────────────
-def main():
-    parser = argparse.ArgumentParser(
-        description="InspireTemplate Style Transfer v3.1"
-    )
-    parser.add_argument("target_ppt",
-        help="Source PPT file to transform")
-    parser.add_argument("--template",
-        default=os.path.join(os.path.dirname(__file__), "..", "InspireTemplate.pptx"),
-        help="Path to InspireTemplate.pptx")
-    parser.add_argument("--style",
-        default=os.path.join(os.path.dirname(__file__), "..", "pptstyle.json"),
-        help="Path to pptstyle.json (informational)")
-    args = parser.parse_args()
-
-    if not os.path.exists(args.target_ppt):
-        print(f"❌ Error: '{args.target_ppt}' not found")
-        sys.exit(1)
-    if not os.path.exists(args.template):
-        print(f"❌ Error: template '{args.template}' not found")
-        sys.exit(1)
-
-    try:
-        transfer = StyleTransfer(args.template, args.style)
-        transfer.transform(args.target_ppt)
-    except Exception:
-        traceback.print_exc()
-        sys.exit(1)
-
+def process_presentation(source_path, template_path):
+    print("\n🚀 InspireTransfer v6.0 (Source-Host + SamplePPT Structures)")
+    print(f"   Source:   {os.path.basename(source_path)}")
+    print(f"   Template: {os.path.basename(template_path)}")
+    
+    # We now also load SamplePPT for high-fidelity structural slide layouts
+    sample_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'SamplePPT.pptx')
+    sample_prs = Presentation(sample_path)
+    
+    STRUCTURAL_TEMPLATES = {
+        "cover": sample_prs.slides[0],    # Slide 1
+        "agenda": sample_prs.slides[1],   # Slide 2
+        "section": sample_prs.slides[4],  # Slide 5
+        "ending": sample_prs.slides[15]   # Slide 16
+    }
+    
+    # 1. Build a Temporary Workspace
+    with tempfile.TemporaryDirectory() as tmpdir:
+        target_pptx_path = os.path.join(tmpdir, "target.pptx")
+        shutil.copy2(source_path, target_pptx_path)
+        
+        # 2. Extract theme from template
+        theme_bytes = None
+        with zipfile.ZipFile(template_path, 'r') as zip_tpl:
+            for file in zip_tpl.namelist():
+                if file.endswith('theme1.xml'):
+                    theme_bytes = zip_tpl.read(file)
+                    break
+                    
+        # 3. Force inject theme into target PPT ZIP to globally update colors
+        if theme_bytes:
+            replace_zip_file(target_pptx_path, "ppt/theme/theme1.xml", theme_bytes)
+            
+        # 4. Open the theme-hacked target presentation for shape modifications
+        target_prs = Presentation(target_pptx_path)
+        tpl_prs = Presentation(template_path)
+    total_slides = len(target_prs.slides)
+    print(f"   Processing {total_slides} slides...")
+    
+    # 5. Master Page Cleanups (Remove old TW logos and Footers)
+    inspire_logo = None
+    for shape in tpl_prs.slide_layouts[0].shapes:
+        if shape.shape_type == MSO_SHAPE_TYPE.PICTURE and shape.width.pt < 150 and shape.height.pt < 50:
+            inspire_logo = shape
+            break
+            
+    for master in target_prs.slide_masters:
+        shapes = list(master.shapes)
+        for s in shapes:
+            if s.shape_type == MSO_SHAPE_TYPE.PICTURE and s.width.pt > 250:
+                s._element.getparent().remove(s._element)
+            if s.has_text_frame and ("©" in s.text_frame.text or "Thoughtworks" in s.text_frame.text):
+                s._element.getparent().remove(s._element)
+                
+    for layout in target_prs.slide_layouts:
+        shapes = list(layout.shapes)
+        for s in shapes:
+            if s.shape_type == MSO_SHAPE_TYPE.PICTURE and s.width.pt > 200 and s.width.pt < 450:
+                s._element.getparent().remove(s._element)
+            if s.has_text_frame and ("©" in s.text_frame.text or "Thoughtworks" in s.text_frame.text):
+                s._element.getparent().remove(s._element)
+    
+    from pptx.util import Pt
+    for i, slide in enumerate(target_prs.slides):
+        stype = classify_source_slide(slide, i, total_slides)
+        
+        if stype in STRUCTURAL_TEMPLATES:
+            # Extract texts before clearing
+            texts = []
+            for s in slide.shapes:
+                if s.has_text_frame and s.text_frame.text.strip():
+                    texts.append(s.text_frame.text.strip())
+            
+            txt_preview = ' '.join(texts).replace('\n', ' ')[:40]
+            print(f"   [{i+1:02d}/{total_slides}] {stype:<12} | Cloning from SamplePPT -> {txt_preview}...")
+            
+            # Map structural template
+            tpl_slide = STRUCTURAL_TEMPLATES[stype]
+            flatten_template_slide_to_target(tpl_slide, slide)
+            inject_texts(slide, texts)
+        else:
+            txt_preview = ""
+            for s in slide.shapes:
+                if s.has_text_frame: txt_preview += s.text_frame.text.replace('\n', ' ')
+            desc_text = txt_preview[:40]
+            print(f"   [{i+1:02d}/{total_slides}] {stype:<12} | Washing styles -> {desc_text}")
+            
+            wash_shape_tree(slide)
+            
+            # Inject Logo
+            if inspire_logo:
+                target_left = target_prs.slide_width - inspire_logo.width - 200000 
+                slide.shapes.add_picture(io.BytesIO(inspire_logo.image.blob), target_left, inspire_logo.top, inspire_logo.width, inspire_logo.height)
+                
+            # Inject Footer
+            tf = slide.shapes.add_textbox(300000, target_prs.slide_height - 300000 - 150000, 2500000, 300000)
+            p = tf.text_frame.paragraphs[0]
+            r = p.add_run()
+            r.text = "© 2026 Inspire | Confidential"
+            r.font.name = "Microsoft YaHei"
+            r.font.size = Pt(10)
+            r.font.color.rgb = hex_to_rgb(COLORS["secondary"])
+            
+    # Save the strictly mutated presentation safely
+    out_path = os.path.splitext(source_path)[0] + "_inspired.pptx"
+    print(f"\n✅ Saving: {out_path}")
+    target_prs.save(out_path)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Inspire PPT Style Transfer (V5 Source-Host)")
+    parser.add_argument("source", help="Path to source PPTX file")
+    parser.add_argument("--template", default="InspireTemplate.pptx", help="Path to Inspire PPT template")
+    
+    args = parser.parse_args()
+    if not os.path.exists(args.source):
+        print(f"Error: Source file {args.source} not found.")
+        sys.exit(1)
+        
+    try:
+        process_presentation(args.source, args.template)
+    except Exception as e:
+        print(f"\n❌ Error during processing: {e}")
+        traceback.print_exc()
