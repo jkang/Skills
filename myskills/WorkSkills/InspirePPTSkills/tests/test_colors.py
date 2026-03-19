@@ -16,6 +16,11 @@ def inspect_shape(shape, indent=""):
             print(f"{indent}  Fill RGB: {shape.fill.fore_color.rgb}")
         elif hasattr(shape.fill.fore_color, 'theme_color'):
             print(f"{indent}  Fill Theme Color: {shape.fill.fore_color.theme_color}")
+    
+    if shape.has_text_frame:
+        for p in shape.text_frame.paragraphs:
+            for r in p.runs:
+                print(f"{indent}  Run Font: {r.font.name}, Text: {r.text[:20]}")
 
 print("=== SLIDE 7 SHAPES ===")
 for shape in slide.shapes:

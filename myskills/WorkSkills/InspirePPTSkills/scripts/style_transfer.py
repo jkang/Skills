@@ -12,6 +12,7 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.util import Pt
 from pptx.dml.color import RGBColor
 
 # --- Color Scheme Definition ---
@@ -75,8 +76,8 @@ def extract_texts_by_size(slide) -> list:
     shapes.sort(key=lambda x: x[0], reverse=True)
     return [txt for _, txt in shapes]
 
-def inject_texts(slide, texts: list):
-    """Inject texts into the copied template placeholder shapes by size hierarchy."""
+def inject_texts(slide, texts: list, stype=None):
+    """Refined injection: Apply precise font sizes and colors from pptstyle.json."""
     shapes = []
     for shape in slide.shapes:
         if not shape.has_text_frame: continue
@@ -91,17 +92,40 @@ def inject_texts(slide, texts: list):
     shapes.sort(key=lambda x: x[0], reverse=True)
 
     for i, (_, shape) in enumerate(shapes):
-        if i >= len(texts): break
+        if i >= len(texts):
+            shape.text_frame.clear()
+            continue
+            
         new_val = texts[i]
         tf = shape.text_frame
-        set_done = False
-        for p in tf.paragraphs:
-            if p.runs and not set_done:
-                p.runs[0].text = new_val
-                for r in p.runs[1:]: r.text = ''
-                set_done = True
-            elif set_done:
-                for r in p.runs: r.text = ''
+        tf.clear() # Clear everything
+        p = tf.paragraphs[0]
+        r = p.add_run()
+        r.text = str(new_val)
+        r.font.name = "Microsoft YaHei"
+        
+        # Apply specs from pptstyle.json
+        if stype in ["cover", "ending"]:
+            if i == 0: # Primary Title
+                r.font.size = Pt(48)
+                r.font.bold = True
+                r.font.color.rgb = hex_to_rgb("#FFFFFF")
+            else: # Date/Subtitle
+                r.font.size = Pt(18)
+                r.font.color.rgb = hex_to_rgb("#FFFFFF")
+        elif stype == "section":
+            if i == 0:
+                r.font.size = Pt(36)
+                r.font.bold = True
+                r.font.color.rgb = hex_to_rgb("#FFFFFF")
+            else:
+                r.font.size = Pt(18)
+                r.font.color.rgb = hex_to_rgb("#FFFFFF")
+        else: # Agenda, etc
+            r.font.size = Pt(28) if i == 0 else Pt(18)
+            r.font.color.rgb = hex_to_rgb(COLORS["primary"])
+            
+        r.font.name = "Microsoft YaHei"
 
 def apply_color_to_text_frame(text_frame, primary_rgb):
     for p in text_frame.paragraphs:
@@ -151,17 +175,49 @@ def wash_shapes_recursive(shapes, primary_rgb, secondary_rgb, bg_light_rgb):
             wash_shapes_recursive(shape.shapes, primary_rgb, secondary_rgb, bg_light_rgb)
             continue
             
+        # Detect if there's white text inside (for contrast check)
+        has_white_text = False
         if shape.has_text_frame:
             apply_color_to_text_frame(shape.text_frame, primary_rgb)
+            for p in shape.text_frame.paragraphs:
+                for r in p.runs:
+                    if hasattr(r.font, 'color'):
+                        # Check RGB white
+                        if hasattr(r.font.color, 'rgb') and r.font.color.rgb == hex_to_rgb("#FFFFFF"):
+                            has_white_text = True
+                            break
+                        # Check Theme White (LT1 is index 14)
+                        if hasattr(r.font.color, 'theme_color') and r.font.color.theme_color == 14:
+                            has_white_text = True
+                            break
             
+        # Remove Borders (No Line) unless it's a dedicated brand highlight
+        if hasattr(shape, "line"):
+            is_highlight = False
+            if shape.line.fill.type == 1: # Solid
+                if hasattr(shape.line.fill.fore_color, 'rgb') and shape.line.fill.fore_color.rgb:
+                    if shape.line.fill.fore_color.rgb in COLOR_VALS:
+                        is_highlight = True
+            
+            if not is_highlight:
+                shape.line.fill.solid() # Ensure it's not background fill if we want NO LINE?
+                # Actually in pptx, to remove line you use:
+                shape.line.fill.background() # This is "No Fill" for line.
+        
         # Wash Solid Fills intelligently
-        if hasattr(shape, "fill") and shape.fill.type == 1:
-            if hasattr(shape.fill.fore_color, 'rgb') and shape.fill.fore_color.rgb:
-                original_rgb = shape.fill.fore_color.rgb
-                if original_rgb != bg_light_rgb and original_rgb != hex_to_rgb(COLORS["bg_light"]):
-                    new_rgb = get_closest_inspire_color_rgb(*original_rgb)
-                    shape.fill.fore_color.rgb = new_rgb
-        # Do NO harm to theme colors! Native zip-replaced theme handles theme_colors perfectly.
+        if hasattr(shape, "fill"):
+            # High Contrast Rule: If text is white, FORCE Starry Blue (Primary)
+            if has_white_text:
+                shape.fill.solid()
+                shape.fill.fore_color.rgb = primary_rgb
+            elif shape.fill.type == 1: # Solid (could be RGB or Theme)
+                if hasattr(shape.fill.fore_color, 'rgb') and shape.fill.fore_color.rgb:
+                    original_rgb = shape.fill.fore_color.rgb
+                    # If it's not a white/light background
+                    if original_rgb != bg_light_rgb and original_rgb != hex_to_rgb("#FFFFFF"):
+                        new_rgb = get_closest_inspire_color_rgb(*original_rgb)
+                        shape.fill.fore_color.rgb = new_rgb
+        # Note: We skip theme color modification if not white text to keep the native mapping.
 
 def wash_shape_tree(slide):
     """Enforce Inspire style onto the existing shapes of a content slide."""
@@ -212,7 +268,17 @@ def flatten_template_slide_to_target(target_slide, template_slide):
     for shape in layout.shapes:
         if shape.is_placeholder:
             continue
+        
+        # Skip Thoughtworks logos and huge backgrounds
+        shape_text = ""
+        if shape.has_text_frame: shape_text = shape.text_frame.text.lower()
+        if "thoughtworks" in shape_text or "thoughtworks" in shape.name.lower():
+            continue
+            
         if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+            is_huge = (shape.width.pt > 700 and shape.height.pt > 400)
+            if is_huge:
+                continue
             blob = shape.image.blob
             target_slide.shapes.add_picture(io.BytesIO(blob), shape.left, shape.top, shape.width, shape.height)
         else:
@@ -221,7 +287,17 @@ def flatten_template_slide_to_target(target_slide, template_slide):
 
     # 4. Copy Slide shapes (extract pictures)
     for shape in template_slide.shapes:
+        # Skip Thoughtworks and other light backgrounds
+        shape_text = ""
+        if shape.has_text_frame: shape_text = shape.text_frame.text.lower()
+        if "thoughtworks" in shape_text or "thoughtworks" in shape.name.lower():
+            continue
+            
+        # If it's a huge picture (likely a background the user hates), skip it on cover/ending
         if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+            is_huge = (shape.width.pt > 700 and shape.height.pt > 400)
+            if is_huge:
+                continue
             blob = shape.image.blob
             target_slide.shapes.add_picture(io.BytesIO(blob), shape.left, shape.top, shape.width, shape.height)
         else:
@@ -233,7 +309,7 @@ def process_presentation(source_path, template_path):
     print(f"   Template: {os.path.basename(template_path)}")
     
     # We now also load SamplePPT for high-fidelity structural slide layouts
-    sample_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'SamplePPT.pptx')
+    sample_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates', 'SamplePPT.pptx')
     sample_prs = Presentation(sample_path)
     
     STRUCTURAL_TEMPLATES = {
@@ -305,8 +381,15 @@ def process_presentation(source_path, template_path):
             
             # Map structural template
             tpl_slide = STRUCTURAL_TEMPLATES[stype]
-            flatten_template_slide_to_target(tpl_slide, slide)
-            inject_texts(slide, texts)
+            flatten_template_slide_to_target(slide, tpl_slide)
+            
+            # Force Solid Starry Blue background for Cover/Ending
+            if stype in ["cover", "ending"]:
+                bg = slide.background
+                bg.fill.solid()
+                bg.fill.fore_color.rgb = hex_to_rgb(COLORS["primary"])
+            
+            inject_texts(slide, texts, stype=stype)
         else:
             txt_preview = ""
             for s in slide.shapes:
