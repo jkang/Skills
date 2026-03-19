@@ -1,21 +1,75 @@
 # InspirePPTSkills
 
-A skill to transform existing PPT documents into the "InspireTemplate" style while strictly preserving all original content.
+将任意 PPT 文档转换为 **Inspire 设计规范** 风格的工具，严格保留原文内容。
 
-## Core Features
-- **Style Analysis**: Deeply parses `InspireTemplate.pptx` to extract master layouts, theme fonts, and color palettes.
-- **Content Preservation**: Ensures all text, data, and core slide elements remain intact during transformation.
-- **Defensive Styling**: Skips or uses fallbacks for complex shapes (SmartArt, grouped objects) that are difficult to restyle without breaking.
-- **Batch Transformation**: Can be extended to process multiple PPT files at once.
+## Inspire 视觉设计系统
 
-## Usage
-1. Ensure your target PPT file is available.
-2. The skill will use `InspireTemplate.pptx` located in the same directory as a style reference.
-3. Run the style transfer script:
-   ```bash
-   python scripts/style_transfer.py <target_ppt_path>
-   ```
-4. The transformed file will be saved as `<original_name>_inspired.pptx`.
+| 元素 | 规范 |
+|---|---|
+| 主品牌色 | 星空蓝 `#1B2B47` — 封面/章节页背景、标题 |
+| 强调色 | 创想蓝 `#4A9FD8` — 序号、数字、重点词 |
+| 内容页背景 | 白色 `#FFFFFF` |
+| 正文色 | `#1B2B47`（深蓝灰，非纯黑） |
+| 次要文字 | `#64748B` |
+| 封面/章节页 | 星空蓝→创想蓝 渐变背景，白色文字 |
+| 中文字体 | 思源黑体 / 微软雅黑（回退） |
 
-## Scripts
-- `scripts/style_transfer.py`: The main engine for analyzing the template and applying styles to the target document.
+## 参考 PDF 的页面结构
+
+基于 **AI商业落地实战：从场景选择到落地应用.pdf**（55页），该 PPT 的完整页面类型分布：
+
+| 页面类型 | 示例 | 特征 |
+|---|---|---|
+| `cover` 封面 | P1 | 深蓝渐变背景，大标题居中 |
+| `agenda` 议程 | P2 | "AGENDA 议程" 标题，5个章节列表 |
+| `section` 章节封面 | P5 P13 P21 P32 P40 P48 P53 | `PART XX` 格式，短文本，深蓝渐变 |
+| `interactive` 互动页 | P4 P17 P20 P25 P31 P38 P46 P51 | 🎯 图标开头，"互动环节/实操引导" |
+| `case_study` 案例页 | P26-P30 P35-P37 | 英文标签 "CASE STUDY"，白色背景 |
+| `content` 内容页 | P6-P12 P14-P16… | 英文标签+中文标题，白色背景 |
+| `ending` 结尾页 | P55 | "感谢聆听"，深蓝渐变背景 |
+
+## 页面处理策略
+
+| 页面类型 | 处理方式 |
+|---|---|
+| `cover` / `agenda` / `section` / `ending` | **从 InspireTemplate.pptx 复制完整幻灯片 XML**，再注入源 PPT 文字 |
+| `content` / `interactive` / `case_study` | 保留原布局，应用 Inspire 字体（微软雅黑）+ 颜色（`#1B2B47`）|
+
+## InspireTemplate.pptx 幻灯片索引映射（固定）
+
+```
+index 1  (Slide 2)  → Cover 封面
+index 4  (Slide 5)  → Agenda/CONTENTS 目录
+index 5  (Slide 6)  → Section Divider 章节封面（无图）
+index 6  (Slide 7)  → Section Divider with Image
+index 10 (Slide 11) → Ending 结尾页
+```
+
+## 分类识别规则
+
+```python
+# 封面:  index == 0
+# 议程:  index <= 3 AND 含 agenda/议程/目录
+# 章节:  含 "PART \d+" 且文本 < 400 字符
+# 互动:  含 🎯 或 "互动环节" 或 "实操引导"
+# 结尾:  最后一张 AND 文本 < 400 字符
+# 其他:  content
+```
+
+## 使用方法
+
+```bash
+python scripts/style_transfer.py <target.pptx>
+# 可选：--template InspireTemplate.pptx --style pptstyle.json
+```
+
+输出：`<原文件名>_inspired.pptx`
+
+## 文件说明
+
+| 文件 | 说明 |
+|---|---|
+| `InspireTemplate.pptx` | 11张幻灯片，各页型模板 |
+| `pptstyle.json` | 完整设计系统（颜色/字体/间距/组件） |
+| `AI商业落地实战：…pdf` | **55页参考示例** — 效果标准 |
+| `scripts/style_transfer.py` | 核心引擎 v3.1 |
