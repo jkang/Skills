@@ -25,85 +25,150 @@ class StyleTransfer:
         self.load_styles()
 
     def load_styles(self):
-        """Loads styles from JSON config or fallback to template extraction."""
         if self.style_config:
-            # Typography from JSON
             typo = self.style_config.get("typography", {})
             self.heading_font = typo.get("chinese_fonts", {}).get("heading", "Source Han Sans CN").split('(')[0].strip()
             self.body_font = typo.get("chinese_fonts", {}).get("body", "Source Han Sans CN").split('(')[0].strip()
-            
-            # Colors from JSON
             colors = self.style_config.get("color_system", {})
             self.primary_color_hex = colors.get("brand_primary", {}).get("starry_blues", {}).get("hex", "#1B2B47")
             self.accent_color_hex = colors.get("brand_primary", {}).get("creative_blue", {}).get("hex", "#4A9FD8")
+            self.neutral_bg_hex = colors.get("brand_primary", {}).get("tech_gray", {}).get("hex", "#F5F7FA")
+            self.white_hex = colors.get("brand_secondary", {}).get("white", {}).get("hex", "#FFFFFF")
             self.text_primary_hex = colors.get("functional", {}).get("text_primary", {}).get("hex", "#1B2B47")
+            self.text_secondary_hex = colors.get("functional", {}).get("text_secondary", {}).get("hex", "#64748B")
+            self.border_hex = colors.get("functional", {}).get("border", {}).get("hex", "#E2E8F0")
         else:
-            # Fallback to previous extraction logic
             self.heading_font = "Poppins"
             self.body_font = "Lato"
             self.primary_color_hex = "#1B2B47"
             self.accent_color_hex = "#4A9FD8"
+            self.neutral_bg_hex = "#F5F7FA"
+            self.white_hex = "#FFFFFF"
             self.text_primary_hex = "#1B2B47"
+            self.text_secondary_hex = "#64748B"
+            self.border_hex = "#E2E8F0"
 
-    def apply_style_to_shape(self, shape):
-        """Recursively applies styles to a shape."""
+    def shape_text_length(self, shape):
+        if not shape.has_text_frame:
+            return 0
+        total = 0
+        for paragraph in shape.text_frame.paragraphs:
+            for run in paragraph.runs:
+                total += len(run.text.strip())
+        return total
+
+    def is_title_shape(self, shape):
+        if not shape.has_text_frame:
+            return False
+        tf = shape.text_frame
+        for paragraph in tf.paragraphs:
+            for run in paragraph.runs:
+                if run.font.size and run.font.size.pt >= 26:
+                    return True
+                if run.font.bold and len(run.text.strip()) <= 40:
+                    return True
+        if shape.top is not None and shape.height is not None:
+            return shape.top < 1700000 and shape.height > 500000
+        return False
+
+    def apply_shape_fill(self, shape, is_cover):
+        if not hasattr(shape, "fill"):
+            return
+        if shape.fill.type is None:
+            return
+        text_len = self.shape_text_length(shape)
+        shape.fill.solid()
+        if is_cover:
+            if text_len > 0:
+                shape.fill.fore_color.rgb = hex_to_rgb(self.primary_color_hex)
+            else:
+                shape.fill.fore_color.rgb = hex_to_rgb(self.accent_color_hex)
+            return
+        if text_len > 0:
+            shape.fill.fore_color.rgb = hex_to_rgb(self.white_hex)
+        else:
+            shape.fill.fore_color.rgb = hex_to_rgb(self.neutral_bg_hex)
+
+    def apply_shape_line(self, shape):
+        if not hasattr(shape, "line"):
+            return
+        if shape.line is None:
+            return
+        try:
+            shape.line.color.rgb = hex_to_rgb(self.border_hex)
+            shape.line.width = Pt(1)
+        except Exception:
+            return
+
+    def apply_style_to_shape(self, shape, is_cover=False):
         try:
             if shape.has_text_frame:
-                self.apply_text_style(shape.text_frame)
+                self.apply_text_style(shape.text_frame, is_cover=is_cover, is_title=self.is_title_shape(shape))
 
-            # Apply colors to solid fills for AutoShapes
             if shape.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE:
-                if hasattr(shape, "fill") and shape.fill.type == 1: # Solid fill
-                    # Simple heuristic: if it was some kind of blue/dark color, map to brand primary
-                    # Otherwise keep it or map to accent if it was bright.
-                    # For now, let's just force the primary text color or similar for stability.
-                    pass
+                self.apply_shape_fill(shape, is_cover=is_cover)
+                self.apply_shape_line(shape)
 
             if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
                 for child_shape in shape.shapes:
-                    self.apply_style_to_shape(child_shape)
+                    self.apply_style_to_shape(child_shape, is_cover=is_cover)
             
             elif shape.shape_type == MSO_SHAPE_TYPE.TABLE:
                 for row in shape.table.rows:
-                    for cell in row.cells:
-                        self.apply_text_style(cell.text_frame)
+                    for cell_index, cell in enumerate(row.cells):
+                        if row == shape.table.rows[0]:
+                            cell.fill.solid()
+                            cell.fill.fore_color.rgb = hex_to_rgb(self.primary_color_hex)
+                            self.apply_text_style(cell.text_frame, is_cover=False, is_title=True, force_color=self.white_hex)
+                        else:
+                            cell.fill.solid()
+                            cell.fill.fore_color.rgb = hex_to_rgb(self.white_hex)
+                            self.apply_text_style(cell.text_frame, is_cover=False, is_title=cell_index == 0, force_color=self.text_primary_hex)
             
         except Exception as e:
             print(f"Warning: Could not restyle shape {shape.name}: {e}")
 
-    def apply_text_style(self, text_frame):
-        """Applies font styles and colors to a text frame."""
+    def apply_text_style(self, text_frame, is_cover=False, is_title=False, force_color=None):
         for paragraph in text_frame.paragraphs:
             for run in paragraph.runs:
                 try:
-                    # Font Name
-                    is_heading = False
-                    if run.font.size and run.font.size.pt > 24:
-                        is_heading = True
-                    elif run.font.bold:
-                        is_heading = True
-                    
+                    is_heading = is_title or (run.font.size and run.font.size.pt > 24) or run.font.bold
                     target_font = self.heading_font if is_heading else self.body_font
                     run.font.name = target_font
-                    
-                    # Font Size Defaults
                     if run.font.size is None:
-                        run.font.size = Pt(28) if is_heading else Pt(14)
-                    
-                    # Font Color
-                    run.font.color.rgb = hex_to_rgb(self.text_primary_hex)
-                    
+                        run.font.size = Pt(30) if is_heading else Pt(14)
+                    elif is_heading and run.font.size.pt < 24:
+                        run.font.size = Pt(24)
+                    if is_heading:
+                        run.font.bold = True
+                    if force_color:
+                        run.font.color.rgb = hex_to_rgb(force_color)
+                    elif is_cover:
+                        run.font.color.rgb = hex_to_rgb(self.white_hex)
+                    elif is_heading:
+                        run.font.color.rgb = hex_to_rgb(self.primary_color_hex)
+                    else:
+                        run.font.color.rgb = hex_to_rgb(self.text_primary_hex)
                 except Exception:
                     pass
 
+    def apply_slide_background(self, slide, index):
+        background = slide.background
+        background.fill.solid()
+        if index == 0:
+            background.fill.fore_color.rgb = hex_to_rgb(self.primary_color_hex)
+        else:
+            background.fill.fore_color.rgb = hex_to_rgb(self.neutral_bg_hex)
+
     def transform(self, target_path):
-        """Transforms the target presentation."""
         print(f"Transforming {target_path} using JSON-defined styles...")
         target_prs = Presentation(target_path)
         
-        for slide in target_prs.slides:
+        for index, slide in enumerate(target_prs.slides):
+            is_cover = index == 0
+            self.apply_slide_background(slide, index)
             for shape in slide.shapes:
-                self.apply_style_to_shape(shape)
+                self.apply_style_to_shape(shape, is_cover=is_cover)
 
         output_path = os.path.splitext(target_path)[0] + "_inspired.pptx"
         target_prs.save(output_path)
