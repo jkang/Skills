@@ -163,8 +163,9 @@ def _get_next_slide_id(unpacked_dir: Path) -> int:
 
 
 def parse_source(source: str) -> tuple[str, str | None]:
-    if source.startswith("slideLayout") and source.endswith(".xml"):
-        return ("layout", source)
+    file_name = Path(source).name
+    if file_name.startswith("slideLayout") and file_name.endswith(".xml"):
+        return ("layout", file_name)
 
     return ("slide", None)
 
