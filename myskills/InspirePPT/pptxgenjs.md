@@ -16,6 +16,54 @@ slide.addText("Hello World!", { x: 0.5, y: 0.5, fontSize: 36, color: "363636" })
 pres.writeFile({ fileName: "Presentation.pptx" });
 ```
 
+---
+
+## Using Design Tokens (`pptstyle.json`)
+
+**MANDATORY**: You must load and use the `pptstyle.json` variables for all colors, fonts, and sizes. **Never hardcode hex colors, font families, or typography sizes.**
+
+PptxGenJS requires hex colors **WITHOUT** the `#` prefix, and font sizes as integers (remove `pt`).
+
+```javascript
+const fs = require('fs');
+// 1. Load the style definitions
+const style = JSON.parse(fs.readFileSync('templates/pptstyle.json', 'utf8'));
+
+// Helper to clean hex colors (removes #)
+const getHex = (hexString) => hexString.replace('#', '');
+
+// Helper to clean font sizes (removes pt)
+const getPt = (sizeString) => parseInt(sizeString.replace('pt', ''), 10);
+
+// 2. Apply theme colors to components
+const primaryColor = getHex(style.color_system.brand_primary.starry_blues.hex);
+const accentColor = getHex(style.color_system.brand_primary.creative_blue.hex);
+
+// 3. Apply typography hierarchy
+const h1Style = style.typography.hierarchy.h1;
+
+slide.addText("Main Title", { 
+  x: 1, y: 1, w: 8, h: 1, 
+  fontSize: getPt(h1Style.size),
+  fontFace: style.typography.chinese_fonts.heading, // e.g. "MiSans SemiBold"
+  color: getHex(h1Style.color),
+  bold: h1Style.weight.includes("Bold")
+});
+
+// 4. Draw Component UI based on JSON definitions (e.g. Card)
+const cardStyle = style.components.cards;
+// Note: JSON defines border as "1px solid #E2E8F0", we extract the #HEX for PptxGenJS.
+const cardBorderHex = cardStyle.border.match(/#([A-Fa-f0-9]{6})/)[1];
+
+slide.addShape(pres.shapes.RECTANGLE, {
+  x: 1, y: 2.5, w: 4, h: 2,
+  fill: { color: getHex(cardStyle.background) },
+  line: { color: cardBorderHex, width: 1 },
+  // Map JSON box-shadow roughly to PptxGenJS outer shadow
+  shadow: { type: "outer", color: "1B2B47", blur: 8, offset: 2, angle: 90, opacity: 0.08 }
+});
+```
+
 ## Layout Dimensions
 
 Slide dimensions (coordinates in inches):
