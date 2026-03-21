@@ -5,7 +5,7 @@ Usage: python rebrand.py <unpacked_dir> [options]
 Examples:
     python rebrand.py unpacked/
     python rebrand.py unpacked/ --old-name "Thoughtworks" --new-name "Inspire"
-    python rebrand.py unpacked/ --templates-dir templates/
+    python rebrand.py unpacked/ --templates-dir assets/
 
 This script:
 - Replaces logo images (detected by aspect ratio) with Inspire logos
@@ -126,10 +126,13 @@ def replace_text_in_xml(
     new_name: str,
     new_year: str | None = None,
 ) -> list[str]:
-    """Replace company name and year in all XML files."""
+    """Replace company name and year in XML files (excluding .rels to avoid corrupting targets)."""
     modified = []
 
-    xml_files = list(unpacked_dir.rglob("*.xml")) + list(unpacked_dir.rglob("*.rels"))
+    # STRICT FIX: Exclude .rels files. Replacing raw strings in .rels files where Target attributes 
+    # might match the old company name (e.g., Target="media/image_thoughtworks.png") 
+    # will break the packaging relationships since we don't rename the physical media files.
+    xml_files = list(unpacked_dir.rglob("*.xml"))
 
     # Regex for year replacement: 
     # Must follow a copyright symbol/word OR be followed by the company name
@@ -194,8 +197,8 @@ def replace_theme_styles(
 ) -> list[str]:
     """Replace theme colors and fonts based on pptstyle.json."""
     if style_json_path is None or not style_json_path.exists():
-        # Look for default templates/pptstyle.json
-        style_json_path = Path(__file__).resolve().parent.parent / "templates" / "pptstyle.json"
+        # Look for default assets/pptstyle.json
+        style_json_path = Path(__file__).resolve().parent.parent / "assets" / "pptstyle.json"
 
     if not style_json_path.exists():
         print(f"Warning: style JSON {style_json_path} not found", file=sys.stderr)
@@ -313,11 +316,11 @@ def rebrand(
     # Determine template paths
     if templates_dir is None:
         # Try to find templates relative to script location
-        script_dir = Path(__file__).resolve().parent.parent / "templates"
+        script_dir = Path(__file__).resolve().parent.parent / "assets"
         if script_dir.exists():
             templates_dir = script_dir
         else:
-            templates_dir = Path("templates")
+            templates_dir = Path("assets")
 
     logo_dark = templates_dir / "Inspire logo.png"
     logo_white = templates_dir / "Inspire logo white.png"

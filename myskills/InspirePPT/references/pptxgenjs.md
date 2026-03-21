@@ -27,7 +27,7 @@ PptxGenJS requires hex colors **WITHOUT** the `#` prefix, and font sizes as inte
 ```javascript
 const fs = require('fs');
 // 1. Load the style definitions
-const style = JSON.parse(fs.readFileSync('templates/pptstyle.json', 'utf8'));
+const style = JSON.parse(fs.readFileSync('assets/pptstyle.json', 'utf8'));
 
 // Helper to clean hex colors (removes #)
 const getHex = (hexString) => hexString.replace('#', '');
