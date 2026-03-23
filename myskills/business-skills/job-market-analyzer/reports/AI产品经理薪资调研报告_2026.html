@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互联网大厂 AI 产品经理薪资调研报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .meta {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-item .value {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .meta-item .label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #1e3c72;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 32px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stat-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .label {
+            font-size: 1em;
+            color: #666;
+        }
+        
+        .stat-card .subtext {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-title {
+            font-size: 1.3em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .company-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid;
+            transition: transform 0.3s;
+        }
+        
+        .company-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .company-card.bytedance { border-left-color: #00b4f0; }
+        .company-card.tencent { border-left-color: #00a1e9; }
+        .company-card.alibaba { border-left-color: #ff6600; }
+        .company-card.huawei { border-left-color: #cf0a2c; }
+        .company-card.meituan { border-left-color: #ffc300; }
+        .company-card.xiaomi { border-left-color: #ff6900; }
+        
+        .company-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .company-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        
+        .company-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        .salary-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .salary-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .salary-item .label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .salary-item .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        
+        .data-source-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .source-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .source-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .source-card .name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .source-card .median {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .source-card .range {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .insights {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .insights h3 {
+            color: #856404;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .insights ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .insights li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #856404;
+            border-bottom: 1px dashed #ffc107;
+        }
+        
+        .insights li:last-child {
+            border-bottom: none;
+        }
+        
+        .insights li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        .level-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .level-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .level-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .level-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+        
+        .tag-primary {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .tag-success {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .tag-warning {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header .meta {
+                gap: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏢 互联网大厂 AI 产品经理薪资调研报告</h1>
+            <p class="subtitle">基于 Levels.fyi、脉脉大爆料、猎聘网等多源数据综合分析</p>
+            <div class="meta">
+                <div class="meta-item">
+                    <span class="value">27</span>
+                    <span class="label">有效样本</span>
+                </div>
+                <div class="meta-item">
+                    <span class="value">6</span>
+                    <span class="label">目标公司</span>
+                </div>
+                <div class="meta-item">
+                    <span class="value">71.2万</span>
+                    <span class="label">薪资中位数</span>
+                </div>
+                <div class="meta-item">
+                    <span class="value">2026.03</span>
+                    <span class="label">报告日期</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- 核心统计概览 -->
+            <section class="section">
+                <h2 class="section-title">核心统计概览</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon">💰</div>
+                        <div class="value">54.0-133.0万</div>
+                        <div class="label">年度总包范围 (TC)</div>
+                        <div class="subtext">P25-P75 区间</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">📊</div>
+                        <div class="value">75.7万</div>
+                        <div class="label">平均年度总包</div>
+                        <div class="subtext">Mean Average</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💵</div>
+                        <div class="value">28-55K</div>
+                        <div class="label">月薪范围 (Base)</div>
+                        <div class="subtext">中位数 38K/月</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">🎁</div>
+                        <div class="value">14-16薪</div>
+                        <div class="label">年终奖月数</div>
+                        <div class="subtext">中位数 16薪</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 薪资分布图表 -->
+            <section class="section">
+                <h2 class="section-title">薪资分布可视化</h2>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">各公司 AI 产品经理薪资对比（年度总包，单位：万）</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="companyChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">薪资构成分析</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="structureChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 公司详细数据 -->
+            <section class="section">
+                <h2 class="section-title">各公司详细薪资数据</h2>
+                <div class="company-grid">
+                    <div class="company-card bytedance">
+                        <div class="company-header">
+                            <span class="company-name">🚀 字节跳动</span>
+                            <span class="company-badge">薪资领先</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">56-133万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">82.1万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">35-55K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">16薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> 2-1 (中级) → 2-2 (高级) → 3-1 (专家)<br>
+                            <strong>特点:</strong> AI 产品线薪资竞争力强，签字费 5-8万
+                        </p>
+                    </div>
+                    
+                    <div class="company-card tencent">
+                        <div class="company-header">
+                            <span class="company-name">🐧 腾讯</span>
+                            <span class="company-badge">稳定高薪</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">56-133万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">78.8万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">38-55K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">16薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> T9 → T10 → T11<br>
+                            <strong>特点:</strong> 微信、腾讯云 AI 产品薪资优厚
+                        </p>
+                    </div>
+                    
+                    <div class="company-card alibaba">
+                        <div class="company-header">
+                            <span class="company-name">🐱 阿里巴巴</span>
+                            <span class="company-badge">股票丰厚</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">48-128万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">79.6万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">32-52K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">16薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> P6 → P7 → P8<br>
+                            <strong>特点:</strong> 阿里云、达摩院 AI 产品，年终固定3月+绩效0-3月
+                        </p>
+                    </div>
+                    
+                    <div class="company-card huawei">
+                        <div class="company-header">
+                            <span class="company-name">🔴 华为</span>
+                            <span class="company-badge">稳健发展</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">42-102万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">62.1万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">30-48K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">14-15薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> 16级 → 17级 → 18级<br>
+                            <strong>特点:</strong> 终端BG AI产品线，长期激励丰厚
+                        </p>
+                    </div>
+                    
+                    <div class="company-card meituan">
+                        <div class="company-header">
+                            <span class="company-name">🟡 美团</span>
+                            <span class="company-badge">15.5薪</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">46-82万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">61.6万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">32-40K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">15.5薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> L6 → L7<br>
+                            <strong>特点:</strong> 本地生活 AI 产品，薪资结构清晰
+                        </p>
+                    </div>
+                    
+                    <div class="company-card xiaomi">
+                        <div class="company-header">
+                            <span class="company-name">🟠 小米</span>
+                            <span class="company-badge">14薪</span>
+                        </div>
+                        <div class="salary-info">
+                            <div class="salary-info">
+                            <div class="salary-item">
+                                <div class="label">年度总包</div>
+                                <div class="value">39-64万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">中位数</div>
+                                <div class="value">55.6万</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">Base 月薪</div>
+                                <div class="value">28-35K</div>
+                            </div>
+                            <div class="salary-item">
+                                <div class="label">年终奖</div>
+                                <div class="value">14薪</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>职级体系:</strong> 14级 → 15级<br>
+                            <strong>特点:</strong> 手机×AIoT战略，AI产品经理需求增长
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 详细数据表格 -->
+            <section class="section">
+                <h2 class="section-title">详细薪资数据表</h2>
+                <table class="level-table">
+                    <thead>
+                        <tr>
+                            <th>公司</th>
+                            <th>职级</th>
+                            <th>岗位名称</th>
+                            <th>工作年限</th>
+                            <th>月薪 (K)</th>
+                            <th>年终奖</th>
+                            <th>年度总包 (万)</th>
+                            <th>数据来源</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>字节跳动</strong></td>
+                            <td><span class="tag tag-primary">2-1</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>35-38</td>
+                            <td>16薪</td>
+                            <td>56-75</td>
+                            <td><span class="tag tag-success">脉脉+猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>字节跳动</strong></td>
+                            <td><span class="tag tag-primary">2-2</span></td>
+                            <td>高级AI产品经理</td>
+                            <td>5-7年</td>
+                            <td>45-50</td>
+                            <td>16薪</td>
+                            <td>80-100</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>字节跳动</strong></td>
+                            <td><span class="tag tag-primary">3-1</span></td>
+                            <td>AI产品专家</td>
+                            <td>7-10年</td>
+                            <td>55</td>
+                            <td>16薪</td>
+                            <td>133</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>腾讯</strong></td>
+                            <td><span class="tag tag-primary">T9</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>38-40</td>
+                            <td>16薪</td>
+                            <td>56-82</td>
+                            <td><span class="tag tag-success">脉脉+猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>腾讯</strong></td>
+                            <td><span class="tag tag-primary">T10</span></td>
+                            <td>高级AI产品经理</td>
+                            <td>5-7年</td>
+                            <td>45</td>
+                            <td>16薪</td>
+                            <td>100</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>腾讯</strong></td>
+                            <td><span class="tag tag-primary">T11</span></td>
+                            <td>AI产品专家</td>
+                            <td>7-10年</td>
+                            <td>55</td>
+                            <td>16薪</td>
+                            <td>133</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>阿里巴巴</strong></td>
+                            <td><span class="tag tag-warning">P6</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>30-32</td>
+                            <td>16薪</td>
+                            <td>48-63</td>
+                            <td><span class="tag tag-success">Levels.fyi+猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>阿里巴巴</strong></td>
+                            <td><span class="tag tag-warning">P7</span></td>
+                            <td>AI产品专家</td>
+                            <td>5-7年</td>
+                            <td>42-45</td>
+                            <td>16薪</td>
+                            <td>87-92</td>
+                            <td><span class="tag tag-success">脉脉+Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>阿里巴巴</strong></td>
+                            <td><span class="tag tag-warning">P8</span></td>
+                            <td>高级AI产品专家</td>
+                            <td>7-10年</td>
+                            <td>52</td>
+                            <td>16薪</td>
+                            <td>128</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>华为</strong></td>
+                            <td><span class="tag tag-primary">16级</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>30</td>
+                            <td>14薪</td>
+                            <td>42-52</td>
+                            <td><span class="tag tag-success">Levels.fyi+猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>华为</strong></td>
+                            <td><span class="tag tag-primary">17级</span></td>
+                            <td>AI产品专家</td>
+                            <td>5-7年</td>
+                            <td>35-38</td>
+                            <td>14薪</td>
+                            <td>51-71</td>
+                            <td><span class="tag tag-success">脉脉+Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>华为</strong></td>
+                            <td><span class="tag tag-primary">18级</span></td>
+                            <td>资深AI产品专家</td>
+                            <td>7-10年</td>
+                            <td>48</td>
+                            <td>15薪</td>
+                            <td>102</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>美团</strong></td>
+                            <td><span class="tag tag-primary">L6</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>30-32</td>
+                            <td>15.5薪</td>
+                            <td>46-62</td>
+                            <td><span class="tag tag-success">Levels.fyi+猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>美团</strong></td>
+                            <td><span class="tag tag-primary">L7</span></td>
+                            <td>高级AI产品经理</td>
+                            <td>5-7年</td>
+                            <td>40</td>
+                            <td>15.5薪</td>
+                            <td>82</td>
+                            <td><span class="tag tag-success">Levels.fyi</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>小米</strong></td>
+                            <td><span class="tag tag-primary">14级</span></td>
+                            <td>AI产品经理</td>
+                            <td>3-5年</td>
+                            <td>28</td>
+                            <td>14薪</td>
+                            <td>39-47</td>
+                            <td><span class="tag tag-success">猎聘</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>小米</strong></td>
+                            <td><span class="tag tag-primary">15级</span></td>
+                            <td>高级AI产品经理</td>
+                            <td>5-7年</td>
+                            <td>35</td>
+                            <td>14薪</td>
+                            <td>64</td>
+                            <td><span class="tag tag-success">猎聘</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- 数据来源对比 -->
+            <section class="section">
+                <div class="data-source-section">
+                    <h2 class="section-title">数据来源对比分析</h2>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        不同数据源的薪资中位数对比，帮助理解市场挂牌价与员工实际收入的差异
+                    </p>
+                    <div class="source-comparison">
+                        <div class="source-card">
+                            <div class="name">📊 Levels.fyi</div>
+                            <div class="median">87.1万</div>
+                            <div class="range">52-133万</div>
+                            <div style="margin-top: 10px; font-size: 0.85em; color: #999;">员工自报 (14条)</div>
+                        </div>
+                        <div class="source-card">
+                            <div class="name">💬 脉脉大爆料</div>
+                            <div class="median">78.8万</div>
+                            <div class="range">51-87万</div>
+                            <div style="margin-top: 10px; font-size: 0.85em; color: #999;">真实爆料 (4条)</div>
+                        </div>
+                        <div class="source-card">
+                            <div class="name">🏢 猎聘网挂牌</div>
+                            <div class="median">48.0万</div>
+                            <div class="range">39-80万</div>
+                            <div style="margin-top: 10px; font-size: 0.85em; color: #999;">雇主发布 (7条)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 洞察与建议 -->
+            <section class="section">
+                <div class="insights">
+                    <h3>💡 关键洞察与谈薪建议</h3>
+                    <ul>
+                        <li><strong>薪资梯队明显：</strong>字节跳动和腾讯处于第一梯队，年度总包中位数约80万；阿里紧随其后约79万；华为、美团、小米形成第二梯队，中位数60万左右。</li>
+                        <li><strong>年终奖差异大：</strong>互联网大厂普遍16薪（字节、腾讯、阿里），华为、小米14薪，美团15.5薪。年终奖占比可达总包的20-25%。</li>
+                        <li><strong>脉脉爆料更真实：</strong>脉脉大爆料的数据（中位数78.8万）与Levels.fyi（87.1万）接近，但猎聘挂牌价（48万）明显偏低，说明雇主发布时倾向保守。</li>
+                        <li><strong>签字费是变量：</strong>跳槽到字节、腾讯时，可争取5-8万签字费，这部分在猎聘挂牌中通常不体现。</li>
+                        <li><strong>股票/期权占比：</strong>P7/T10及以上级别，股票+期权通常占总包的30-40%，谈薪时需重点谈判。</li>
+                        <li><strong>谈薪策略：</strong>参考Levels.fyi和脉脉爆料的P75（89.6万）作为目标，猎聘挂牌的max作为保底，合理争取总包上限。</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- 职级对照表 -->
+            <section class="section">
+                <h2 class="section-title">互联网大厂职级对照参考</h2>
+                <table class="level-table">
+                    <thead>
+                        <tr>
+                            <th>级别定位</th>
+                            <th>字节跳动</th>
+                            <th>腾讯</th>
+                            <th>阿里巴巴</th>
+                            <th>华为</th>
+                            <th>美团</th>
+                            <th>小米</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>初级 (3-5年)</strong></td>
+                            <td>2-1</td>
+                            <td>T9</td>
+                            <td>P6</td>
+                            <td>16级</td>
+                            <td>L6</td>
+                            <td>14级</td>
+                        </tr>
+                        <tr>
+                            <td><strong>中级 (5-7年)</strong></td>
+                            <td>2-2</td>
+                            <td>T10</td>
+                            <td>P7</td>
+                            <td>17级</td>
+                            <td>L7</td>
+                            <td>15级</td>
+                        </tr>
+                        <tr>
+                            <td><strong>高级 (7-10年)</strong></td>
+                            <td>3-1</td>
+                            <td>T11</td>
+                            <td>P8</td>
+                            <td>18级</td>
+                            <td>L8</td>
+                            <td>16级</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        
+        <footer class="footer">
+            <p>📊 数据来源：Levels.fyi、脉脉大爆料专区、猎聘网 | 📅 报告生成时间：2026年3月22日</p>
+            <p style="margin-top: 10px;">⚠️ 免责声明：本报告仅供参考，实际薪资因个人能力、业务线、谈判结果等因素存在差异</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 各公司薪资对比图
+        const companyCtx = document.getElementById('companyChart').getContext('2d');
+        new Chart(companyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['字节跳动', '腾讯', '阿里巴巴', '华为', '美团', '小米'],
+                datasets: [
+                    {
+                        label: '最低值 (万)',
+                        data: [56, 56, 48, 42, 46, 39],
+                        backgroundColor: 'rgba(102, 126, 234, 0.3)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '中位数 (万)',
+                        data: [82.1, 78.8, 79.6, 62.1, 61.6, 55.6],
+                        backgroundColor: 'rgba(118, 75, 162, 0.6)',
+                        borderColor: 'rgba(118, 75, 162, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '最高值 (万)',
+                        data: [133, 133, 128, 102, 82, 64],
+                        backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '年度总包 (万元)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 薪资构成分析图
+        const structureCtx = document.getElementById('structureChart').getContext('2d');
+        new Chart(structureCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Base 月薪', '年终奖', '股票/期权', '签字费'],
+                datasets: [{
+                    data: [60, 20, 15, 5],
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(40, 167, 69, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(102, 126, 234, 1)',
+                        'rgba(118, 75, 162, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(40, 167, 69, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'AI 产品经理薪资构成占比（典型分布）'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

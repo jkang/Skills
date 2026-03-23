@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中东局势供应链风险分析看板</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .header-content h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header-content p {
+            font-size: 16px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .header-meta {
+            text-align: right;
+        }
+        
+        .header-meta .date {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .header-meta .overall-risk {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-meta .risk-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+        
+        .header-meta .risk-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        
+        .header-meta .risk-level {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        
+        .risk-high {
+            background: #ff4d4f;
+            color: white;
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .kpi-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .kpi-icon.blue { background: #e6f7ff; }
+        .kpi-icon.red { background: #fff1f0; }
+        .kpi-icon.orange { background: #fff7e6; }
+        .kpi-icon.green { background: #f6ffed; }
+        
+        .kpi-label {
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+        }
+        
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d2129;
+        }
+        
+        .kpi-sub {
+            font-size: 12px;
+            color: #bfbfbf;
+            margin-top: 4px;
+        }
+        
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d2129;
+        }
+        
+        .chart-subtitle {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-top: 4px;
+        }
+        
+        .chart-body {
+            padding: 20px;
+            height: 320px;
+        }
+        
+        .chart-body.large {
+            height: 400px;
+        }
+        
+        /* Events List */
+        .events-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d2129;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .event-card {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #ff4d4f;
+            transition: all 0.3s;
+        }
+        
+        .event-card:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .event-card.medium { border-left-color: #faad14; }
+        .event-card.low { border-left-color: #52c41a; }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d2129;
+            flex: 1;
+        }
+        
+        .event-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-high { background: #ff4d4f; color: white; }
+        .badge-medium { background: #faad14; color: white; }
+        .badge-low { background: #52c41a; color: white; }
+        
+        .event-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #595959;
+            margin-bottom: 12px;
+        }
+        
+        .event-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .event-desc {
+            font-size: 14px;
+            color: #595959;
+            line-height: 1.6;
+        }
+        
+        .event-impact {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #d9d9d9;
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+        
+        .footer strong {
+            color: #595959;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .header-meta {
+                text-align: center;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-card.full-width {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>中东局势供应链风险分析看板</h1>
+                <p>聚焦2026年3月霍尔木兹海峡危机与美伊战争对全球航运供应链的影响<br>
+                数据来源：BBC News、Journal of Commerce、Reddit | 分析时间：2026年3月23日</p>
+            </div>
+            <div class="header-meta">
+                <div class="date">生成日期：2026-03-23</div>
+                <div class="overall-risk">
+                    <div class="risk-label">综合风险指数</div>
+                    <div class="risk-value">4.1</div>
+                    <div class="risk-level risk-high">高危</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon blue">📊</div>
+                <div class="kpi-label">风险事件总数</div>
+                <div class="kpi-value">7</div>
+                <div class="kpi-sub">军事冲突2 | 航运中断4 | 能源波动1</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon red">🚨</div>
+                <div class="kpi-label">高危事件数</div>
+                <div class="kpi-value" style="color: #ff4d4f;">3</div>
+                <div class="kpi-sub">需立即启动应急预案</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon orange">🚢</div>
+                <div class="kpi-label">受影响航线</div>
+                <div class="kpi-value">4</div>
+                <div class="kpi-sub">霍尔木兹海峡 | 波斯湾 | 红海</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon green">💰</div>
+                <div class="kpi-label">布伦特原油</div>
+                <div class="kpi-value">$112</div>
+                <div class="kpi-sub">美国原油：$98.57/桶</div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <!-- Risk Timeline -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">风险事件时间线</div>
+                        <div class="chart-subtitle">2026年2-3月关键风险事件演变</div>
+                    </div>
+                </div>
+                <div class="chart-body" id="timelineChart"></div>
+            </div>
+
+            <!-- Risk Type Distribution -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">风险类型分布</div>
+                        <div class="chart-subtitle">按事件类型统计</div>
+                    </div>
+                </div>
+                <div class="chart-body" id="typeChart"></div>
+            </div>
+
+            <!-- Geographic Distribution -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">风险地理分布</div>
+                        <div class="chart-subtitle">中东关键航运节点受影响程度</div>
+                    </div>
+                </div>
+                <div class="chart-body" id="geoChart"></div>
+            </div>
+
+            <!-- Risk Matrix -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">风险影响矩阵</div>
+                        <div class="chart-subtitle">严重度 vs 概率四象限分析</div>
+                    </div>
+                </div>
+                <div class="chart-body" id="matrixChart"></div>
+            </div>
+        </div>
+
+        <!-- Top Risk Events -->
+        <div class="events-section">
+            <h2 class="section-title">🔥 TOP 5 高风险事件</h2>
+            
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-title">1. 霍尔木兹海峡被伊朗封锁</div>
+                    <span class="event-badge badge-high">高危 | 评分 4.8</span>
+                </div>
+                <div class="event-meta">
+                    <span>📍 伊朗、阿联酋、阿曼、卡塔尔、巴林、科威特、沙特</span>
+                    <span>📅 2026-02-28起</span>
+                    <span>⚡ 紧急</span>
+                </div>
+                <div class="event-desc">
+                    自2026年2月28日起，伊朗封锁霍尔木兹海峡，这是全球约20%原油和25% LNG运输的必经之路。船公司已暂停接受往返阿联酋、阿曼、伊拉克、科威特、卡塔尔、巴林和沙特的冷藏货物、危险品和特殊货物。约20%的全球石油供应受阻。
+                </div>
+                <div class="event-impact">
+                    <strong>影响：</strong>全球能源危机爆发，油价飙升至112美元/桶，亚洲股市暴跌（日经-3.4%，KOSPI-5%）
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-title">2. 美伊战争升级，特朗普威胁打击发电厂</div>
+                    <span class="event-badge badge-high">高危 | 评分 4.7</span>
+                </div>
+                <div class="event-meta">
+                    <span>📍 美国、伊朗、以色列</span>
+                    <span>📅 2026-03-23</span>
+                    <span>⚡ 紧急</span>
+                </div>
+                <div class="event-desc">
+                    美伊战争进入第四周，特朗普威胁如果伊朗不开放霍尔木兹海峡，将在48小时内"摧毁"伊朗发电厂。伊朗议会发言人誓言将"不可逆转地摧毁"整个中东地区的重要基础设施作为回应，包括能源设施和海水淡化厂。
+                </div>
+                <div class="event-impact">
+                    <strong>影响：</strong>战争进入"新的升级阶段"，伊朗导弹已击中以色列迪莫纳核设施附近城镇，造成180人受伤
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-title">3. 全球能源危机爆发，油价飙升</div>
+                    <span class="event-badge badge-high">高危 | 评分 4.2</span>
+                </div>
+                <div class="event-meta">
+                    <span>📍 全球</span>
+                    <span>📅 持续中</span>
+                    <span>⚡ 紧急</span>
+                </div>
+                <div class="event-desc">
+                    国际能源署负责人Fatih Birol称当前危机是"两个石油危机和一个天然气危机的总和"，将其与1970年代石油危机和2022年俄乌冲突的影响相比较。布伦特原油价格达112美元/桶，美国原油98.57美元/桶。这是数十年来最严重的能源危机。
+                </div>
+                <div class="event-impact">
+                    <strong>影响：</strong>全球经济面临通胀压力，燃油附加费上涨至$30-300/TEU，供应链成本激增
+                </div>
+            </div>
+
+            <div class="event-card medium">
+                <div class="event-header">
+                    <div class="event-title">4. 冷藏集装箱滞留波斯湾外港口</div>
+                    <span class="event-badge badge-medium">中等 | 评分 3.6</span>
+                </div>
+                <div class="event-meta">
+                    <span>📍 阿联酋、阿曼、伊拉克、科威特、卡塔尔、巴林、沙特</span>
+                    <span>📅 2026-02-28起</span>
+                    <span>⏱️ 紧急</span>
+                </div>
+                <div class="event-desc">
+                    2月28日战争开始时正在运输途中的冷藏集装箱被卸在区域外港口并接入冷藏插槽，产生大量滞期费。船公司已暂停接受往返波斯湾国家的冷藏货物、危险品和特殊货物。Tyson Foods等企业有大量冷藏集装箱位置异常。
+                </div>
+                <div class="event-impact">
+                    <strong>影响：</strong>货主要么等待霍尔木兹海峡重新开放，要么开始寻找新市场，滞期费和仓储费大幅增加
+                </div>
+            </div>
+
+            <div class="event-card medium">
+                <div class="event-header">
+                    <div class="event-title">5. 船公司征收紧急燃油附加费</div>
+                    <span class="event-badge badge-medium">中等 | 评分 3.4</span>
+                </div>
+                <div class="event-meta">
+                    <span>📍 全球主要航线</span>
+                    <span>📅 2026-03-18</span>
+                    <span>⏱️ 短期</span>
+                </div>
+                <div class="event-desc">
+                    船公司已实施紧急燃油附加费，根据贸易航线不同，每TEU从30美元到300美元不等。船公司称这是历史上最严重的能源冲击，燃油成本占运营成本的15%-30%，被迫通过超出季度燃油调整因子(BAF)的费用来收回成本。
+                </div>
+                <div class="event-impact">
+                    <strong>影响：</strong>货主质疑燃油附加费被用作收入来源而非成本回收机制，引发船公司与货主争执
+                </div>
+            </div>
+        </div>
+
+        <!-- Supply Chain Impact Analysis -->
+        <div class="events-section">
+            <h2 class="section-title">🚢 供应链关键节点影响分析</h2>
+            
+            <div class="chart-card full-width" style="margin-bottom: 20px;">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">关键航线影响评估</div>
+                        <div class="chart-subtitle">基于严重度、影响范围和恢复难度的综合评估</div>
+                    </div>
+                </div>
+                <div class="chart-body large" id="impactChart"></div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="events-section">
+            <h2 class="section-title">💡 应对建议</h2>
+            
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-title">立即启动替代航线预案</div>
+                    <span class="event-badge badge-high">紧急</span>
+                </div>
+                <div class="event-desc">
+                    将波斯湾航线货物转至阿拉伯港口外霍尔木兹海峡的港口（如富查伊拉）或考虑陆路运输方案。与船公司协商运费锁定协议。预计运输成本增加20-40%。
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-title">建立燃油成本对冲机制</div>
+                    <span class="event-badge badge-high">紧急</span>
+                </div>
+                <div class="event-desc">
+                    鉴于燃油附加费已达$30-300/TEU，建议与船公司谈判长期燃油调整机制，或考虑燃油期货对冲。对冲成本约2-5%。
+                </div>
+            </div>
+
+            <div class="event-card medium">
+                <div class="event-header">
+                    <div class="event-title">寻找替代供应商和市场</div>
+                    <span class="event-badge badge-medium">高优先级</span>
+                </div>
+                <div class="event-desc">
+                    美国树脂出口商已看到机遇，建议评估是否可将中东采购转向美国或其他未受影响地区。供应商转换成本预计10-20%。
+                </div>
+            </div>
+
+            <div class="event-card medium">
+                <div class="event-header">
+                    <div class="event-title">加强货物追踪和可视化</div>
+                    <span class="event-badge badge-medium">高优先级</span>
+                </div>
+                <div class="event-desc">
+                    使用海运可视化提供商（如Vizion）实时追踪集装箱位置，及时应对服务中断。技术投入$10,000-50,000/年。
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>数据来源：</strong>BBC News、Journal of Commerce (JOC)、Reddit | <strong>生成时间：</strong>2026年3月23日</p>
+            <p style="margin-top: 10px; font-size: 11px; color: #bfbfbf;">
+                ⚠️ 免责声明：本报告基于公开新闻和AI分析生成，仅供参考。数据可能存在滞后或不完整，决策者应结合其他信息源综合判断。<br>
+                供应链风险瞬息万变，建议持续监控事态发展并制定灵活的应对策略。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        var rawData = {
+            timeline: [
+                {date: '2026-02-28', event: '美以袭击伊朗', score: 4.5, severity: 5},
+                {date: '2026-03-05', event: '油价开始飙升', score: 3.8, severity: 4},
+                {date: '2026-03-12', event: '战争进入第13天', score: 4.2, severity: 5},
+                {date: '2026-03-13', event: '美出口中东中断', score: 3.3, severity: 3},
+                {date: '2026-03-18', event: '燃油附加费征收', score: 3.4, severity: 3},
+                {date: '2026-03-19', event: '冷藏集装箱滞留', score: 3.6, severity: 3},
+                {date: '2026-03-20', event: '美树脂出口激增', score: 3.0, severity: 2},
+                {date: '2026-03-23', event: '特朗普威胁升级', score: 4.7, severity: 5}
+            ],
+            riskTypes: [
+                {value: 4, name: '航运中断'},
+                {value: 2, name: '军事冲突'},
+                {value: 1, name: '能源波动'},
+                {value: 1, name: '政治动荡'}
+            ],
+            geoData: [
+                {name: '霍尔木兹海峡', value: [56.3, 26.5, 5], risk: '高危'},
+                {name: '杰贝阿里港', value: [55.0, 25.0, 4], risk: '高危'},
+                {name: '波斯湾', value: [51.0, 27.0, 4], risk: '高危'},
+                {name: '达曼港', value: [50.2, 26.5, 3], risk: '中等'},
+                {name: '富查伊拉港', value: [56.3, 25.1, 3], risk: '中等'},
+                {name: '塞拉莱港', value: [54.0, 17.0, 2], risk: '低'}
+            ],
+            matrixData: [
+                {name: '海峡封锁', severity: 5, probability: 5, score: 4.8},
+                {name: '战争升级', severity: 5, probability: 4, score: 4.7},
+                {name: '能源危机', severity: 4, probability: 5, score: 4.2},
+                {name: '冷藏滞留', severity: 3, probability: 5, score: 3.6},
+                {name: '燃油附加费', severity: 3, probability: 5, score: 3.4},
+                {name: '美出口中断', severity: 3, probability: 4, score: 3.3},
+                {name: '供应链波动', severity: 3, probability: 4, score: 2.9}
+            ],
+            impactData: {
+                routes: ['霍尔木兹海峡', '波斯湾内航线', '杰贝阿里港', '全球能源市场'],
+                severity: [5, 4, 4, 5],
+                affected: [95, 80, 75, 90]
+            }
+        };
+
+        // Initialize charts when page loads
+        window.addEventListener('load', function() {
+            initTimelineChart();
+            initTypeChart();
+            initGeoChart();
+            initMatrixChart();
+            initImpactChart();
+        });
+
+        function initTimelineChart() {
+            try {
+                var chart = echarts.init(document.getElementById('timelineChart'));
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function(params) {
+                            return params.data.date + '<br/>' + 
+                                   params.data.event + '<br/>' +
+                                   '风险评分: ' + params.data.score;
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rawData.timeline.map(function(item) { return item.date.substring(5); }),
+                        axisLabel: { rotate: 45 }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '风险评分',
+                        max: 5,
+                        min: 0
+                    },
+                    series: [{
+                        type: 'scatter',
+                        data: rawData.timeline.map(function(item, idx) {
+                            return {
+                                value: [idx, item.score, item.severity],
+                                date: item.date,
+                                event: item.event
+                            };
+                        }),
+                        symbolSize: function(val) { return val[2] * 10; },
+                        itemStyle: {
+                            color: function(params) {
+                                var score = params.data.score;
+                                if (score >= 4.0) return '#ff4d4f';
+                                if (score >= 3.0) return '#faad14';
+                                return '#52c41a';
+                            }
+                        }
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', function() { chart.resize(); });
+            } catch(e) { console.error('Timeline chart error:', e); }
+        }
+
+        function initTypeChart() {
+            try {
+                var chart = echarts.init(document.getElementById('typeChart'));
+                var option = {
+                    tooltip: { trigger: 'item' },
+                    legend: {
+                        orient: 'vertical',
+                        right: 10,
+                        top: 'center'
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['40%', '50%'],
+                        data: rawData.riskTypes,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            formatter: '{b}: {c}'
+                        }
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', function() { chart.resize(); });
+            } catch(e) { console.error('Type chart error:', e); }
+        }
+
+        function initGeoChart() {
+            try {
+                var chart = echarts.init(document.getElementById('geoChart'));
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function(params) {
+                            return params.data.name + '<br/>风险等级: ' + params.data.risk;
+                        }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '经度',
+                        min: 45,
+                        max: 60
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '纬度',
+                        min: 15,
+                        max: 30
+                    },
+                    series: [{
+                        type: 'scatter',
+                        data: rawData.geoData.map(function(item) {
+                            return {
+                                value: item.value,
+                                name: item.name,
+                                risk: item.risk
+                            };
+                        }),
+                        symbolSize: function(val) { return val[2] * 12; },
+                        itemStyle: {
+                            color: function(params) {
+                                var risk = params.data.risk;
+                                if (risk === '高危') return '#ff4d4f';
+                                if (risk === '中等') return '#faad14';
+                                return '#52c41a';
+                            }
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'top'
+                        }
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', function() { chart.resize(); });
+            } catch(e) { console.error('Geo chart error:', e); }
+        }
+
+        function initMatrixChart() {
+            try {
+                var chart = echarts.init(document.getElementById('matrixChart'));
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function(params) {
+                            return params.data.name + '<br/>' +
+                                   '严重度: ' + params.data.severity + '<br/>' +
+                                   '概率: ' + params.data.probability + '<br/>' +
+                                   '综合评分: ' + params.data.score;
+                        }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '影响程度（严重度）',
+                        min: 1,
+                        max: 6
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '发生概率',
+                        min: 1,
+                        max: 6
+                    },
+                    series: [{
+                        type: 'scatter',
+                        data: rawData.matrixData.map(function(item) {
+                            return {
+                                value: [item.severity, item.probability, item.score],
+                                name: item.name,
+                                severity: item.severity,
+                                probability: item.probability,
+                                score: item.score
+                            };
+                        }),
+                        symbolSize: function(val) { return val[2] * 10; },
+                        itemStyle: {
+                            color: function(params) {
+                                var score = params.data.score;
+                                if (score >= 4.0) return '#ff4d4f';
+                                if (score >= 3.0) return '#faad14';
+                                return '#52c41a';
+                            }
+                        },
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            position: 'right'
+                        },
+                        markLine: {
+                            silent: true,
+                            lineStyle: { type: 'dashed', color: '#999' },
+                            data: [
+                                { xAxis: 3.5, symbol: ['none', 'none'] },
+                                { yAxis: 3.5, symbol: ['none', 'none'] }
+                            ]
+                        }
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', function() { chart.resize(); });
+            } catch(e) { console.error('Matrix chart error:', e); }
+        }
+
+        function initImpactChart() {
+            try {
+                var chart = echarts.init(document.getElementById('impactChart'));
+                var option = {
+                    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                    legend: { data: ['严重度', '受影响程度(%)'] },
+                    xAxis: {
+                        type: 'category',
+                        data: rawData.impactData.routes,
+                        axisLabel: { rotate: 15 }
+                    },
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '严重度',
+                            max: 5,
+                            min: 0
+                        },
+                        {
+                            type: 'value',
+                            name: '受影响程度',
+                            max: 100,
+                            min: 0,
+                            axisLabel: { formatter: '{value}%' }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '严重度',
+                            type: 'bar',
+                            data: rawData.impactData.severity,
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: '#ff4d4f' },
+                                    { offset: 1, color: '#ff7875' }
+                                ])
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: '{c}'
+                            }
+                        },
+                        {
+                            name: '受影响程度(%)',
+                            type: 'line',
+                            yAxisIndex: 1,
+                            data: rawData.impactData.affected,
+                            itemStyle: { color: '#faad14' },
+                            lineStyle: { width: 3 },
+                            symbol: 'circle',
+                            symbolSize: 10
+                        }
+                    ]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', function() { chart.resize(); });
+            } catch(e) { console.error('Impact chart error:', e); }
+        }
+    </script>
+</body>
+</html>

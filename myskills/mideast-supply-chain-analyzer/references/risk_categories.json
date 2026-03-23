@@ -1,0 +1,129 @@
+{
+  "_comment": "中东地缘政治风险分类体系 — mideast-supply-chain-analyzer",
+  "event_types": [
+    {
+      "code": "MIL",
+      "name": "军事冲突",
+      "name_en": "Military Conflict",
+      "base_severity": 5,
+      "description": "武装冲突、军事行动、导弹袭击、无人机攻击、海上军事对峙等",
+      "examples": ["也门胡塞武装袭击商船", "伊朗与以色列互射导弹", "美军空袭中东目标"]
+    },
+    {
+      "code": "SAN",
+      "name": "经济制裁",
+      "name_en": "Economic Sanctions",
+      "base_severity": 4,
+      "description": "国际制裁、贸易禁令、资产冻结、出口管制等",
+      "examples": ["美国对伊朗石油制裁", "欧盟冻结相关实体资产", "联合国安理会新决议"]
+    },
+    {
+      "code": "SHP",
+      "name": "航运中断",
+      "name_en": "Shipping Disruption",
+      "base_severity": 5,
+      "description": "航线封锁、船舶遭袭、港口关闭、运河阻断、海上劫持等",
+      "examples": ["红海商船遇袭绕行好望角", "苏伊士运河因搁浅阻断", "霍尔木兹海峡封锁威胁"]
+    },
+    {
+      "code": "POL",
+      "name": "政治动荡",
+      "name_en": "Political Instability",
+      "base_severity": 3,
+      "description": "政权更迭、大规模抗议、政策突变、选举争议等",
+      "examples": ["伊拉克政局动荡", "黎巴嫩政府危机", "叙利亚局势变化"]
+    },
+    {
+      "code": "TER",
+      "name": "恐怖袭击",
+      "name_en": "Terrorist Attack",
+      "base_severity": 5,
+      "description": "恐怖组织袭击、自杀式爆炸、劫持人质、基础设施破坏等",
+      "examples": ["IS残余势力袭击", "针对石油设施的恐怖袭击", "海上恐怖活动"]
+    },
+    {
+      "code": "DIP",
+      "name": "外交事件",
+      "name_en": "Diplomatic Incident",
+      "base_severity": 2,
+      "description": "断交、召回大使、外交争端、国际谈判破裂等",
+      "examples": ["伊朗核谈判破裂", "海湾国家外交危机", "中东和平协议进展"]
+    },
+    {
+      "code": "OIL",
+      "name": "能源供应波动",
+      "name_en": "Energy Supply Disruption",
+      "base_severity": 4,
+      "description": "油田攻击、OPEC减产决议、管道中断、LNG设施受损等",
+      "examples": ["沙特油田遭无人机袭击", "OPEC+宣布大幅减产", "伊朗油气出口受限"]
+    },
+    {
+      "code": "ENV",
+      "name": "环境灾害",
+      "name_en": "Environmental Disaster",
+      "base_severity": 3,
+      "description": "沙尘暴、地震、海上油污泄漏、极端天气等",
+      "examples": ["波斯湾油轮泄漏", "中东地区罕见洪水", "沙尘暴导致港口关闭"]
+    }
+  ],
+  "severity_scale": {
+    "1": {
+      "label": "极低",
+      "label_en": "Very Low",
+      "color": "#52C41A",
+      "description": "对航运无直接影响，仅需关注"
+    },
+    "2": {
+      "label": "低",
+      "label_en": "Low",
+      "color": "#73D13D",
+      "description": "可能造成轻微延迟（1-2天），运费波动<5%"
+    },
+    "3": {
+      "label": "中等",
+      "label_en": "Medium",
+      "color": "#FAAD14",
+      "description": "部分航线受影响，运费上涨10-30%，需启动预案"
+    },
+    "4": {
+      "label": "高",
+      "label_en": "High",
+      "color": "#FA8C16",
+      "description": "主要航线中断，需启用替代航线，运费上涨30-100%"
+    },
+    "5": {
+      "label": "极高",
+      "label_en": "Critical",
+      "color": "#FF4D4F",
+      "description": "关键航线完全中断，全球供应链受冲击，运费暴涨>100%"
+    }
+  },
+  "time_sensitivity_weights": {
+    "紧急": {"weight": 5, "description": "正在发生或24小时内可能发生", "label_en": "Urgent"},
+    "短期": {"weight": 4, "description": "1-7天内可能产生影响", "label_en": "Short-term"},
+    "中期": {"weight": 3, "description": "1-4周内可能产生影响", "label_en": "Medium-term"},
+    "长期": {"weight": 2, "description": "1个月以上的持续性风险", "label_en": "Long-term"}
+  },
+  "impact_types": {
+    "直接": {
+      "weight": 1.0,
+      "description": "事件直接影响航运运营（航线中断、船舶遇袭）",
+      "label_en": "Direct"
+    },
+    "间接": {
+      "weight": 0.7,
+      "description": "事件通过产业链传导影响航运（油价上涨→燃油成本）",
+      "label_en": "Indirect"
+    },
+    "潜在": {
+      "weight": 0.4,
+      "description": "事件可能演变为航运风险（外交紧张→军事冲突可能）",
+      "label_en": "Potential"
+    }
+  },
+  "risk_level_thresholds": {
+    "高危": {"min_score": 4.0, "color": "#FF4D4F", "bg_color": "#FFF1F0", "action": "立即启动应急预案"},
+    "中等": {"min_score": 3.0, "color": "#FAAD14", "bg_color": "#FFFBE6", "action": "密切监控，准备备选方案"},
+    "低": {"min_score": 0, "color": "#52C41A", "bg_color": "#F6FFED", "action": "常规关注，定期复查"}
+  }
+}

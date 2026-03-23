@@ -1,0 +1,11 @@
+anthropic-skills/
+.opencode/
+impeccable-style-universal/
+*.pptx
+*.pdf
+*.zip
+*.tar.gz
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store

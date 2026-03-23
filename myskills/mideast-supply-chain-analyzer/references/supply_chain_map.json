@@ -1,0 +1,212 @@
+{
+  "_comment": "航运供应链关键节点映射 — mideast-supply-chain-analyzer。聚焦中东地区航运要道、关键港口及其全球贸易关联。",
+  "industry": "航运",
+  "critical_routes": [
+    {
+      "id": "route_suez",
+      "name": "红海-苏伊士运河航线",
+      "name_en": "Red Sea - Suez Canal Route",
+      "importance": 5,
+      "global_trade_share": "约12%全球贸易量",
+      "annual_cargo_value": "超1万亿美元",
+      "daily_vessels": "约50艘",
+      "key_chokepoints": ["曼德海峡", "苏伊士运河"],
+      "connected_regions": ["东亚", "南亚", "欧洲", "地中海", "北非"],
+      "primary_cargo": ["集装箱", "石油", "天然气", "散货", "汽车"],
+      "major_users": ["马士基", "地中海航运", "达飞轮船", "中远海运", "长荣海运"],
+      "risk_factors": ["胡塞武装袭击", "也门内战", "埃及政局", "苏伊士运河管理"],
+      "alternative": {
+        "route": "好望角绕行",
+        "extra_days": 10,
+        "extra_distance_nm": 3500,
+        "extra_cost_pct": "15-25%",
+        "extra_fuel_cost": "约50-80万美元/航次",
+        "capacity_impact": "全球运力下降约10-15%"
+      },
+      "geo_coords": {"lat": 27.0, "lng": 33.8}
+    },
+    {
+      "id": "route_hormuz",
+      "name": "霍尔木兹海峡航线",
+      "name_en": "Strait of Hormuz Route",
+      "importance": 5,
+      "global_trade_share": "约20%全球原油运输、25%全球LNG运输",
+      "annual_cargo_value": "超1.5万亿美元（石油+天然气）",
+      "daily_vessels": "约30艘油轮",
+      "key_chokepoints": ["霍尔木兹海峡"],
+      "connected_regions": ["波斯湾产油国", "印度洋", "东亚", "欧洲", "南亚"],
+      "primary_cargo": ["原油", "LNG", "石化产品", "凝析油"],
+      "major_users": ["沙特阿美", "ADNOC", "科威特石油", "伊朗国家油轮"],
+      "risk_factors": ["伊朗-以色列对峙", "伊朗核问题", "美伊关系", "伊朗革命卫队"],
+      "alternative": {
+        "route": "阿联酋Habshan-富查伊拉管道",
+        "capacity": "约150万桶/天（全球需求的1.5%）",
+        "limitation": "仅适用于原油，无法替代LNG运输",
+        "extra_cost_pct": "20-40%"
+      },
+      "geo_coords": {"lat": 26.5, "lng": 56.3}
+    },
+    {
+      "id": "route_bab_mandeb",
+      "name": "曼德海峡",
+      "name_en": "Bab el-Mandeb Strait",
+      "importance": 5,
+      "global_trade_share": "连接红海与亚丁湾的唯一通道，约9%全球海运贸易",
+      "daily_vessels": "约50艘（与苏伊士运河通行量一致）",
+      "key_chokepoints": ["曼德海峡（宽仅26公里）"],
+      "connected_regions": ["红海", "亚丁湾", "印度洋", "东非"],
+      "primary_cargo": ["集装箱", "石油", "天然气", "散货"],
+      "risk_factors": ["胡塞武装导弹和无人机袭击", "厄立特里亚-吉布提争端", "索马里海盗"],
+      "alternative": {
+        "route": "无直接替代，须绕行好望角",
+        "extra_days": 10,
+        "extra_cost_pct": "15-30%"
+      },
+      "geo_coords": {"lat": 12.5, "lng": 43.3}
+    },
+    {
+      "id": "route_gulf_aden",
+      "name": "亚丁湾航线",
+      "name_en": "Gulf of Aden Route",
+      "importance": 4,
+      "global_trade_share": "连接印度洋与红海的关键通道",
+      "key_chokepoints": ["亚丁湾"],
+      "connected_regions": ["印度洋", "东非", "红海", "南亚"],
+      "primary_cargo": ["集装箱", "石油", "散货"],
+      "risk_factors": ["索马里海盗", "也门局势溢出", "胡塞武装远程袭击"],
+      "alternative": {
+        "route": "好望角绕行",
+        "extra_days": 7,
+        "extra_cost_pct": "10-20%"
+      },
+      "geo_coords": {"lat": 12.0, "lng": 48.0}
+    },
+    {
+      "id": "route_persian_gulf",
+      "name": "波斯湾内航线",
+      "name_en": "Persian Gulf Internal Routes",
+      "importance": 4,
+      "global_trade_share": "全球30%原油产量来自波斯湾沿岸国家",
+      "key_chokepoints": ["波斯湾各港口进出航道"],
+      "connected_regions": ["沙特", "阿联酋", "卡塔尔", "科威特", "伊拉克", "伊朗", "巴林"],
+      "primary_cargo": ["原油", "LNG", "石化产品", "铝材", "化肥"],
+      "risk_factors": ["区域军事冲突", "水雷威胁", "伊朗海军活动"],
+      "alternative": {
+        "route": "依赖霍尔木兹海峡通行，无内部替代",
+        "limitation": "管道运输能力有限"
+      },
+      "geo_coords": {"lat": 27.0, "lng": 51.0}
+    }
+  ],
+  "key_ports": [
+    {
+      "name": "杰贝阿里港",
+      "name_en": "Jebel Ali Port",
+      "country": "阿联酋",
+      "city": "迪拜",
+      "importance": 5,
+      "type": "全球枢纽港",
+      "annual_teu": "约1400万TEU",
+      "description": "中东最大集装箱港，全球第九大港口，自贸区辐射整个中东和非洲",
+      "geo_coords": {"lat": 25.0, "lng": 55.0}
+    },
+    {
+      "name": "苏伊士港/塞得港",
+      "name_en": "Port Said / Suez",
+      "country": "埃及",
+      "importance": 5,
+      "type": "运河枢纽",
+      "description": "苏伊士运河南北入口港，全球航运要冲",
+      "geo_coords": {"lat": 31.3, "lng": 32.3}
+    },
+    {
+      "name": "吉达港",
+      "name_en": "Jeddah Islamic Port",
+      "country": "沙特",
+      "importance": 4,
+      "type": "区域枢纽",
+      "annual_teu": "约500万TEU",
+      "description": "沙特最大商港，红海沿岸核心枢纽",
+      "geo_coords": {"lat": 21.5, "lng": 39.2}
+    },
+    {
+      "name": "哈利法港",
+      "name_en": "Khalifa Port",
+      "country": "阿联酋",
+      "city": "阿布扎比",
+      "importance": 4,
+      "type": "新兴深水港",
+      "description": "阿布扎比新建深水港，中远海运运营的CSP码头所在地",
+      "geo_coords": {"lat": 24.8, "lng": 54.6}
+    },
+    {
+      "name": "塞拉莱港",
+      "name_en": "Port of Salalah",
+      "country": "阿曼",
+      "importance": 3,
+      "type": "转运枢纽",
+      "description": "阿曼南部深水港，亚丁湾转运枢纽",
+      "geo_coords": {"lat": 17.0, "lng": 54.0}
+    },
+    {
+      "name": "达曼港",
+      "name_en": "King Abdulaziz Port Dammam",
+      "country": "沙特",
+      "importance": 3,
+      "type": "工业港",
+      "description": "沙特东部波斯湾沿岸主要工业港口",
+      "geo_coords": {"lat": 26.5, "lng": 50.2}
+    },
+    {
+      "name": "亚丁港",
+      "name_en": "Port of Aden",
+      "country": "也门",
+      "importance": 2,
+      "type": "受冲突影响",
+      "description": "历史上的重要港口，因也门内战运营受限",
+      "geo_coords": {"lat": 12.8, "lng": 45.0}
+    },
+    {
+      "name": "富查伊拉港",
+      "name_en": "Port of Fujairah",
+      "country": "阿联酋",
+      "importance": 4,
+      "type": "石油中转枢纽",
+      "description": "霍尔木兹海峡外唯一阿联酋深水港，石油储存和转运基地",
+      "geo_coords": {"lat": 25.1, "lng": 56.3}
+    }
+  ],
+  "impact_propagation": {
+    "level_1_direct": {
+      "level": 1,
+      "name": "直接冲击",
+      "description": "航线中断 → 船舶绕行/滞留 → 运力骤降 → 运费飙升 → 交货严重延迟",
+      "typical_duration": "数天至数周",
+      "typical_freight_impact": "运费上涨50-300%",
+      "indicators": ["SCFI/BDI指数飙升", "船舶AIS数据显示绕行", "港口拥堵加剧"]
+    },
+    "level_2_secondary": {
+      "level": 2,
+      "name": "连锁反应",
+      "description": "运费上涨 → 大宗商品涨价 → 制造业成本上升 → 终端消费品涨价 → 通胀压力",
+      "typical_duration": "数周至数月",
+      "typical_freight_impact": "供应链成本上升10-30%",
+      "indicators": ["大宗商品价格指数上涨", "CPI/PPI数据上行", "企业盈利预警"]
+    },
+    "level_3_structural": {
+      "level": 3,
+      "name": "结构性调整",
+      "description": "海运保险费率上升 → 长期合同重谈 → 贸易航线重构 → 供应链多元化布局",
+      "typical_duration": "数月至数年",
+      "typical_freight_impact": "保险费率上升200-1000%（战争险）",
+      "indicators": ["保险费率调整", "新航线开辟", "近岸化/友岸化趋势加速"]
+    }
+  },
+  "freight_indices": {
+    "_comment": "相关运价指数，用于量化影响",
+    "SCFI": {"name": "上海出口集装箱运价指数", "description": "反映集装箱即期运价"},
+    "BDI": {"name": "波罗的海干散货指数", "description": "反映干散货运输成本"},
+    "BDTI": {"name": "波罗的海油轮运价指数", "description": "反映油轮运输成本"},
+    "WCI": {"name": "Drewry世界集装箱运价指数", "description": "反映全球主要航线集装箱运价"}
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "news_items": [
+    {
+      "title": "胡塞武装再次袭击红海商船，全球航运巨头延长绕行好望角",
+      "url": "https://www.reuters.com/world/middle-east/houthi-militants-attack-another-ship-red-sea-2024-03-15/",
+      "source": "exa",
+      "published_date": "2025-03-20",
+      "snippet": "也门胡塞武装使用反舰导弹袭击一艘悬挂利比里亚国旗的集装箱船，这是本月第12起类似事件。马士基、地中海航运等公司宣布将继续绕行好望角至第二季度末。",
+      "language": "zh"
+    },
+    {
+      "title": "Red Sea crisis: Shipping costs surge 200% as attacks continue",
+      "url": "https://www.bloomberg.com/news/articles/2025-03-18/red-sea-shipping-costs-surge",
+      "source": "exa",
+      "published_date": "2025-03-18",
+      "snippet": "The cost of shipping containers from Asia to Europe has surged by over 200% since December as Houthi attacks force vessels to divert around Africa. Insurance premiums have risen tenfold.",
+      "language": "en"
+    },
+    {
+      "title": "伊朗警告：若美国继续支持以色列，将封锁霍尔木兹海峡",
+      "url": "https://www.aljazeera.com/news/2025/03/19/iran-hormuz-strait-threat",
+      "source": "exa",
+      "published_date": "2025-03-19",
+      "snippet": "伊朗革命卫队司令威胁称，如果美国继续向以色列提供军事支持，伊朗将考虑关闭霍尔木兹海峡。全球约20%的石油运输经过该海峡。",
+      "language": "zh"
+    },
+    {
+      "title": "苏伊士运河收入暴跌70%，埃及经济受重创",
+      "url": "https://www.ft.com/content/suez-canal-revenue-plunge",
+      "source": "exa",
+      "published_date": "2025-03-17",
+      "snippet": "埃及苏伊士运河管理局数据显示，2025年前两月收入同比下降70%，从去年同期13亿美元降至4亿美元。运河每日通行船舶从平均50艘降至不足20艘。",
+      "language": "zh"
+    },
+    {
+      "title": "美军加大对也门空袭力度，胡塞武装誓言报复",
+      "url": "https://www.cnn.com/2025/03/16/middleeast/us-airstrikes-yemen-houthis",
+      "source": "exa",
+      "published_date": "2025-03-16",
+      "snippet": "美军周末对也门首都萨那及周边地区发动多轮空袭，目标是胡塞武装的导弹发射场和雷达设施。胡塞武装领导人发誓要对美国及其盟友的海上利益进行更多袭击。",
+      "language": "zh"
+    },
+    {
+      "title": "Israel-Iran tensions escalate: Both sides exchange threats",
+      "url": "https://www.bbc.com/news/world-middle-east-68612345",
+      "source": "exa",
+      "published_date": "2025-03-15",
+      "snippet": "Tensions between Israel and Iran have reached new heights following Israeli airstrikes on Iranian targets in Syria. Iran has promised \"severe consequences\" for any further Israeli aggression.",
+      "language": "en"
+    },
+    {
+      "title": "航运保险业大幅提高红海航线保费，战争险费率飙升",
+      "url": "https://www.lloydslist.maritimeintelligence.informa.com/ll1234567",
+      "source": "exa",
+      "published_date": "2025-03-14",
+      "snippet": "劳合社市场协会宣布将红海和亚丁湾的联合战争险费率从0.1%提高至1%，创历史新高。这意味着一艘价值5000万美元的商船每次通行需额外支付50万美元保险费。",
+      "language": "zh"
+    },
+    {
+      "title": "欧盟启动红海护航行动'阿斯皮德斯'，派遣军舰保护商船",
+      "url": "https://www.consilium.europa.eu/en/press/2025/03/12/eu-red-sea-operation/",
+      "source": "exa",
+      "published_date": "2025-03-12",
+      "snippet": "欧盟正式代号为'阿斯皮德斯'（Aspides）的红海护航行动，派遣德国、法国、意大利和希腊军舰前往红海保护欧洲商船。行动将持续至2025年底。",
+      "language": "zh"
+    },
+    {
+      "title": "Container lines blank sailings surge 40% on Red Sea diversion",
+      "url": "https://www.dynamar.com/news/container-blank-sailings-red-sea",
+      "source": "exa",
+      "published_date": "2025-03-13",
+      "snippet": "Container shipping lines have increased blank sailings by 40% in March as vessels rerouted around Cape of Good Hope create capacity shortages on Asia-Europe routes.",
+      "language": "en"
+    },
+    {
+      "title": "沙特石油设施加强安保，应对伊朗威胁",
+      "url": "https://www.arabnews.com/node/2345678",
+      "source": "exa",
+      "published_date": "2025-03-11",
+      "snippet": "沙特阿美宣布提高东部省石油设施的安保级别，包括增加防空系统和海上巡逻。此前伊朗曾威胁要打击沙特石油设施以报复美国在中东的军事存在。",
+      "language": "zh"
+    },
+    {
+      "title": "分析师警告：若霍尔木兹海峡关闭，油价可能飙升至150美元/桶",
+      "url": "https://www.cnbc.com/2025/03/10/oil-price-shock-hormuz-strait-closure.html",
+      "source": "exa",
+      "published_date": "2025-03-10",
+      "snippet": "能源分析师警告称，如果伊朗兑现威胁封锁霍尔木兹海峡，全球石油供应将瞬间减少20%，油价可能飙升至每桶150美元以上，引发全球经济危机。",
+      "language": "zh"
+    },
+    {
+      "title": "航运公司调整亚欧航线网络，新增非洲中转港",
+      "url": "https://www.shippingwatch.com/secure/article17345678.ece",
+      "source": "exa",
+      "published_date": "2025-03-09",
+      "snippet": "为应对红海危机，马士基、达飞轮船等航运巨头调整亚欧航线网络，在好望角附近的南非德班港和开普敦港增加挂靠频率，作为新的货物中转枢纽。",
+      "language": "zh"
+    },
+    {
+      "title": "Breaking: Another Houthi missile attack reported near Bab el-Mandeb",
+      "url": "https://twitter.com/maritimesecurity/status/1767890123456",
+      "source": "twitter",
+      "published_date": "2025-03-20",
+      "snippet": "Maritime security sources confirm another missile attack on commercial vessel near Bab el-Mandeb strait. All crew reported safe. Vessel diverted to Djibouti.",
+      "language": "en"
+    },
+    {
+      "title": "也门荷台达港附近发生爆炸，疑似导弹袭击",
+      "url": "https://twitter.com/redseaalert/status/1767789012345",
+      "source": "twitter",
+      "published_date": "2025-03-19",
+      "snippet": "也门荷台达港附近海域发生爆炸，据信是胡塞武装发射的反舰导弹。一艘散货船报告在附近航行时听到爆炸声，已改变航向远离该区域。",
+      "language": "zh"
+    },
+    {
+      "title": "红海危机导致欧洲零售商库存告急，圣诞季供应面临风险",
+      "url": "https://www.ft.com/content/european-retailers-red-sea-impact",
+      "source": "exa",
+      "published_date": "2025-03-08",
+      "snippet": "欧洲零售联合会警告称，红海航运中断导致亚洲至欧洲运输时间延长10-14天，许多零售商库存降至危险水平。如危机持续，2025年圣诞季商品供应将面临严重短缺风险。",
+      "language": "zh"
+    }
+  ]
+}

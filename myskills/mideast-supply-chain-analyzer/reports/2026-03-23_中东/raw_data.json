@@ -1,0 +1,342 @@
+{
+  "report_metadata": {
+    "title": "中东局势供应链风险分析报告",
+    "region": "中东（霍尔木兹海峡、波斯湾、红海）",
+    "time_range": "2026年3月",
+    "generated_date": "2026-03-23",
+    "data_sources": ["BBC News", "JOC (Journal of Commerce)", "Reddit"]
+  },
+  "news_items": [
+    {
+      "title": "亚洲股市暴跌，美伊威胁升级战争",
+      "url": "https://www.bbc.com/news/articles/czex56kwxxzo",
+      "source": "BBC News",
+      "published_date": "2026-03-23",
+      "snippet": "亚洲主要股市周一暴跌，华盛顿和德黑兰威胁升级敌对行动，伊朗战争进入第四周。日本基准日经225指数早盘下跌3.4%，韩国KOSPI下跌近5%。特朗普总统周六警告，如果伊朗不开放霍尔木兹海峡航运通道，将'摧毁'伊朗发电厂。",
+      "language": "zh"
+    },
+    {
+      "title": "特朗普威胁打击伊朗发电厂，战争进入'升级新阶段'",
+      "url": "https://www.bbc.com/news/articles/cn0wd20k0xeo",
+      "source": "BBC News",
+      "published_date": "2026-03-23",
+      "snippet": "《金融时报》称当前时刻为'新的升级阶段'，以色列军方称其为战争'中点'，战争已进入第四周。德黑兰誓言如果美国袭击伊朗发电站，将'不可逆转地摧毁'整个中东地区的重要基础设施。",
+      "language": "zh"
+    },
+    {
+      "title": "美国树脂出口商寻求新机遇，霍尔木兹海峡关闭切断供应",
+      "url": "https://www.joc.com/article/us-resin-shippers-look-to-tap-new-customers-amid-iran-war-6190361",
+      "source": "JOC",
+      "published_date": "2026-03-20",
+      "snippet": "霍尔木兹海峡的关闭切断了全球最大的塑料供应来源，为美国生产填补部分缺口创造了条件。3月16日树脂出口集装箱预订量达到6,191 TEU，而2026年全年通常每天预订量为3,500-4,500。",
+      "language": "en"
+    },
+    {
+      "title": "中远海运：中东战争将'放大'全球供应链波动",
+      "url": "https://www.joc.com/article/middle-east-war-will-amplify-volatility-in-global-supply-chains-cosco-6189727",
+      "source": "JOC",
+      "published_date": "2026-03-19",
+      "snippet": "中远海运表示，中东战争加剧的地缘政治紧张局势将加速今年全球贸易区域化和近岸外包的步伐，同时'放大全球供应链的波动性'。展望2026年，集装箱航运市场的复杂性和不确定性将进一步加剧。",
+      "language": "en"
+    },
+    {
+      "title": "冷藏货主等待滞留在波斯湾外的集装箱",
+      "url": "https://www.joc.com/article/reefer-shippers-play-waiting-game-with-boxes-stuck-outside-persian-gulf-6189639",
+      "source": "JOC",
+      "published_date": "2026-03-19",
+      "snippet": "船公司已暂停接受往返阿联酋、阿曼、伊拉克、科威特、卡塔尔、巴林和沙特的冷藏货物、危险品和特殊货物。2月28日战争开始时正在运输途中的冷藏集装箱被卸在区域外港口并接入冷藏插槽，货主正在等待或寻找新的市场。",
+      "language": "en"
+    },
+    {
+      "title": "战争重燃船公司与货主就燃油附加费的争执",
+      "url": "https://www.joc.com/article/war-reignites-tussle-between-ocean-carriers-cargo-owners-over-fuel-surcharges-6188632",
+      "source": "JOC",
+      "published_date": "2026-03-18",
+      "snippet": "船公司已实施紧急燃油附加费，根据贸易航线不同，每TEU从30美元到300美元不等。燃油价格约占船公司运营成本的15%-30%。这是历史上最严重的能源冲击，迫使船公司通过超出季度燃油调整因子(BAF)的费用来收回成本。",
+      "language": "en"
+    },
+    {
+      "title": "美国出口中东货物因战区服务中断而停滞",
+      "url": "https://www.joc.com/article/us-exports-to-middle-east-in-limbo-amid-war-zone-service-disruptions-6186031",
+      "source": "JOC",
+      "published_date": "2026-03-13",
+      "snippet": "美国出口商正在紧急寻找已运往中东但因船公司被迫暂停几乎所有服务而被卸在未知港口的集装箱。地中海航运公司本周对迪拜杰贝阿里港的出口货物援引'航程终止'条款。",
+      "language": "en"
+    },
+    {
+      "title": "中东冲突第13日回顾（2026年3月12-13日）",
+      "url": "https://reddit.com/r/IndiaSpeaks/comments/1rryij0/middle_east_conflict_day_13_in_review_mar_1213/",
+      "source": "Reddit",
+      "published_date": "2026-03-12",
+      "snippet": "随着美以战争进入第13天，战争迷雾渐浓。以色列对真主党据点发动新一轮大规模空袭。伊朗导弹击中以色列迪莫纳市，随后不久又对附近的阿拉德镇发动第二次袭击。",
+      "language": "en"
+    },
+    {
+      "title": "全球航运和运输成本警报：油价和供应链成本的双重挑战",
+      "url": "https://reddit.com/r/FreightForwardersOnly/comments/1rl9t6a/global_shipping_and_transportation_cost_alert_the/",
+      "source": "Reddit",
+      "published_date": "2026-03-05",
+      "snippet": "由于中东局势升级，霍尔木兹海峡的安全形势严峻。几乎所有船只都已停止并停靠在港口。约20%的全球原油和液化天然气(LNG)通常通过该水道运输，战争已导致全球燃料价格飙升。",
+      "language": "en"
+    },
+    {
+      "title": "2026年能源冲击：中东地缘政治紧张局势与西方经济体生活工资的侵蚀",
+      "url": "https://reddit.com/r/economy/comments/1rru9ph/the_2026_energy_shock_geopolitical_tensions_in/",
+      "source": "Reddit",
+      "published_date": "2026-03-12",
+      "snippet": "中东地区最近的军事升级，包括无人机袭击伊拉克的意大利基地和波斯湾日本油轮反复遇袭，可能引发数十年来最严重的能源危机。",
+      "language": "en"
+    },
+    {
+      "title": "2026年2月28日：美国和以色列对伊朗发动协调袭击",
+      "url": "https://reddit.com/r/dune/comments/1s06xwb/the_spice_must_flow_what_dune_gets_right_about/",
+      "source": "Reddit",
+      "published_date": "2026-03-22",
+      "snippet": "2026年2月28日，美国和以色列对伊朗发动协调袭击。伊朗的回应是采取每个敌人在这种情况下都会采取的行动——封锁霍尔木兹海峡。全球约20%的石油供应通过该海峡运输。",
+      "language": "en"
+    },
+    {
+      "title": "印度面临LPG供应的真实但可控的中断",
+      "url": "https://reddit.com/r/India_Bharat_/comments/1rsfnc5/manufactured_lpg_panic_facts_vs_political_drama/",
+      "source": "Reddit",
+      "published_date": "2026-03-13",
+      "snippet": "印度面临LPG供应的真实但可控的中断。近90%的进口通常通过霍尔木兹海峡。伊朗封锁海峡已迫使航运公司寻找替代路线，大幅增加了运输成本和时间。",
+      "language": "en"
+    }
+  ],
+  "scored_events": [
+    {
+      "event_id": "evt_001",
+      "title": "霍尔木兹海峡被伊朗封锁",
+      "event_type": "SHP",
+      "event_type_name": "航运中断",
+      "countries": ["伊朗", "阿联酋", "阿曼", "卡塔尔", "巴林", "科威特", "沙特"],
+      "affected_routes": ["霍尔木兹海峡航线", "波斯湾内航线"],
+      "affected_ports": ["杰贝阿里港", "哈利法港", "达曼港", "富查伊拉港"],
+      "severity": 5,
+      "probability": 5,
+      "time_sensitivity": "紧急",
+      "supply_chain_impact": "直接",
+      "summary": "自2026年2月28日起，伊朗封锁霍尔木兹海峡，这是全球约20%原油和25% LNG运输的必经之路。船公司已暂停接受往返阿联酋、阿曼、伊拉克、科威特、卡塔尔、巴林和沙特的冷藏货物、危险品和特殊货物。",
+      "source_urls": ["https://www.bbc.com/news/articles/czex56kwxxzo", "https://www.joc.com/article/reefer-shippers-play-waiting-game-with-boxes-stuck-outside-persian-gulf-6189639"],
+      "source_count": 3,
+      "risk_score": 4.8,
+      "risk_level": "高危"
+    },
+    {
+      "event_id": "evt_002",
+      "title": "美伊战争升级，特朗普威胁打击发电厂",
+      "event_type": "MIL",
+      "event_type_name": "军事冲突",
+      "countries": ["美国", "伊朗", "以色列"],
+      "affected_routes": ["霍尔木兹海峡航线", "红海-苏伊士运河航线"],
+      "affected_ports": [],
+      "severity": 5,
+      "probability": 4,
+      "time_sensitivity": "紧急",
+      "supply_chain_impact": "直接",
+      "summary": "美伊战争进入第四周，特朗普威胁如果伊朗不开放霍尔木兹海峡，将在48小时内'摧毁'伊朗发电厂。伊朗誓言将'不可逆转地摧毁'整个中东地区的重要基础设施作为回应。",
+      "source_urls": ["https://www.bbc.com/news/articles/czex56kwxxzo", "https://www.bbc.com/news/articles/cn0wd20k0xeo"],
+      "source_count": 2,
+      "risk_score": 4.7,
+      "risk_level": "高危"
+    },
+    {
+      "event_id": "evt_003",
+      "title": "全球能源危机爆发，油价飙升",
+      "event_type": "OIL",
+      "event_type_name": "能源供应波动",
+      "countries": ["全球"],
+      "affected_routes": ["霍尔木兹海峡航线"],
+      "affected_ports": [],
+      "severity": 4,
+      "probability": 5,
+      "time_sensitivity": "紧急",
+      "supply_chain_impact": "间接",
+      "summary": "国际能源署负责人称当前危机是'两个石油危机和一个天然气危机的总和'，布伦特原油价格达112美元/桶，美国原油98.57美元/桶。这是数十年来最严重的能源危机。",
+      "source_urls": ["https://www.bbc.com/news/articles/czex56kwxxzo"],
+      "source_count": 1,
+      "risk_score": 4.2,
+      "risk_level": "高危"
+    },
+    {
+      "event_id": "evt_004",
+      "title": "船公司征收紧急燃油附加费",
+      "event_type": "SHP",
+      "event_type_name": "航运中断",
+      "countries": ["全球"],
+      "affected_routes": ["全球主要航线"],
+      "affected_ports": [],
+      "severity": 3,
+      "probability": 5,
+      "time_sensitivity": "短期",
+      "supply_chain_impact": "间接",
+      "summary": "船公司已实施紧急燃油附加费，根据贸易航线不同，每TEU从30美元到300美元不等。船公司称这是历史上最严重的能源冲击，燃油成本占运营成本的15%-30%。",
+      "source_urls": ["https://www.joc.com/article/war-reignites-tussle-between-ocean-carriers-cargo-owners-over-fuel-surcharges-6188632"],
+      "source_count": 1,
+      "risk_score": 3.4,
+      "risk_level": "中等"
+    },
+    {
+      "event_id": "evt_005",
+      "title": "冷藏集装箱滞留波斯湾外港口",
+      "event_type": "SHP",
+      "event_type_name": "航运中断",
+      "countries": ["阿联酋", "阿曼", "伊拉克", "科威特", "卡塔尔", "巴林", "沙特"],
+      "affected_routes": ["波斯湾内航线"],
+      "affected_ports": ["杰贝阿里港", "塞拉莱港", "达曼港"],
+      "severity": 3,
+      "probability": 5,
+      "time_sensitivity": "紧急",
+      "supply_chain_impact": "直接",
+      "summary": "2月28日战争开始时正在运输途中的冷藏集装箱被卸在区域外港口并接入冷藏插槽，产生大量滞期费。货主要么等待霍尔木兹海峡重新开放，要么开始寻找新市场。",
+      "source_urls": ["https://www.joc.com/article/reefer-shippers-play-waiting-game-with-boxes-stuck-outside-persian-gulf-6189639"],
+      "source_count": 1,
+      "risk_score": 3.6,
+      "risk_level": "中等"
+    },
+    {
+      "event_id": "evt_006",
+      "title": "美国出口中东货物服务中断",
+      "event_type": "SHP",
+      "event_type_name": "航运中断",
+      "countries": ["美国", "阿联酋", "沙特"],
+      "affected_routes": ["跨大西洋-中东航线"],
+      "affected_ports": ["杰贝阿里港"],
+      "severity": 3,
+      "probability": 4,
+      "time_sensitivity": "短期",
+      "supply_chain_impact": "直接",
+      "summary": "美国出口商正在紧急寻找已运往中东但被卸在未知港口的集装箱。地中海航运公司对迪拜杰贝阿里港出口货物援引'航程终止'条款。",
+      "source_urls": ["https://www.joc.com/article/us-exports-to-middle-east-in-limbo-amid-war-zone-service-disruptions-6186031"],
+      "source_count": 1,
+      "risk_score": 3.3,
+      "risk_level": "中等"
+    },
+    {
+      "event_id": "evt_007",
+      "title": "全球供应链波动性加剧",
+      "event_type": "POL",
+      "event_type_name": "政治动荡",
+      "countries": ["全球"],
+      "affected_routes": ["全球航线"],
+      "affected_ports": [],
+      "severity": 3,
+      "probability": 4,
+      "time_sensitivity": "中期",
+      "supply_chain_impact": "潜在",
+      "summary": "中远海运表示，地缘政治紧张局势将加速全球贸易区域化和近岸外包，同时放大全球供应链的波动性。2026年集装箱航运市场的复杂性和不确定性将进一步加剧。",
+      "source_urls": ["https://www.joc.com/article/middle-east-war-will-amplify-volatility-in-global-supply-chains-cosco-6189727"],
+      "source_count": 1,
+      "risk_score": 2.9,
+      "risk_level": "低"
+    }
+  ],
+  "impact_analysis": [
+    {
+      "node_name": "霍尔木兹海峡航线",
+      "node_type": "航线",
+      "impact_level": "严重",
+      "impact_path": "伊朗封锁海峡 → 全球20%原油和25% LNG运输中断 → 油价飙升至112美元/桶 → 船公司停运 → 供应链成本激增",
+      "current_status": "自2月28日起被伊朗封锁，船公司暂停波斯湾地区服务",
+      "alternative": "阿联酋Habshan-富查伊拉管道（仅原油，约150万桶/天，全球需求的1.5%）",
+      "extra_cost": "船公司紧急燃油附加费$30-300/TEU",
+      "recovery_time": "取决于地缘局势，预计数月"
+    },
+    {
+      "node_name": "波斯湾内航线",
+      "node_type": "航线",
+      "impact_level": "严重",
+      "impact_path": "战争爆发 → 船公司暂停服务 → 冷藏集装箱滞留 → 滞期费累积 → 贸易中断",
+      "current_status": "船公司已暂停接受往返阿联酋、阿曼、伊拉克、科威特、卡塔尔、巴林和沙特的冷藏货物、危险品和特殊货物",
+      "alternative": "陆桥服务通过沙特阿拉伯或阿拉伯港口外海峡",
+      "extra_cost": "滞期费和仓储费大幅增加",
+      "recovery_time": "取决于战争持续时间"
+    },
+    {
+      "node_name": "杰贝阿里港",
+      "node_type": "港口",
+      "impact_level": "严重",
+      "impact_path": "服务中断 → 货物滞留 → 出口商无法定位集装箱 → 贸易停滞",
+      "current_status": "地中海航运公司对出口货物援引'航程终止'条款",
+      "alternative": "转至其他阿拉伯港口或陆路运输",
+      "extra_cost": "货物追踪和重新路由成本",
+      "recovery_time": "未知"
+    },
+    {
+      "node_name": "全球能源市场",
+      "node_type": "市场",
+      "impact_level": "严重",
+      "impact_path": "海峡封锁 → 原油供应减少 → 油价飙升 → 通胀压力 → 全球经济放缓",
+      "current_status": "布伦特原油112美元/桶，美国原油98.57美元/桶",
+      "alternative": "战略石油储备释放、需求削减",
+      "extra_cost": "运输成本增加15-30%",
+      "recovery_time": "数月到数年"
+    }
+  ],
+  "recommendations": [
+    {
+      "risk_level": "高危",
+      "action": "立即启动替代航线预案",
+      "detail": "将波斯湾航线货物转至阿拉伯港口外霍尔木兹海峡的港口（如富查伊拉）或考虑陆路运输方案。与船公司协商运费锁定协议。",
+      "priority": "紧急",
+      "department": "物流部/采购部",
+      "timeframe": "立即执行",
+      "estimated_cost": "运输成本增加20-40%"
+    },
+    {
+      "risk_level": "高危",
+      "action": "建立燃油成本对冲机制",
+      "detail": "鉴于燃油附加费已达$30-300/TEU，建议与船公司谈判长期燃油调整机制，或考虑燃油期货对冲。",
+      "priority": "紧急",
+      "department": "财务部/采购部",
+      "timeframe": "1-2周内",
+      "estimated_cost": "对冲成本约2-5%"
+    },
+    {
+      "risk_level": "中等",
+      "action": "寻找替代供应商和市场",
+      "detail": "美国树脂出口商已看到机遇，建议评估是否可将中东采购转向美国或其他未受影响地区。",
+      "priority": "高",
+      "department": "采购部",
+      "timeframe": "1-4周内",
+      "estimated_cost": "供应商转换成本10-20%"
+    },
+    {
+      "risk_level": "中等",
+      "action": "加强货物追踪和可视化",
+      "detail": "使用海运可视化提供商（如Vizion）实时追踪集装箱位置，及时应对服务中断。",
+      "priority": "高",
+      "department": "物流部",
+      "timeframe": "1周内",
+      "estimated_cost": "技术投入$10,000-50,000/年"
+    },
+    {
+      "risk_level": "低",
+      "action": "供应链区域化布局",
+      "detail": "借鉴中远海运分析，加速近岸外包和供应链多元化布局，减少对单一地区的依赖。",
+      "priority": "中",
+      "department": "战略部/供应链部",
+      "timeframe": "3-12个月",
+      "estimated_cost": "供应链重构成本"
+    }
+  ],
+  "summary_stats": {
+    "total_events": 7,
+    "high_risk_events": 3,
+    "medium_risk_events": 3,
+    "low_risk_events": 1,
+    "affected_routes": 4,
+    "affected_ports": 6,
+    "overall_risk_score": 4.1,
+    "overall_risk_level": "高危",
+    "key_metrics": {
+      "oil_price_brent": 112,
+      "oil_price_wti": 98.57,
+      "fuel_surcharge_min": 30,
+      "fuel_surcharge_max": 300,
+      "strait_hormuz_closure_date": "2026-02-28",
+      "war_duration_days": 23
+    }
+  }
+}

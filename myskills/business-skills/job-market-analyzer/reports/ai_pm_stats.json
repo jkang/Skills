@@ -1,0 +1,87 @@
+{
+  "overall_tc": {
+    "sample_count": 27,
+    "min": 39.2,
+    "max": 133.0,
+    "mean": 75.7,
+    "median": 71.2,
+    "p25": 54.0,
+    "p75": 89.6
+  },
+  "by_source": {
+    "levels.fyi": {
+      "sample_count": 14,
+      "min": 52.0,
+      "max": 133.0,
+      "median": 87.1,
+      "range": "52.0-133.0万"
+    },
+    "liepin_estimate": {
+      "sample_count": 2,
+      "min": 47.2,
+      "max": 64.0,
+      "median": 55.6,
+      "range": "47.2-64.0万"
+    },
+    "maimai": {
+      "sample_count": 4,
+      "min": 51.0,
+      "max": 87.0,
+      "median": 78.8,
+      "range": "51.0-87.0万"
+    },
+    "liepin": {
+      "sample_count": 7,
+      "min": 39.2,
+      "max": 80.0,
+      "median": 48.0,
+      "range": "39.2-80.0万"
+    }
+  },
+  "by_company": {
+    "字节跳动": {"median": 82.1, "range": "56.0-133.0", "count": 6},
+    "腾讯": {"median": 78.8, "range": "56.0-133.0", "count": 5},
+    "阿里巴巴": {"median": 79.6, "range": "48.0-128.2", "count": 5},
+    "华为": {"median": 62.1, "range": "42.0-102.0", "count": 4},
+    "美团": {"median": 61.6, "range": "46.5-82.0", "count": 3},
+    "小米": {"median": 55.6, "range": "39.2-64.0", "count": 4}
+  },
+  "base_monthly": {
+    "sample_count": 27,
+    "min": 28,
+    "max": 55,
+    "median": 38,
+    "unit": "k/月"
+  },
+  "bonus": {
+    "total_months": {
+      "sample_count": 27,
+      "min": 14,
+      "max": 16,
+      "median": 16,
+      "common": "14-16薪"
+    },
+    "fixed_months": {
+      "sample_count": 2,
+      "min": 2,
+      "max": 3,
+      "median": 2.5
+    },
+    "performance_months": {
+      "sample_count": 1,
+      "range_low": 0,
+      "range_high": 3
+    },
+    "sign_on_bonus": {
+      "sample_count": 2,
+      "min": 5,
+      "max": 8,
+      "median": 6.5,
+      "unit": "万"
+    }
+  },
+  "valid_entries": 27,
+  "parse_errors": [],
+  "report_date": "2026-03-22",
+  "data_sources": ["Levels.fyi", "脉脉大爆料专区", "猎聘网挂牌数据"]
+}

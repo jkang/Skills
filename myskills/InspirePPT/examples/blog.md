@@ -25,10 +25,10 @@ Inspire PPT 就是为了解决这些问题而生的。
 
 在这个 Skill 中，我们提供了全链路的自动化能力：
 
-- **深度解析与洞察**：通过集成 `markitdown` 和 `thumbnail.py`，不仅能提取 PPT 中的纯文本内容，还能直接生成每一页的高清缩略图，让大语言模型（如 Gemini/Claude）能够“看到”幻灯片的真实长相，从而做出更精准的版式决策。
-- **一键全方位品牌替换 (Rebranding)**：这是该 Skill 最亮眼的功能。它可以自动找出 PPT 里的旧 Logo 图片进行尺寸适配并无缝替换，遍历全文将“旧公司名”替换为“新品牌”，甚至自动追踪版权声明（如 `© 2025`）将其更新到当前年份。
-- **无感样式转移 (Style Transfer)**：你不再需要手动点选颜色刷。提供一份 `pptstyle.json` 配置，它能自动解析 PPT 主题的底层 XML，将旧的色板（如各种深色调）全部替换为 Inspire 的“星空蓝”和“创想蓝”，并将全局字体批量替换为符合规范的无衬线字体（如 MiSans / Montserrat）。
-- **安全的原子化编辑**：支持针对特定单页进行增删改，自动维护复杂的关联引用关系，保证修改后的文件用 Office 打开绝对不会报错。
+- **Subskill 1：原生 XML 内容创作**：完全摒弃 ad-hoc 脚本，通过解包模板、克隆 Slide、并利用 AI 原生编辑工具直接手术级修改 XML 文本节点，实现最高质量的版式继承。
+- **Subskill 2：一键全方位品牌重塑 (Rebranding)**：自动化检测旧 Logo、替换公司名与年份，将存量资产一键更新。
+- **无感样式转移 (Style Transfer)**：基于 `pptstyle.json` 配置，自动解析并重写底层 `theme1.xml`，将旧色板与字体一键对齐至企业规范。
+- **自愈式封装**：`pack.py` 内置 OOXML 结构校验，确保修改后的文件绝对合规。
 
 ---
 
@@ -65,11 +65,12 @@ Inspire PPT 就是为了解决这些问题而生的。
    ```
    *脚本会自动移除未使用的媒体文件、修复损坏的关联关系（Relationships），重新压缩成合法的标准 PPTX 格式。*
 
-### 场景二：结合大模型从零生成 (Create from Scratch)
-如果要全新生成，Skill 中也结合了 `pptxgenjs` 方案：
-1. 编写一份符合期望大纲的 Markdown 内容。
-2. 依据 `pptstyle.json` 中的模板规范，将其转换为结构化的 JSON 指令。
-3. 通过 Node 脚本将 JSON 渲染出结构完美、带有炫彩底纹和正确字体的新 PPTX 文件。
+### 场景二：基于模板从零生成 (Create from Template)
+无需编写任何生成代码：
+1. **解包模板**：`python scripts/office/unpack.py assets/InspireTemplate.pptx unpacked/`
+2. **克隆 Slide**：使用 `add_slide.py` 复制模板中排版精美的原始 Slide 作为底稿。
+3. **原生编辑**：Agent 使用 Edit Tool 直接修改 `slide*.xml` 中的 `<a:t>` 文本。
+4. **打包产出**：`python scripts/office/pack.py unpacked/ NewPPT.pptx`
 
 ---
 
@@ -91,12 +92,12 @@ InspirePPT/
 │   ├── Inspire logo.png     # 标准品牌 Logo（适用于浅色背景）
 │   └── Inspire logo white.png # 反白的品牌 Logo（适用于深色背景）
 ├── scripts/                 # 自动化工具链
-│   ├── rebrand.py           # 品牌重塑脚本（Logo、文字替换及 Style Transfer 的核心大脑）。
-│   ├── add_slide.py         # 用于在代码层面安全地克隆和追加新幻灯片。
-│   ├── clean.py             # 智能清理废弃的素材与悬空节点。
+│   ├── rebrand.py           # Subskill 2 核心：品牌重塑（Logo、文字替换及主题色刷新）。
+│   ├── add_slide.py         # Subskill 1 核心：用于安全地克隆和追加模板幻灯片。
+│   ├── clean.py             # 智能清理废弃关联节点。
 │   └── office/              # 底层基建
-│       ├── unpack.py        # 解压并格式化 XML。
-│       ├── pack.py          # 带有 Auto-healing（自愈）能力的重打包脚本。
+│       ├── unpack.py        # 解压并排版 XML。
+│       ├── pack.py          # 带有自愈能力的重打包脚本。
 │       └── thumbnail.py     # 视觉截帧工具，赋予大模型读取版式的“眼睛”。
 └── examples/                # 用于演示和端到端测试的样本。
 ```
