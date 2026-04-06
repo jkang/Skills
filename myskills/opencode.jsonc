@@ -3,5 +3,6 @@
   "default_agent": "openwork",
   "plugin": [
     "opencode-scheduler"
-  ]
+  ],
+  "model": "kimi-for-coding/k2p5"
 }
